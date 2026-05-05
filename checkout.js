@@ -197,8 +197,15 @@ const SHIPPING_FEE       = 3990;
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
           });
-          if (!r.ok) throw new Error('backend_' + r.status);
-          const json = await r.json();
+          const json = await r.json().catch(() => ({}));
+          if (!r.ok) {
+            const msg = json?.message || json?.error || JSON.stringify(json) || ('HTTP ' + r.status);
+            const err = new Error('gateway_error');
+            err.gatewayError = msg;
+            err.gatewayStatus = r.status;
+            err.data = json;
+            throw err;
+          }
           return json.data || json;
         }
       });
@@ -206,20 +213,20 @@ const SHIPPING_FEE       = 3990;
       handleResult(result, orderId, total);
     } catch (e) {
       console.error('[checkout] erro:', e);
-      // Se o backend ainda não estiver online, mostra o payload que vai sair —
-      // útil pra debug em dev.
-      const isDev = !BACKEND_URL.startsWith('http');
-      if (isDev) {
-        const body = buildTransactionBody({ token: 'pgct_DEMO', orderId, total, installments: parseInt($('ckInstall').value, 10) || 1 });
-        console.log('[checkout · DEMO] payload pronto pro backend:', body);
-        openResult({
-          ok: true,
-          title: '✓ Pedido recibido (modo demo)',
-          msg: `Tu orden #${orderId} fue creada. Cuando el backend esté online, este flujo creará la transacción real en Pagou.ai. Revisa la consola para ver el payload.`
-        });
-      } else {
-        openResult({ ok: false, title: 'Pago no procesado', msg: 'Hubo un problema procesando tu tarjeta. Verifica los datos o intenta otro medio.' });
+      // Tenta extrair mensagem real do gateway pra mostrar no modal
+      let detail = e?.message || String(e);
+      if (e?.response) {
+        try { detail = JSON.stringify(e.response).slice(0, 300); } catch {}
+      } else if (e?.data) {
+        try { detail = JSON.stringify(e.data).slice(0, 300); } catch {}
+      } else if (e?.gatewayError) {
+        detail = e.gatewayError;
       }
+      openResult({
+        ok: false,
+        title: 'Pago no aprobado',
+        msg: `Mensaje del gateway: ${detail}`
+      });
     } finally {
       payBtn.disabled = false;
       payBtn.querySelector('.ck-pay-label').hidden = false;
