@@ -5,19 +5,18 @@
    monta o resumo, integra com o Payment Element do Pagou.ai
    pra tokenizar a tarjeta e envia ao backend pra criar a transação.
 
-   ⚠️ CONFIGURAÇÃO — preencha antes de ir pra produção:
-   - PAGOU_PUBLIC_KEY: chave pública do Pagou (pk_sandbox_... / pk_live_...)
-   - BACKEND_URL: endpoint do SEU backend que recebe o token
-                  e chama POST https://api.pagou.ai/v2/transactions
-                  com o secret-token Bearer (NUNCA exposto no browser).
-   - PAGOU_ENV: "sandbox" ou "production"
+   ✅ Toda a configuração (pública e secreta) vem de ENV VARS na Vercel:
+       PAGOU_PUBLIC_KEY  → exposto via /api/config
+       PAGOU_SECRET_KEY  → usado só no /api/pagou/transactions
+       PAGOU_ENV         → "sandbox" / "production"
+       PAGOU_WEBHOOK_SECRET (opcional) → /api/pagou/webhook
+   Nada de chaves no código.
 ============================================ */
 
-const PAGOU_PUBLIC_KEY = 'pk_sandbox_REEMPLAZAR_POR_TU_LLAVE';
-const BACKEND_URL      = '/api/pagou/transactions'; // ajuste pro seu domínio
-const PAGOU_ENV        = 'sandbox'; // troca pra 'production' no go-live
-const SHIPPING_THRESHOLD = 30000;   // CLP
-const SHIPPING_FEE       = 3990;    // CLP quando abaixo do limite
+const BACKEND_URL        = '/api/pagou/transactions';
+const CONFIG_URL         = '/api/config';
+const SHIPPING_THRESHOLD = 30000;
+const SHIPPING_FEE       = 3990;
 
 (function checkout() {
   const fmt = n => '$' + n.toLocaleString('es-CL');
@@ -112,11 +111,30 @@ const SHIPPING_FEE       = 3990;    // CLP quando abaixo do limite
   let elements, card;
   let pagouReady = false;
 
-  if (typeof Pagou !== 'undefined') {
+  initPagou();
+
+  async function initPagou() {
+    if (typeof Pagou === 'undefined') {
+      mountFallback('SDK de pago no disponible. Verifica tu conexión.');
+      return;
+    }
+    let cfg = { pagouPublicKey: '', pagouEnv: 'sandbox' };
     try {
-      Pagou.setEnvironment(PAGOU_ENV);
+      const r = await fetch(CONFIG_URL, { cache: 'no-store' });
+      if (r.ok) cfg = await r.json();
+    } catch (e) {
+      console.warn('[Pagou] /api/config indisponível, modo demo');
+    }
+
+    if (!cfg.pagouPublicKey) {
+      mountFallback('Configuración de pago pendiente. Configura PAGOU_PUBLIC_KEY en el panel de Vercel.');
+      return;
+    }
+
+    try {
+      Pagou.setEnvironment(cfg.pagouEnv);
       elements = Pagou.elements({
-        publicKey: PAGOU_PUBLIC_KEY,
+        publicKey: cfg.pagouPublicKey,
         locale: 'es',
         origin: window.location.origin,
       });
@@ -127,8 +145,6 @@ const SHIPPING_FEE       = 3990;    // CLP quando abaixo do limite
       console.error('[Pagou] init falhou:', err);
       mountFallback('No fue posible cargar el formulario de pago. Intenta más tarde.');
     }
-  } else {
-    mountFallback('SDK de pago no disponible. Verifica tu conexión.');
   }
 
   function mountFallback(msg) {
