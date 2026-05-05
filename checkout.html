@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1F4D3D" />
+  <title>Checkout — Farma Origen</title>
+  <meta name="description" content="Finaliza tu compra en Farma Origen. Pago seguro con tarjeta." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER MINIMAL ============ -->
+  <header class="header header-pd">
+    <div class="container header-inner header-inner-pd">
+      <a href="index.html" class="logo" aria-label="Farma Origen">
+        <img src="assets/logofarmaorigen.jpeg" alt="Farma Origen" />
+      </a>
+      <div class="checkout-trust">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span>Pago 100 % seguro</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ CHECKOUT ============ -->
+  <section class="ck">
+    <div class="container ck-grid">
+
+      <!-- ====== LEFT: BUYER + PAYMENT ====== -->
+      <div class="ck-form">
+        <h1 class="ck-h1">Finaliza tu compra</h1>
+        <p class="ck-sub">Completa tus datos y paga con tarjeta de crédito o débito chilena.</p>
+
+        <!-- ===== BUYER ===== -->
+        <section class="ck-section">
+          <header class="ck-section-head">
+            <span class="ck-step">1</span>
+            <h2>Tus datos</h2>
+          </header>
+          <div class="ck-fields">
+            <label class="ck-field span-2">
+              <span>Nombre completo *</span>
+              <input id="ckName" type="text" autocomplete="name" required />
+            </label>
+            <label class="ck-field">
+              <span>RUT *</span>
+              <input id="ckRut" type="text" inputmode="text" placeholder="12.345.678-9" required />
+            </label>
+            <label class="ck-field">
+              <span>Teléfono *</span>
+              <input id="ckPhone" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required />
+            </label>
+            <label class="ck-field span-2">
+              <span>Email *</span>
+              <input id="ckEmail" type="email" autocomplete="email" placeholder="tu@correo.cl" required />
+            </label>
+          </div>
+        </section>
+
+        <!-- ===== ADDRESS ===== -->
+        <section class="ck-section">
+          <header class="ck-section-head">
+            <span class="ck-step">2</span>
+            <h2>Dirección de despacho</h2>
+          </header>
+          <div class="ck-fields">
+            <label class="ck-field">
+              <span>Código postal *</span>
+              <input id="ckCep" type="text" inputmode="numeric" maxlength="8" placeholder="8320000" required />
+            </label>
+            <label class="ck-field">
+              <span>Región *</span>
+              <select id="ckRegion" required>
+                <option value="">Selecciona región</option>
+                <option value="XV">Arica y Parinacota</option>
+                <option value="I">Tarapacá</option>
+                <option value="II">Antofagasta</option>
+                <option value="III">Atacama</option>
+                <option value="IV">Coquimbo</option>
+                <option value="V">Valparaíso</option>
+                <option value="RM">Metropolitana</option>
+                <option value="VI">O'Higgins</option>
+                <option value="VII">Maule</option>
+                <option value="XVI">Ñuble</option>
+                <option value="VIII">Biobío</option>
+                <option value="IX">Araucanía</option>
+                <option value="XIV">Los Ríos</option>
+                <option value="X">Los Lagos</option>
+                <option value="XI">Aysén</option>
+                <option value="XII">Magallanes</option>
+              </select>
+            </label>
+            <label class="ck-field">
+              <span>Comuna *</span>
+              <input id="ckComuna" type="text" required />
+            </label>
+            <label class="ck-field">
+              <span>Calle *</span>
+              <input id="ckStreet" type="text" autocomplete="street-address" required />
+            </label>
+            <label class="ck-field">
+              <span>Número *</span>
+              <input id="ckNumber" type="text" required />
+            </label>
+            <label class="ck-field span-2">
+              <span>Departamento / referencia</span>
+              <input id="ckExtra" type="text" placeholder="Depto, casa, referencia" />
+            </label>
+          </div>
+        </section>
+
+        <!-- ===== PAYMENT ===== -->
+        <section class="ck-section">
+          <header class="ck-section-head">
+            <span class="ck-step">3</span>
+            <h2>Datos de pago</h2>
+            <span class="ck-badges">
+              <span class="ck-card-tag">VISA</span>
+              <span class="ck-card-tag">Mastercard</span>
+              <span class="ck-card-tag">Amex</span>
+            </span>
+          </header>
+
+          <div class="ck-installments">
+            <label class="ck-field">
+              <span>Cuotas</span>
+              <select id="ckInstall">
+                <option value="1" selected>1 cuota sin interés</option>
+                <option value="2">2 cuotas sin interés</option>
+                <option value="3">3 cuotas sin interés</option>
+                <option value="6">6 cuotas</option>
+                <option value="12">12 cuotas</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Pagou Payment Element mounts here -->
+          <div id="ck-card-element" class="ck-card-mount"></div>
+          <p id="ckPayError" class="ck-pay-error" hidden></p>
+        </section>
+
+        <button type="button" class="ck-pay-btn" id="ckPayBtn">
+          <span class="ck-pay-label">Pagar <strong id="ckPayAmount">$0</strong></span>
+          <span class="ck-pay-loading" hidden>
+            <span class="ck-spin"></span> Procesando…
+          </span>
+        </button>
+
+        <p class="ck-secure-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Tus datos viajan cifrados con TLS. No almacenamos tu tarjeta — la procesa Pagou.ai.
+        </p>
+      </div>
+
+      <!-- ====== RIGHT: ORDER SUMMARY ====== -->
+      <aside class="ck-summary">
+        <header class="ck-sum-head">
+          <h2>Tu pedido</h2>
+          <a href="index.html" class="ck-edit">Seguir comprando</a>
+        </header>
+        <ul id="ckItems" class="ck-items"></ul>
+
+        <div class="ck-coupon">
+          <input id="ckCoupon" type="text" placeholder="Código de descuento" />
+          <button type="button" id="ckCouponBtn">Aplicar</button>
+        </div>
+
+        <dl class="ck-totals">
+          <div><dt>Subtotal</dt><dd id="ckSubtotal">$0</dd></div>
+          <div><dt>Despacho</dt><dd id="ckShipping">—</dd></div>
+          <div class="ck-total"><dt>Total</dt><dd id="ckTotal">$0</dd></div>
+        </dl>
+
+        <ul class="ck-mini-trust">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/></svg> Compra protegida</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg> Despacho a todo Chile</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg> Cambio fácil</li>
+        </ul>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ============ SUCCESS / ERROR MODALS ============ -->
+  <div id="ckResult" class="ck-modal" hidden>
+    <div class="ck-modal-card">
+      <div class="ck-modal-icon" id="ckResultIcon"></div>
+      <h2 id="ckResultTitle">Pago aprobado</h2>
+      <p id="ckResultMsg"></p>
+      <a id="ckResultCta" href="index.html" class="ck-pay-btn">Volver al inicio</a>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER MINIMAL ============ -->
+  <footer class="footer ck-footer">
+    <div class="container footer-bottom">
+      <p class="legal-note">Pago procesado por Pagou.ai. Los productos en Farma Origen son suplementos alimenticios y artículos de cuidado personal. No reemplazan una alimentación equilibrada ni constituyen tratamiento médico.</p>
+      <p>© 2026 Farma Origen · contacto@farmaorigen.com</p>
+    </div>
+  </footer>
+
+  <!-- Pagou.ai Payment SDK -->
+  <script src="https://js.pagou.ai/payments/v3.js"></script>
+  <script src="products-data.js"></script>
+  <script src="script.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>

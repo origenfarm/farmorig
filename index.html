@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1F4D3D" />
+  <title>Farma Origen — Suplementos naturales en Chile</title>
+  <meta name="description" content="Farma Origen: suplementos naturales, hongos medicinales, vitaminas y bienestar con despacho a todo Chile. Origen natural, cuidado real." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ TOP BAR ============ -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <p class="topbar-msg">
+        <span class="dot"></span>
+        Despacho gratis en compras sobre $30.000 a todo Chile
+      </p>
+      <nav class="topbar-nav" aria-label="Accesos rápidos">
+        <a href="#contacto">Contacto</a>
+        <a href="#ayuda">Ayuda</a>
+        <a href="#cuenta">Mi cuenta</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="/" class="logo" aria-label="Farma Origen">
+        <img src="assets/logofarmaorigen.jpeg" alt="Farma Origen" />
+      </a>
+
+      <form class="search" role="search" onsubmit="event.preventDefault();">
+        <select class="search-cat" aria-label="Categoría">
+          <option>Todas las categorías</option>
+          <option>Suplementos Naturales</option>
+          <option>Hongos Medicinales</option>
+          <option>Probióticos</option>
+          <option>Dermocosmética</option>
+          <option>Cuidado Ocular</option>
+          <option>Antioxidantes</option>
+          <option>Energía y Vitalidad</option>
+        </select>
+        <input type="search" placeholder="¿Qué estás buscando hoy?" aria-label="Buscar productos" />
+        <button type="submit" aria-label="Buscar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+      </form>
+
+      <div class="header-actions">
+        <a href="#cuenta" class="hicon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span>Mi cuenta</span>
+        </a>
+        <a href="#favoritos" class="hicon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          <span>Favoritos</span>
+        </a>
+        <a href="#carro" class="hicon cart-btn" id="cartButton">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 5h2l3 12h11l3-9H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+          <span>Carro <em class="cart-count" id="cartCount">0</em></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ============ MEGA MENU ============ -->
+    <nav class="mainnav" aria-label="Categorías">
+      <div class="container mainnav-inner">
+        <button class="menu-all">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          Todas las categorías
+        </button>
+        <ul class="menu">
+          <li><a href="#suplementos">Suplementos</a></li>
+          <li><a href="#hongos">Hongos Medicinales</a></li>
+          <li><a href="#probioticos">Probióticos</a></li>
+          <li><a href="#dermo">Dermocosmética</a></li>
+          <li><a href="#ocular">Cuidado Ocular</a></li>
+          <li><a href="#longevidad">Antioxidantes</a></li>
+          <li><a href="#energia">Energía &amp; Vitalidad</a></li>
+          <li><a href="#marcas">Marcas</a></li>
+          <li class="hot"><a href="#ofertas">Más Buscados</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============ HERO CAROUSEL ============ -->
+  <section class="hero">
+    <div class="hero-track" id="heroTrack">
+      <article class="slide slide-1" aria-label="Origen natural">
+        <div class="container slide-inner">
+          <div class="slide-copy">
+            <span class="eyebrow">Nueva colección herbal</span>
+            <h1>Origen natural,<br/>cuidado real.</h1>
+            <p>Descubre nuestra línea botánica con activos puros de la cordillera y el sur de Chile.</p>
+            <a href="#naturales" class="btn btn-primary">Explorar línea natural</a>
+          </div>
+        </div>
+      </article>
+      <article class="slide slide-2" aria-label="Dermocosmética 20% off">
+        <div class="container slide-inner">
+          <div class="slide-copy">
+            <span class="eyebrow">Solo esta semana</span>
+            <h1>Hasta 20% off<br/>en dermocosmética.</h1>
+            <p>Cuida tu piel con marcas premium: Eucerin, La Roche-Posay, Vichy, Avène y más.</p>
+            <a href="#dermo" class="btn btn-primary">Ver ofertas</a>
+          </div>
+        </div>
+      </article>
+      <article class="slide slide-3" aria-label="Despacho gratis">
+        <div class="container slide-inner">
+          <div class="slide-copy">
+            <span class="eyebrow">A todo Chile</span>
+            <h1>Despacho gratis<br/>sobre $30.000.</h1>
+            <p>De Arica a Punta Arenas. Recibe tus productos en 24 a 72 horas hábiles.</p>
+            <a href="#despacho" class="btn btn-primary">Conoce más</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <button class="hero-arrow prev" id="heroPrev" aria-label="Anterior">‹</button>
+    <button class="hero-arrow next" id="heroNext" aria-label="Siguiente">›</button>
+    <div class="hero-dots" id="heroDots"></div>
+  </section>
+
+  <!-- ============ TICKER PROMOCIONAL ============ -->
+  <div class="ticker" aria-label="Promociones del día">
+    <div class="ticker-track">
+      <span>🔥 <strong>HASTA 40% OFF</strong> en dermocosmética</span>
+      <span>🚚 <strong>DESPACHO GRATIS</strong> sobre $30.000</span>
+      <span>💊 <strong>2x1</strong> en vitaminas seleccionadas</span>
+      <span>🌿 <strong>NUEVO</strong> · Línea Origen Patagonia</span>
+      <span>⚡ <strong>RETIRO EN TIENDA</strong> en 2 horas</span>
+      <span>💳 <strong>3 CUOTAS SIN INTERÉS</strong> con todas las tarjetas</span>
+      <!-- duplica pra loop infinito -->
+      <span>🔥 <strong>HASTA 40% OFF</strong> en dermocosmética</span>
+      <span>🚚 <strong>DESPACHO GRATIS</strong> sobre $30.000</span>
+      <span>💊 <strong>2x1</strong> en vitaminas seleccionadas</span>
+      <span>🌿 <strong>NUEVO</strong> · Línea Origen Patagonia</span>
+      <span>⚡ <strong>RETIRO EN TIENDA</strong> en 2 horas</span>
+      <span>💳 <strong>3 CUOTAS SIN INTERÉS</strong> con todas las tarjetas</span>
+    </div>
+  </div>
+
+  <!-- ============ TRUST STRIP ============ -->
+  <section class="trust">
+    <div class="container trust-inner">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h13v10H3zM16 10h4l1 3v4h-5"/><circle cx="7" cy="18" r="1.5"/><circle cx="18" cy="18" r="1.5"/></svg>
+        <div><strong>Despacho a todo Chile</strong><span>Gratis sobre $30.000</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16v12H4zM8 8V5a4 4 0 0 1 8 0v3"/></svg>
+        <div><strong>Compra segura</strong><span>Pago 100% protegido</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        <div><strong>Calidad premium</strong><span>Origen verificado y trazable</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div><strong>Atención al cliente</strong><span>WhatsApp · Lun a Sáb</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORÍAS DESTACADAS ============ -->
+  <section class="cats" id="categorias">
+    <div class="container">
+      <header class="section-head">
+        <h2>Compra por categoría</h2>
+        <p>Todo lo que necesitas para tu salud y bienestar, en un solo lugar.</p>
+      </header>
+      <div class="cats-grid">
+        <a href="#suplementos" class="cat-card">
+          <span class="cat-icon">🌿</span>
+          <h3>Suplementos</h3>
+          <p>Naturales y herbales</p>
+        </a>
+        <a href="#hongos" class="cat-card">
+          <span class="cat-icon">🍄</span>
+          <h3>Hongos Medicinales</h3>
+          <p>Melena, Reishi, Cordyceps</p>
+        </a>
+        <a href="#probioticos" class="cat-card">
+          <span class="cat-icon">🧬</span>
+          <h3>Probióticos</h3>
+          <p>Salud digestiva</p>
+        </a>
+        <a href="#longevidad" class="cat-card">
+          <span class="cat-icon">⚡</span>
+          <h3>Antioxidantes</h3>
+          <p>NMN, NAD+, Resveratrol</p>
+        </a>
+        <a href="#dermo" class="cat-card">
+          <span class="cat-icon">🧴</span>
+          <h3>Dermocosmética</h3>
+          <p>Eucerin, La Roche-Posay</p>
+        </a>
+        <a href="#ocular" class="cat-card">
+          <span class="cat-icon">👁️</span>
+          <h3>Cuidado Ocular</h3>
+          <p>Lágrimas y colirios</p>
+        </a>
+        <a href="#energia" class="cat-card">
+          <span class="cat-icon">⚡</span>
+          <h3>Energía &amp; Vitalidad</h3>
+          <p>Adaptógenos y vitaminas</p>
+        </a>
+        <a href="#bienestar" class="cat-card">
+          <span class="cat-icon">🌙</span>
+          <h3>Bienestar &amp; Sueño</h3>
+          <p>Melatonina y relajantes</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BANNERS DUPLOS ============ -->
+  <section class="dual-banner">
+    <div class="container dual-grid">
+      <a href="#hongos" class="dual-card dual-1">
+        <div class="dual-text">
+          <span class="eyebrow">Línea Origen</span>
+          <h3>Hongos medicinales de cultivo orgánico</h3>
+          <span class="link-arrow">Descubrir →</span>
+        </div>
+      </a>
+      <a href="#longevidad" class="dual-card dual-2">
+        <div class="dual-text">
+          <span class="eyebrow">Longevidad</span>
+          <h3>NMN, NAD+ y antioxidantes premium</h3>
+          <span class="link-arrow">Comprar →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ MÁS BUSCADOS — TOP 8 ============ -->
+  <section class="products" id="ofertas">
+    <div class="container">
+      <header class="section-head row">
+        <div>
+          <span class="eyebrow gold">⭐ Top 8 más buscados del mes</span>
+          <h2>Los favoritos de Chile</h2>
+        </div>
+        <a href="#catalogo" class="see-all">Ver catálogo completo →</a>
+      </header>
+
+      <div class="products-grid" id="ofertasGrid">
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Top 1</span>
+            <span class="badge-fav" aria-label="Favorito">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Complejo+B&font=raleway" alt="Complejo B" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Complejo B Origen · 60 cápsulas</h3>
+            <div class="prod-price">
+              <span class="old">$11.990</span>
+              <strong>$8.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="complejo-b" data-name="Complejo B" data-price="8990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Melena+de+Leon&font=raleway" alt="Melena de León" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Melena de León · 60 cápsulas</h3>
+            <div class="prod-price">
+              <strong>$24.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="melena-leon" data-name="Melena de León" data-price="24990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Top 3</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Perenteryl&font=raleway" alt="Perenteryl" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Biocodex</span>
+            <h3 class="prod-name">Perenteryl 250mg · 30 cápsulas</h3>
+            <div class="prod-price">
+              <strong>$14.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="perenteryl" data-name="Perenteryl" data-price="14990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Berberina&font=raleway" alt="Berberina" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Berberina 500mg · 60 cápsulas</h3>
+            <div class="prod-price">
+              <strong>$18.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="berberina" data-name="Berberina" data-price="18990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Cardo+Mariano&font=raleway" alt="Cardo Mariano" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Cardo Mariano 200mg · 60 cápsulas</h3>
+            <div class="prod-price">
+              <strong>$15.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="cardo-mariano" data-name="Cardo Mariano" data-price="15990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge red">-18%</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Resveratrol&font=raleway" alt="Resveratrol" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Resveratrol 500mg · 60 cápsulas</h3>
+            <div class="prod-price">
+              <span class="old">$27.990</span>
+              <strong>$22.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="resveratrol" data-name="Resveratrol" data-price="22990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge red">-15%</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Cicaplast+B5&font=raleway" alt="Cicaplast Baume B5" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">La Roche-Posay</span>
+            <h3 class="prod-name">Cicaplast Baume B5 · Bálsamo Reparador 40ml</h3>
+            <div class="prod-price">
+              <span class="old">$16.490</span>
+              <strong>$13.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="cicaplast-b5" data-name="Cicaplast Baume B5" data-price="13990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Eucerin+Anti-Pigment&font=raleway" alt="Eucerin Anti-Pigment" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Eucerin</span>
+            <h3 class="prod-name">Anti-Pigment Crema Aclarante · 50ml</h3>
+            <div class="prod-price">
+              <strong>$32.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="eucerin-pigment" data-name="Eucerin Anti-Pigment" data-price="32990">Agregar al carro</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BANNER FULL ============ -->
+  <section class="banner-full">
+    <div class="banner-overlay"></div>
+    <div class="container banner-content">
+      <span class="eyebrow light">Línea exclusiva</span>
+      <h2>Hongos medicinales &amp; longevidad</h2>
+      <p>Melena de León, Reishi, Cordyceps, NMN y NAD+ con estándar premium.<br/>Suplementos seleccionados, precios honestos, despacho a todo Chile.</p>
+      <a href="#catalogo" class="btn btn-light">Explorar línea premium</a>
+    </div>
+  </section>
+
+  <!-- ============ CATÁLOGO COMPLETO ============ -->
+  <section class="products" id="catalogo">
+    <div class="container">
+      <header class="section-head row">
+        <div>
+          <span class="eyebrow gold">🌿 Catálogo</span>
+          <h2>Todos nuestros productos</h2>
+        </div>
+        <span class="see-all">55 productos disponibles</span>
+      </header>
+
+      <div class="products-grid">
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Alflorex&font=raleway" alt="Alflorex" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">PrecisionBiotics</span>
+            <h3 class="prod-name">Alflorex Probiótico · 30 cápsulas</h3>
+            <div class="prod-price"><strong>$34.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="alflorex" data-name="Alflorex" data-price="34990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Bioflora&font=raleway" alt="Bioflora" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Saval</span>
+            <h3 class="prod-name">Bioflora · 30 cápsulas</h3>
+            <div class="prod-price"><strong>$9.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="bioflora" data-name="Bioflora" data-price="9990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Ginkgo+Biloba&font=raleway" alt="Ginkgo Biloba" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Ginkgo Biloba 120mg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$12.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="ginkgo" data-name="Ginkgo Biloba" data-price="12990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Biozen&font=raleway" alt="Biozen" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Recalcine</span>
+            <h3 class="prod-name">Biozen · 30 cápsulas</h3>
+            <div class="prod-price"><strong>$11.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="biozen" data-name="Biozen" data-price="11990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Multiflora+Plus&font=raleway" alt="Multiflora Plus" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Pasteur</span>
+            <h3 class="prod-name">Multiflora Plus Probiótico · 30 cápsulas</h3>
+            <div class="prod-price"><strong>$9.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="multiflora" data-name="Multiflora Plus" data-price="9990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Cordyceps&font=raleway" alt="Cordyceps" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Cordyceps · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$19.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="cordyceps" data-name="Cordyceps" data-price="19990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Cromo+Picolinato&font=raleway" alt="Cromo Picolinato" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Cromo Picolinato 200mcg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$9.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="cromo" data-name="Cromo Picolinato" data-price="9990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Dermopure&font=raleway" alt="Dermopure Eucerin" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Eucerin</span>
+            <h3 class="prod-name">Dermopure Limpiador · 200ml</h3>
+            <div class="prod-price"><strong>$13.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="dermopure" data-name="Dermopure Eucerin" data-price="13990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Enterogermina&font=raleway" alt="Enterogermina" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Sanofi</span>
+            <h3 class="prod-name">Enterogermina · Frasco 4ml x10</h3>
+            <div class="prod-price"><strong>$7.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="enterogermina" data-name="Enterogermina" data-price="7990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=NMN&font=raleway" alt="NMN" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">NMN 500mg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$39.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="nmn" data-name="NMN" data-price="39990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Retinal+Shot&font=raleway" alt="Retinal Shot" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Medik8</span>
+            <h3 class="prod-name">Retinal Shot Sérum · 30ml</h3>
+            <div class="prod-price"><strong>$34.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="retinal-shot" data-name="Retinal Shot" data-price="34990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge red">-15%</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Effaclar+Duo&font=raleway" alt="Effaclar Duo" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">La Roche-Posay</span>
+            <h3 class="prod-name">Effaclar Duo+ · 40ml</h3>
+            <div class="prod-price">
+              <span class="old">$23.490</span>
+              <strong>$19.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="effaclar-duo" data-name="Effaclar Duo" data-price="19990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Reishi&font=raleway" alt="Reishi" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Reishi · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$21.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="reishi" data-name="Reishi" data-price="21990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Systane+Ultra&font=raleway" alt="Systane Ultra" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Alcon</span>
+            <h3 class="prod-name">Systane Ultra Lubricante Ocular · 10ml</h3>
+            <div class="prod-price"><strong>$9.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="systane-ultra" data-name="Systane Ultra" data-price="9990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Alopek&font=raleway" alt="Alopek" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Pasteur</span>
+            <h3 class="prod-name">Alopek Loción Capilar · 60ml</h3>
+            <div class="prod-price"><strong>$14.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="alopek" data-name="Alopek" data-price="14990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Hyaluron+Filler&font=raleway" alt="Eucerin Hyaluron Filler" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Eucerin</span>
+            <h3 class="prod-name">Hyaluron-Filler Crema Día · 50ml</h3>
+            <div class="prod-price"><strong>$39.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="eucerin-hyaluron" data-name="Eucerin Hyaluron Filler" data-price="39990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Sambucol&font=raleway" alt="Sambucol" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Sambucol</span>
+            <h3 class="prod-name">Sambucol Adultos · Jarabe 120ml</h3>
+            <div class="prod-price"><strong>$14.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="sambucol" data-name="Sambucol" data-price="14990">Agregar al carro</button>
+          </div>
+        </article>
+
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Atopicontrol&font=raleway" alt="Eucerin AtopiControl" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Eucerin</span>
+            <h3 class="prod-name">AtopiControl Loción Corporal · 250ml</h3>
+            <div class="prod-price"><strong>$24.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="eucerin-atopicontrol" data-name="Eucerin AtopiControl" data-price="24990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Hyabak&font=raleway" alt="Hyabak" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Théa</span>
+            <h3 class="prod-name">Hyabak Solución Oftálmica · 10ml</h3>
+            <div class="prod-price"><strong>$9.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="hyabak" data-name="Hyabak" data-price="9990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Hyalu+B5&font=raleway" alt="Hyalu B5" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">La Roche-Posay</span>
+            <h3 class="prod-name">Hyalu B5 Sérum Antiarrugas · 30ml</h3>
+            <div class="prod-price"><strong>$34.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="hyalu-b5" data-name="Hyalu B5" data-price="34990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Lagricel&font=raleway" alt="Lagricel" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Sophia</span>
+            <h3 class="prod-name">Lagricel Ofteno 0.4% · 5ml</h3>
+            <div class="prod-price"><strong>$7.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="lagricel" data-name="Lagricel" data-price="7990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Hylo+Comod&font=raleway" alt="Hylo-Comod" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Brill Pharma</span>
+            <h3 class="prod-name">Hylo-Comod Lágrimas Artificiales · 10ml</h3>
+            <div class="prod-price"><strong>$10.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="hylo-comod" data-name="Hylo-Comod" data-price="10990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Lactoflora&font=raleway" alt="Lactoflora" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">STADA</span>
+            <h3 class="prod-name">Lactoflora Probiótico · 30 cápsulas</h3>
+            <div class="prod-price"><strong>$8.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="lactoflora" data-name="Lactoflora" data-price="8990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Mela+B3&font=raleway" alt="Mela B3" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">La Roche-Posay</span>
+            <h3 class="prod-name">Mela B3 Sérum Anti-Manchas · 30ml</h3>
+            <div class="prod-price"><strong>$32.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="mela-b3" data-name="Mela B3" data-price="32990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge red">-12%</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Anthelios+UVMune&font=raleway" alt="Anthelios UVMune 400" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">La Roche-Posay</span>
+            <h3 class="prod-name">Anthelios UVMune 400 SPF50+ · 50ml</h3>
+            <div class="prod-price">
+              <span class="old">$32.990</span>
+              <strong>$28.990</strong>
+            </div>
+            <button class="btn btn-add" data-action="checkout" data-sku="anthelios-uvmune" data-name="Anthelios UVMune 400" data-price="28990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Artrisimi&font=raleway" alt="Artrisimi" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Saval</span>
+            <h3 class="prod-name">Artrisimi Articular · 30 cápsulas</h3>
+            <div class="prod-price"><strong>$19.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="artrisimi" data-name="Artrisimi" data-price="19990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Citracal&font=raleway" alt="Citracal" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Bayer</span>
+            <h3 class="prod-name">Citracal Plus Vitamina D · 60 comprimidos</h3>
+            <div class="prod-price"><strong>$11.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="citracal" data-name="Citracal" data-price="11990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Effaclar+Serum&font=raleway" alt="Effaclar Sérum" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">La Roche-Posay</span>
+            <h3 class="prod-name">Effaclar Sérum Anti-Edad · 30ml</h3>
+            <div class="prod-price"><strong>$24.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="effaclar-serum" data-name="Effaclar Sérum" data-price="24990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge gold">Premium</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=NAD%2B&font=raleway" alt="NAD+" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">NAD+ 250mg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$44.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="nad" data-name="NAD+" data-price="44990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Systane+Complete&font=raleway" alt="Systane Complete" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Alcon</span>
+            <h3 class="prod-name">Systane Complete · 10ml</h3>
+            <div class="prod-price"><strong>$13.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="systane-complete" data-name="Systane Complete" data-price="13990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Heliocare+360&font=raleway" alt="Heliocare 360" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">IFC</span>
+            <h3 class="prod-name">Heliocare 360º Fluid SPF50+ · 50ml</h3>
+            <div class="prod-price"><strong>$26.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="heliocare" data-name="Heliocare 360" data-price="26990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Liver+Complex&font=raleway" alt="Liver Complex" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Liver Complex Hepático · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$19.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="liver-complex" data-name="Liver Complex" data-price="19990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Mixsoon+Bean&font=raleway" alt="Mixsoon Bean Essence" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Mixsoon</span>
+            <h3 class="prod-name">Bean Essence Esencia Coreana · 50ml</h3>
+            <div class="prod-price"><strong>$19.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="mixsoon" data-name="Mixsoon Bean Essence" data-price="19990">Agregar al carro</button>
+          </div>
+        </article>
+
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Toptear+LC&font=raleway" alt="Toptear LC" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Vision Pharma</span>
+            <h3 class="prod-name">Toptear LC Lubricante Ocular · 10ml</h3>
+            <div class="prod-price"><strong>$10.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="toptear" data-name="Toptear LC" data-price="10990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Tribulus&font=raleway" alt="Tribulus Terrestris" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Tribulus Terrestris 500mg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$16.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="tribulus" data-name="Tribulus Terrestris" data-price="16990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Bacopa&font=raleway" alt="Bacopa Monnieri" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Bacopa Monnieri 300mg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$14.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="bacopa" data-name="Bacopa Monnieri" data-price="14990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Melatonil&font=raleway" alt="Melatonil" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Melatonil 3mg · 60 comprimidos</h3>
+            <div class="prod-price"><strong>$4.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="melatonil" data-name="Melatonil" data-price="4990">Agregar al carro</button>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-img">
+            <span class="badge green">Natural</span>
+            <span class="badge-fav">♡</span>
+            <img src="https://placehold.co/600x600/1F4D3D/F4EFE6?text=Quercetina&font=raleway" alt="Quercetina" loading="lazy" />
+          </div>
+          <div class="prod-info">
+            <span class="prod-brand">Origen Natural</span>
+            <h3 class="prod-name">Quercetina 500mg · 60 cápsulas</h3>
+            <div class="prod-price"><strong>$13.990</strong></div>
+            <button class="btn btn-add" data-action="checkout" data-sku="quercetina" data-name="Quercetina" data-price="13990">Agregar al carro</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DERMOCOSMÉTICA EDITORIAL ============ -->
+  <section class="dermo-edit" id="dermo">
+    <div class="container dermo-grid">
+      <div class="dermo-text">
+        <span class="eyebrow">Dermocosmética</span>
+        <h2>Tu piel merece ciencia y origen.</h2>
+        <p>Trabajamos con las marcas más prestigiosas en cuidado de la piel: La Roche-Posay, Vichy, Eucerin, Avène, Cetaphil y más. Selección curada de fórmulas con activos comprobados.</p>
+        <ul class="dermo-list">
+          <li>✓ Atención y orientación por WhatsApp</li>
+          <li>✓ Embalaje cuidado para productos sensibles</li>
+          <li>✓ Hasta 25% off seleccionando 2 productos</li>
+        </ul>
+        <a href="#dermo-todo" class="btn btn-primary">Explorar dermocosmética</a>
+      </div>
+      <div class="dermo-image" aria-hidden="true">
+        <div class="dermo-stack stack-1"></div>
+        <div class="dermo-stack stack-2"></div>
+        <div class="dermo-stack stack-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARCAS ============ -->
+  <section class="brands" id="marcas">
+    <div class="container">
+      <header class="section-head center">
+        <h2>Marcas que confían en Farma Origen</h2>
+        <p>Trabajamos solo con laboratorios certificados y marcas líderes mundiales.</p>
+      </header>
+      <div class="brands-strip">
+        <div class="brand">La Roche-Posay</div>
+        <div class="brand">Eucerin</div>
+        <div class="brand">Vichy</div>
+        <div class="brand">Cetaphil</div>
+        <div class="brand">Avène</div>
+        <div class="brand">Bioderma</div>
+        <div class="brand">Neutrogena</div>
+        <div class="brand">Nivea</div>
+        <div class="brand">ISDIN</div>
+        <div class="brand">Sebamed</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NATURALES (BRAND DNA) ============ -->
+  <section class="naturales" id="naturales">
+    <div class="container nat-grid">
+      <div class="nat-image" aria-hidden="true"></div>
+      <div class="nat-text">
+        <span class="eyebrow gold">Línea Origen</span>
+        <h2>Del valle a tu botiquín.</h2>
+        <p>Cada fórmula de nuestra línea Origen Natural nace de ingredientes recolectados en valles, bosques y cordilleras de Chile. Sin parabenos, sin sulfatos, con sello de fabricación local y certificación INVIMA.</p>
+        <div class="nat-features">
+          <div class="nat-feat">
+            <span>🌱</span>
+            <strong>100% botánico</strong>
+            <small>Activos vegetales certificados</small>
+          </div>
+          <div class="nat-feat">
+            <span>🇨🇱</span>
+            <strong>Hecho en Chile</strong>
+            <small>Producción nacional, valle del Aconcagua</small>
+          </div>
+          <div class="nat-feat">
+            <span>🧪</span>
+            <strong>Testeado clínicamente</strong>
+            <small>Validado por dermatólogos</small>
+          </div>
+        </div>
+        <a href="#linea-origen" class="btn btn-primary">Ver toda la línea</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section class="newsletter">
+    <div class="container news-inner">
+      <div class="news-text">
+        <h2>Únete al Club Origen</h2>
+        <p>Recibe ofertas exclusivas, consejos de bienestar y un 10% de descuento en tu primera compra.</p>
+      </div>
+      <form class="news-form" onsubmit="event.preventDefault(); this.reset(); alert('¡Bienvenido al Club Origen!');">
+        <input type="email" placeholder="tu@correo.cl" required aria-label="Correo electrónico" />
+        <button type="submit" class="btn btn-primary">Suscribirme</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="foot-col foot-brand">
+        <p>Tu tienda de suplementos naturales en Chile. Origen real, cuidado real.</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>Atención al cliente</h4>
+        <ul>
+          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="#despacho">Despacho y envíos</a></li>
+          <li><a href="#cambios">Cambios y devoluciones</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Sobre Farma Origen</h4>
+        <ul>
+          <li><a href="#nosotros">Quiénes somos</a></li>
+          <li><a href="#trabaja">Trabaja con nosotros</a></li>
+          <li><a href="#prensa">Prensa</a></li>
+          <li><a href="#blog">Blog de bienestar</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Información legal</h4>
+        <ul>
+          <li><a href="#terminos">Términos y condiciones</a></li>
+          <li><a href="#privacidad">Política de privacidad</a></li>
+          <li><a href="#cookies">Política de cookies</a></li>
+          <li><a href="#libro">Libro de reclamos</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container pay-strip">
+      <div class="pay-block">
+        <h5>Medios de pago</h5>
+        <div class="pay-icons">
+          <span>VISA</span>
+          <span>Mastercard</span>
+          <span>Amex</span>
+          <span>Webpay</span>
+          <span>Transferencia</span>
+          <span>Mercado Pago</span>
+        </div>
+      </div>
+      <div class="pay-block">
+        <h5>Despacho con</h5>
+        <div class="pay-icons">
+          <span>Starken</span>
+          <span>Chilexpress</span>
+          <span>Blue Express</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="legal-note">Los productos disponibles en Farma Origen son suplementos alimenticios y artículos de cuidado personal. No reemplazan una alimentación equilibrada ni constituyen tratamiento médico. Ante cualquier condición de salud, consulta a un profesional. Los testimonios y opiniones son experiencias personales y los resultados pueden variar.</p>
+        <p>© 2026 Farma Origen · Todos los derechos reservados.</p>
+        <p>Av. Providencia 1234, Santiago de Chile · contacto@farmaorigen.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

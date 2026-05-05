@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1F4D3D" />
+  <title>Producto — Farma Origen</title>
+  <meta name="description" content="Detalle de producto en Farma Origen. Despacho a todo Chile." />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ TOP BAR ============ -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <p class="topbar-msg">
+        <span class="dot"></span>
+        Despacho gratis en compras sobre $30.000 a todo Chile
+      </p>
+      <nav class="topbar-nav" aria-label="Accesos rápidos">
+        <a href="index.html#contacto">Contacto</a>
+        <a href="index.html#ayuda">Ayuda</a>
+        <a href="index.html#cuenta">Mi cuenta</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header header-pd">
+    <div class="container header-inner header-inner-pd">
+      <a href="index.html" class="logo" aria-label="Farma Origen">
+        <img src="assets/logofarmaorigen.jpeg" alt="Farma Origen" />
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html#cuenta" class="hicon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span>Mi cuenta</span>
+        </a>
+        <a href="index.html#favoritos" class="hicon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          <span>Favoritos</span>
+        </a>
+        <a href="index.html#carro" class="hicon cart-btn" id="cartButton">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 5h2l3 12h11l3-9H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+          <span>Carro <em class="cart-count" id="cartCount">0</em></span>
+        </a>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ============ PRODUCT DETAIL ============ -->
+  <section class="pd">
+    <div class="container pd-grid" id="pdGrid">
+
+      <!-- ====== GALLERY ====== -->
+      <div class="pd-gallery">
+        <div class="pd-main-wrap">
+          <span class="pd-badge" id="pdBadge" hidden></span>
+          <button class="pd-fav" id="pdFav" aria-label="Favorito">♡</button>
+          <img id="pdMainImg" src="" alt="" />
+        </div>
+        <div class="pd-thumbs" id="pdThumbs"></div>
+      </div>
+
+      <!-- ====== INFO + BUY ====== -->
+      <div class="pd-info">
+        <span class="pd-brand" id="pdBrand"></span>
+        <h1 class="pd-title" id="pdTitle">…</h1>
+        <div class="pd-meta">
+          <span class="pd-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-text">4.8 · 124 reseñas</span>
+          </span>
+        </div>
+
+        <div class="pd-price">
+          <span class="pd-old" id="pdOld" hidden></span>
+          <strong id="pdNow">$0</strong>
+          <span class="pd-disc" id="pdDisc" hidden></span>
+        </div>
+        <p class="pd-installments" id="pdInstall"></p>
+
+        <!-- ===== KIT SELECTOR ===== -->
+        <div class="pd-kits" id="pdKits">
+          <h3>Elige tu pack</h3>
+          <div class="pd-kit-options">
+            <label class="pd-kit-opt selected">
+              <input type="radio" name="pdKit" value="single" checked />
+              <span class="pd-kit-name">1 unidad</span>
+              <span class="pd-kit-price" data-target="single">$0</span>
+              <span class="pd-kit-tag">Estándar</span>
+            </label>
+            <label class="pd-kit-opt">
+              <input type="radio" name="pdKit" value="kit3x2" />
+              <span class="pd-kit-name">Lleva 3 · Paga 2</span>
+              <span class="pd-kit-price" data-target="kit3x2">$0</span>
+              <span class="pd-kit-tag green">Ahorra 33%</span>
+            </label>
+            <label class="pd-kit-opt highlight">
+              <input type="radio" name="pdKit" value="kit5x3" />
+              <span class="pd-kit-name">Lleva 5 · Paga 3</span>
+              <span class="pd-kit-price" data-target="kit5x3">$0</span>
+              <span class="pd-kit-tag gold">Ahorra 40%</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ===== ADD TO CART ===== -->
+        <div class="pd-actions">
+          <div class="pd-qty">
+            <button type="button" class="qty-btn" id="qtyMinus" aria-label="Quitar uno">−</button>
+            <input type="number" id="qtyInput" value="1" min="1" max="99" aria-label="Cantidad" />
+            <button type="button" class="qty-btn" id="qtyPlus" aria-label="Agregar uno">+</button>
+          </div>
+          <button class="btn btn-primary pd-add" id="pdAdd"
+            data-action="checkout"
+            data-sku=""
+            data-name=""
+            data-price="0">
+            Agregar al carro
+          </button>
+        </div>
+
+        <!-- ===== DELIVERY OPTIONS ===== -->
+        <div class="pd-delivery">
+          <header class="pd-delivery-head">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+            <h3>Disponibilidad y despacho</h3>
+          </header>
+
+          <div class="pd-region">
+            <label for="pdCep">Ingresa tu código postal</label>
+            <div class="pd-cep-row">
+              <span class="pd-cep-prefix">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <input id="pdCep" type="text" inputmode="numeric" maxlength="8"
+                placeholder="Ej: 8320000" autocomplete="postal-code" aria-label="Código postal" />
+              <button type="button" id="pdCepBtn">Consultar</button>
+              <span class="pd-cep-spinner" id="pdCepSpinner" hidden></span>
+            </div>
+            <p class="pd-cep-feedback" id="pdCepFeedback"></p>
+
+            <details class="pd-manual">
+              <summary>O selecciona manualmente tu región</summary>
+              <div class="pd-region-row">
+                <select id="pdRegion" aria-label="Selecciona tu región">
+                  <option value="">Selecciona tu región</option>
+                  <option value="XV">Arica y Parinacota</option>
+                  <option value="I">Tarapacá</option>
+                  <option value="II">Antofagasta</option>
+                  <option value="III">Atacama</option>
+                  <option value="IV">Coquimbo</option>
+                  <option value="V">Valparaíso</option>
+                  <option value="RM">Metropolitana</option>
+                  <option value="VI">Libertador B. O'Higgins</option>
+                  <option value="VII">Maule</option>
+                  <option value="XVI">Ñuble</option>
+                  <option value="VIII">Biobío</option>
+                  <option value="IX">Araucanía</option>
+                  <option value="XIV">Los Ríos</option>
+                  <option value="X">Los Lagos</option>
+                  <option value="XI">Aysén</option>
+                  <option value="XII">Magallanes</option>
+                </select>
+                <select id="pdComuna" aria-label="Comuna" disabled>
+                  <option value="">Comuna</option>
+                </select>
+              </div>
+            </details>
+
+            <p class="pd-region-hint" id="pdRegionHint">Ingresa tu código postal para ver disponibilidad y tiempos de entrega.</p>
+          </div>
+
+          <ul class="pd-delivery-list" id="pdDeliveryList">
+            <!-- Renderizado por producto.js -->
+          </ul>
+        </div>
+
+        <!-- ===== TRUST STRIP ===== -->
+        <ul class="pd-trust">
+          <li>
+            <span class="pd-trust-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <strong>Producto original</strong>
+            <small>Garantía de autenticidad</small>
+          </li>
+          <li>
+            <span class="pd-trust-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </span>
+            <strong>Despacho gratis</strong>
+            <small>En compras sobre $30.000</small>
+          </li>
+          <li>
+            <span class="pd-trust-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+            </span>
+            <strong>Cambio fácil</strong>
+            <small>30 días sin preguntas</small>
+          </li>
+          <li>
+            <span class="pd-trust-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <strong>Atención al cliente</strong>
+            <small>Lun a Sáb · 9:00 a 21:00 h</small>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TABS / DETAILS ============ -->
+  <section class="pd-detail">
+    <div class="container">
+      <div class="pd-tabs" role="tablist">
+        <button class="pd-tab active" data-tab="desc" role="tab" aria-selected="true">Descripción</button>
+        <button class="pd-tab" data-tab="info" role="tab">Información</button>
+        <button class="pd-tab" data-tab="uso" role="tab">Modo de uso</button>
+        <button class="pd-tab" data-tab="precs" role="tab">Precauciones</button>
+      </div>
+
+      <div class="pd-panels">
+        <article class="pd-panel active" data-panel="desc">
+          <p id="pdDescText"></p>
+        </article>
+        <article class="pd-panel" data-panel="info">
+          <div class="pd-info-grid">
+            <div class="pd-info-card">
+              <span class="pd-info-ico">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              </span>
+              <span class="pd-info-label">Marca</span>
+              <span class="pd-info-value" id="pdInfoBrand">—</span>
+            </div>
+            <div class="pd-info-card">
+              <span class="pd-info-ico">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </span>
+              <span class="pd-info-label">Presentación</span>
+              <span class="pd-info-value" id="pdInfoPres">—</span>
+            </div>
+            <div class="pd-info-card">
+              <span class="pd-info-ico">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </span>
+              <span class="pd-info-label">Origen</span>
+              <span class="pd-info-value">Importado · Distribución oficial Chile</span>
+            </div>
+            <div class="pd-info-card">
+              <span class="pd-info-ico">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </span>
+              <span class="pd-info-label">Calidad</span>
+              <span class="pd-info-value">Marca seleccionada y trazable</span>
+            </div>
+            <div class="pd-info-card">
+              <span class="pd-info-ico">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+              </span>
+              <span class="pd-info-label">Conservación</span>
+              <span class="pd-info-value">Bajo 25°C, lejos de la luz directa</span>
+            </div>
+          </div>
+        </article>
+        <article class="pd-panel" data-panel="uso">
+          <p>Para una correcta forma de uso, sigue las indicaciones del envase original. Ante cualquier duda sobre tu rutina de bienestar, escríbenos por WhatsApp y te orientamos.</p>
+          <p><strong>Sugerencia general:</strong> 1 unidad al día, después del desayuno, con un vaso de agua. No excedas la cantidad sugerida en el envase.</p>
+        </article>
+        <article class="pd-panel" data-panel="precs">
+          <ul>
+            <li>Suspende el uso si notas alguna reacción a los componentes.</li>
+            <li>Mantener fuera del alcance de niños menores de 5 años.</li>
+            <li>Conservar en lugar fresco y seco, lejos de la luz directa.</li>
+            <li>Este producto es un suplemento alimenticio y no reemplaza una alimentación equilibrada.</li>
+            <li>No se aceptan cambios ni devoluciones por preferencia personal.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RELATED ============ -->
+  <section class="pd-related">
+    <div class="container">
+      <header class="section-head">
+        <h2>También te puede interesar</h2>
+        <p>Selección curada por nuestro equipo.</p>
+      </header>
+      <div class="products-grid related-grid" id="pdRelated"></div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="foot-col foot-brand">
+        <p>Tu tienda de suplementos naturales en Chile. Origen real, cuidado real.</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>Atención al cliente</h4>
+        <ul>
+          <li><a href="index.html#contacto">Contacto</a></li>
+          <li><a href="index.html#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="index.html#despacho">Despacho y envíos</a></li>
+          <li><a href="index.html#cambios">Cambios y devoluciones</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Sobre Farma Origen</h4>
+        <ul>
+          <li><a href="index.html#nosotros">Quiénes somos</a></li>
+          <li><a href="index.html#trabaja">Trabaja con nosotros</a></li>
+          <li><a href="index.html#prensa">Prensa</a></li>
+          <li><a href="index.html#blog">Blog de bienestar</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Información legal</h4>
+        <ul>
+          <li><a href="index.html#terminos">Términos y condiciones</a></li>
+          <li><a href="index.html#privacidad">Política de privacidad</a></li>
+          <li><a href="index.html#cookies">Política de cookies</a></li>
+          <li><a href="index.html#libro">Libro de reclamos</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="legal-note">Los productos disponibles en Farma Origen son suplementos alimenticios y artículos de cuidado personal. No reemplazan una alimentación equilibrada ni constituyen tratamiento médico. Ante cualquier condición de salud, consulta a un profesional. Los testimonios y opiniones son experiencias personales y los resultados pueden variar.</p>
+        <p>© 2026 Farma Origen · Todos los derechos reservados.</p>
+        <p>Av. Providencia 1234, Santiago de Chile · contacto@farmaorigen.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="products-data.js"></script>
+  <script src="script.js"></script>
+  <script src="producto.js"></script>
+</body>
+</html>
