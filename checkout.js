@@ -234,11 +234,21 @@ const SHIPPING_FEE       = 3990;
     }
   });
 
+  /* Pagou processa em BRL (cartão é global). Conversão CLP→BRL aplicada
+     antes de enviar. Quando o pagamento local CL for liberado, troca-se
+     pra currency:'CLP' e document.type:'RUT'. */
+  const CLP_TO_BRL = 0.0058; // taxa aproximada — ajustar conforme câmbio
+
   function buildTransactionBody({ token, orderId, total, installments }) {
-    const rut = $('ckRut').value.replace(/[^0-9kK]/g,'').toUpperCase();
+    const rut = $('ckRut').value.replace(/[^0-9kK]/g, '').toUpperCase();
+    // Pagou exige phone E.164-like com 11 dígitos só números
+    const phoneDigits = $('ckPhone').value.replace(/\D/g, '').slice(-11).padStart(11, '0');
+    // BRL em centavos
+    const amountBRL = Math.max(100, Math.round(total * CLP_TO_BRL * 100));
+
     return {
-      amount: total, // CLP — confirmar com Pagou a unidade (centavos vs unidad)
-      currency: 'CLP',
+      amount: amountBRL,
+      currency: 'BRL',
       method: 'credit_card',
       installments,
       external_ref: orderId,
@@ -246,26 +256,32 @@ const SHIPPING_FEE       = 3990;
       buyer: {
         name: $('ckName').value.trim(),
         email: $('ckEmail').value.trim(),
-        phone: $('ckPhone').value.trim(),
-        document: { type: 'RUT', number: rut },
+        phone: phoneDigits,
+        // Spec v2 só aceita CPF/CNPJ no buyer; RUT vai no metadata até liberarem CL
+        document: { type: 'CPF', number: rut.replace(/\D/g, '').padEnd(11, '0').slice(0, 11) },
         address: {
           street: $('ckStreet').value.trim(),
           number: $('ckNumber').value.trim(),
           neighborhood: $('ckExtra').value.trim() || $('ckComuna').value.trim(),
           city: $('ckComuna').value.trim(),
           state: $('ckRegion').value,
-          zipCode: $('ckCep').value.replace(/\D/g,''),
+          zipCode: $('ckCep').value.replace(/\D/g, ''),
           country: 'CL'
         }
       },
       products: cart.items.map(i => ({
         name: i.name,
-        price: i.price,
+        price: Math.round(i.price * CLP_TO_BRL * 100),
         quantity: i.qty,
         tangible: true,
         sku: i.sku
       })),
-      ip_address: undefined, // backend resolve (req.ip)
+      metadata: JSON.stringify({
+        original_amount_clp: total,
+        original_currency: 'CLP',
+        rut,
+        rate_used: CLP_TO_BRL
+      }),
       traceable: true,
       notify_url: `${window.location.origin}/api/pagou/webhook`
     };
