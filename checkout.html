@@ -142,6 +142,18 @@
           <!-- Pagou Payment Element mounts here -->
           <div id="ck-card-element" class="ck-card-mount"></div>
           <p id="ckPayError" class="ck-pay-error" hidden></p>
+
+          <!-- Aviso só visível em sandbox (escondido por CSS quando env=production) -->
+          <details class="ck-test-cards" id="ckTestCards" hidden>
+            <summary>Tarjetas de prueba (sandbox)</summary>
+            <ul>
+              <li><code>4242 4242 4242 4242</code> · Visa aprobada</li>
+              <li><code>4200 0000 0000 0018</code> · Visa aprobada</li>
+              <li><code>5500 0000 0000 0012</code> · Mastercard aprobada</li>
+              <li><code>5413 3303 0000 1006</code> · 3DS challenge</li>
+              <li>Expiración: cualquier fecha futura · CVV: 123</li>
+            </ul>
+          </details>
         </section>
 
         <button type="button" class="ck-pay-btn" id="ckPayBtn">

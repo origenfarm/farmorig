@@ -141,6 +141,11 @@ const SHIPPING_FEE       = 3990;
       card = elements.create('card', { theme: 'default' });
       card.mount('#ck-card-element');
       pagouReady = true;
+      // Mostra cartões de teste quando em sandbox
+      if (cfg.pagouEnv === 'sandbox') {
+        const tc = document.getElementById('ckTestCards');
+        if (tc) tc.hidden = false;
+      }
     } catch (err) {
       console.error('[Pagou] init falhou:', err);
       mountFallback('No fue posible cargar el formulario de pago. Intenta más tarde.');
@@ -234,56 +239,72 @@ const SHIPPING_FEE       = 3990;
     }
   });
 
-  /* Pagou processa em BRL (cartão é global). Conversão CLP→BRL aplicada
-     antes de enviar. Quando o pagamento local CL for liberado, troca-se
-     pra currency:'CLP' e document.type:'RUT'. */
+  /* Conforme exemplo enviado pelo suporte do Pagou para Chile:
+     - currency: 'BRL' (Pagou converte CLP→BRL no lado deles)
+     - amount em centavos de BRL
+     - buyer.document NÃO é enviado (undefined)
+     - RUT guardado em metadata.user_identification_number
+     - phone: '56XXXXXXXXX' (DDI Chile + 9 dígitos = 11 total)
+     - address.state: código ISO 2 letras (sem prefixo CL-)
+     - shipping.address separado do buyer.address
+  */
   const CLP_TO_BRL = 0.0058; // taxa aproximada — ajustar conforme câmbio
+  const REGION_TO_ISO = {
+    'XV':'AP','I':'TA','II':'AN','III':'AT','IV':'CO',
+    'V':'VS','RM':'RM','VI':'LI','VII':'ML','XVI':'NB',
+    'VIII':'BI','IX':'AR','XIV':'LR','X':'LL','XI':'AY','XII':'MA'
+  };
 
   function buildTransactionBody({ token, orderId, total, installments }) {
     const rut = $('ckRut').value.replace(/[^0-9kK]/g, '').toUpperCase();
-    // Pagou exige phone E.164-like com 11 dígitos só números
-    const phoneDigits = $('ckPhone').value.replace(/\D/g, '').slice(-11).padStart(11, '0');
-    // BRL em centavos
+    // phone: garante 11 dígitos com DDI 56 (Chile)
+    let phoneDigits = $('ckPhone').value.replace(/\D/g, '');
+    if (!phoneDigits.startsWith('56')) phoneDigits = '56' + phoneDigits;
+    phoneDigits = phoneDigits.slice(0, 11).padEnd(11, '0');
     const amountBRL = Math.max(100, Math.round(total * CLP_TO_BRL * 100));
+    const stateIso = REGION_TO_ISO[$('ckRegion').value] || 'RM';
+
+    const address = {
+      street: $('ckStreet').value.trim(),
+      number: $('ckNumber').value.trim() || '0',
+      complement: $('ckExtra').value.trim() || null,
+      city: $('ckComuna').value.trim() || 'Santiago',
+      state: stateIso,
+      zipCode: $('ckCep').value.replace(/\D/g, '').padStart(8, '0'),
+      country: 'CL',
+      neighborhood: undefined
+    };
 
     return {
+      method: 'credit_card',
       amount: amountBRL,
       currency: 'BRL',
-      method: 'credit_card',
-      installments,
-      external_ref: orderId,
-      token,
+      notify_url: `${window.location.origin}/api/pagou/webhook`,
       buyer: {
         name: $('ckName').value.trim(),
         email: $('ckEmail').value.trim(),
         phone: phoneDigits,
-        // Spec v2 só aceita CPF/CNPJ no buyer; RUT vai no metadata até liberarem CL
-        document: { type: 'CPF', number: rut.replace(/\D/g, '').padEnd(11, '0').slice(0, 11) },
-        address: {
-          street: $('ckStreet').value.trim(),
-          number: $('ckNumber').value.trim(),
-          neighborhood: $('ckExtra').value.trim() || $('ckComuna').value.trim(),
-          city: $('ckComuna').value.trim(),
-          state: $('ckRegion').value,
-          zipCode: $('ckCep').value.replace(/\D/g, ''),
-          country: 'CL'
-        }
+        docNumber: undefined,
+        document: undefined,
+        address
       },
       products: cart.items.map(i => ({
         name: i.name,
-        price: Math.round(i.price * CLP_TO_BRL * 100),
-        quantity: i.qty,
-        tangible: true,
-        sku: i.sku
+        price: Math.round(i.price * CLP_TO_BRL * 100)
       })),
       metadata: JSON.stringify({
+        provider: 'Checkout Farma Origen',
+        order_id: orderId,
         original_amount_clp: total,
         original_currency: 'CLP',
-        rut,
-        rate_used: CLP_TO_BRL
+        user_email: $('ckEmail').value.trim(),
+        user_identification_number: rut
       }),
-      traceable: true,
-      notify_url: `${window.location.origin}/api/pagou/webhook`
+      shipping: { address },
+      token,
+      installments,
+      external_ref: orderId,
+      traceable: true
     };
   }
 

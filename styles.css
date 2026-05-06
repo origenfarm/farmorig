@@ -2268,6 +2268,42 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
   font-weight: 700;
 }
 
+/* Cartões de teste sandbox */
+.ck-test-cards {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--cream);
+  border: 1px dashed var(--graphite-soft);
+  border-radius: var(--radius);
+  font-size: 0.78rem;
+  color: var(--graphite);
+}
+.ck-test-cards summary {
+  cursor: pointer;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--green-dark);
+  font-size: 0.72rem;
+}
+.ck-test-cards ul {
+  list-style: none;
+  margin-top: 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ck-test-cards code {
+  font-family: ui-monospace, Menlo, monospace;
+  background: var(--white);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
 .ck-pay-btn {
   width: 100%;
   display: flex; align-items: center; justify-content: center; gap: 10px;
