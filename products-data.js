@@ -1,10 +1,10 @@
-// Auto-generated from index.html · 51 products
+// Auto-generated from index.html · 59 products
 window.FO_PRODUCTS = [
   {
-    "sku": "complejo-b",
-    "name": "Complejo B",
-    "fullName": "Complejo B Origen · 60 cápsulas",
-    "brand": "Origen Natural",
+    "sku": "neurobionta",
+    "name": "Neurobionta",
+    "fullName": "Neurobionta · Complejo B 30 comprimidos",
+    "brand": "Procter & Gamble",
     "price": 8990,
     "oldPrice": 11990,
     "badge": "Top 1"
@@ -125,6 +125,78 @@ window.FO_PRODUCTS = [
     "price": 34990,
     "oldPrice": null,
     "badge": "Premium"
+  },
+  {
+    "sku": "bisolvon",
+    "name": "Bisolvon",
+    "fullName": "Bisolvon Jarabe · 200ml",
+    "brand": "Boehringer",
+    "price": 5490,
+    "oldPrice": null,
+    "badge": "♡"
+  },
+  {
+    "sku": "dilasedan",
+    "name": "Dilasedan",
+    "fullName": "Dilasedan · 30 comprimidos",
+    "brand": "Andrómaco",
+    "price": 4990,
+    "oldPrice": null,
+    "badge": "♡"
+  },
+  {
+    "sku": "daflon",
+    "name": "Daflon 500",
+    "fullName": "Daflon 500mg · 30 comprimidos",
+    "brand": "Servier",
+    "price": 19990,
+    "oldPrice": null,
+    "badge": "♡"
+  },
+  {
+    "sku": "loceryl",
+    "name": "Loceryl",
+    "fullName": "Loceryl Esmalte 5% · 5ml",
+    "brand": "Galderma",
+    "price": 24990,
+    "oldPrice": null,
+    "badge": "♡"
+  },
+  {
+    "sku": "balloon-slim",
+    "name": "Balloon Slim",
+    "fullName": "Balloon Slim · 30 cápsulas",
+    "brand": "Slim Lab",
+    "price": 24990,
+    "oldPrice": 29990,
+    "badge": "-20%"
+  },
+  {
+    "sku": "thermo-slim",
+    "name": "Thermo Slim",
+    "fullName": "Thermo Slim Termogénico · 60 cápsulas",
+    "brand": "Slim Lab",
+    "price": 18990,
+    "oldPrice": null,
+    "badge": "♡"
+  },
+  {
+    "sku": "lipo6",
+    "name": "Lipo 6 Black",
+    "fullName": "Lipo 6 Black Ultra · 60 cápsulas",
+    "brand": "Nutrex",
+    "price": 24990,
+    "oldPrice": 29990,
+    "badge": "-15%"
+  },
+  {
+    "sku": "finaprost",
+    "name": "Finaprost",
+    "fullName": "Finaprost 5mg · 30 comprimidos",
+    "brand": "Andrómaco",
+    "price": 24990,
+    "oldPrice": null,
+    "badge": "♡"
   },
   {
     "sku": "bioflora",
