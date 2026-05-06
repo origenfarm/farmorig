@@ -438,8 +438,8 @@ document.addEventListener('click', (e) => {
 /* ---------- MEGA MENU MOBILE TOGGLE (drawer lateral) ---------- */
 (function mobileMenuDrawer() {
   const menu = document.querySelector('.menu');
-  const trigger = document.querySelector('.menu-all');
-  if (!menu || !trigger) return;
+  const triggers = document.querySelectorAll('.menu-all');
+  if (!menu || !triggers.length) return;
 
   // Backdrop e botão de fechar — adicionados via JS pra não tocar em todas as páginas
   const backdrop = document.createElement('div');
@@ -463,8 +463,10 @@ document.addEventListener('click', (e) => {
     document.body.classList.remove('menu-open');
   }
 
-  trigger.addEventListener('click', () => {
-    menu.classList.contains('open') ? close() : open();
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      menu.classList.contains('open') ? close() : open();
+    });
   });
   backdrop.addEventListener('click', close);
   closeBtn.addEventListener('click', close);

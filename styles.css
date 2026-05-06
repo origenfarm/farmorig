@@ -445,6 +445,7 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
 }
 .menu-close { display: none; }
 .menu-backdrop { display: none; }
+.header-burger { display: none; }
 
 /* ===========================================
    INFO MODAL — popups de footer/topbar
@@ -1416,19 +1417,33 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
 }
 
 @media (max-width: 760px) {
-  .topbar-inner { font-size: 0.72rem; }
+  .topbar-inner { font-size: 0.72rem; padding: 8px 14px; }
   .topbar-nav { display: none; }
 
-  .header-actions { gap: 12px; }
+  /* Header compacto: logo + ícones + burger numa linha só */
+  .header-inner {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "logo actions" "search search";
+    gap: 10px;
+    padding: 10px 14px;
+  }
+  .logo img { height: 56px; }
+  .header-actions { gap: 6px; }
+  .hicon { padding: 4px; }
   .hicon span:not(.cart-count) { display: none; }
-  .cart-btn span { display: inline; }
+  .cart-btn span { display: none; }
 
-  /* Search compacto: esconde o select de categoria pra caber tudo */
+  /* Search compacto */
   .search-cat { display: none; }
-  .search input { padding: 12px 14px; font-size: 0.88rem; }
-  .search button { width: 52px; }
+  .search { border-width: 2px; }
+  .search input { padding: 10px 14px; font-size: 0.85rem; }
+  .search button { width: 46px; }
 
-  .menu-all { padding: 10px 14px; font-size: 0.78rem; }
+  /* Burger mobile dentro do header */
+  .header-burger { display: flex !important; }
+
+  /* Mainnav inteira oculta no mobile — drawer substitui */
+  .mainnav { display: none; }
 
   /* Drawer lateral mobile — claro e clean */
   .menu {
