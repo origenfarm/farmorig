@@ -1,4 +1,4 @@
-// Auto-generated from index.html · 46 products
+// Auto-generated from index.html · 51 products
 window.FO_PRODUCTS = [
   {
     "sku": "complejo-b",
@@ -69,6 +69,51 @@ window.FO_PRODUCTS = [
     "fullName": "Anti-Pigment Crema Aclarante · 50ml",
     "brand": "Eucerin",
     "price": 32990,
+    "oldPrice": null,
+    "badge": "Premium"
+  },
+  {
+    "sku": "vitafer",
+    "name": "Vitafer-L",
+    "fullName": "Vitafer-L Original · Jarabe 500ml",
+    "brand": "Vitafer",
+    "price": 14990,
+    "oldPrice": 18990,
+    "badge": "Top Búsqueda"
+  },
+  {
+    "sku": "shilajit",
+    "name": "Shilajit",
+    "fullName": "Shilajit Puro Himalaya 1000mg · 60 cápsulas",
+    "brand": "Origen Natural",
+    "price": 19990,
+    "oldPrice": null,
+    "badge": "Natural"
+  },
+  {
+    "sku": "kaloba",
+    "name": "Kaloba",
+    "fullName": "Kaloba Pelargonium Sidoides · Solución 50ml",
+    "brand": "Schwabe",
+    "price": 11990,
+    "oldPrice": null,
+    "badge": "♡"
+  },
+  {
+    "sku": "pheromen",
+    "name": "Pheromen",
+    "fullName": "Pheromen Perfume con Feromonas · For Men 50ml",
+    "brand": "Pheromen",
+    "price": 25990,
+    "oldPrice": 42990,
+    "badge": "-40%"
+  },
+  {
+    "sku": "latisse",
+    "name": "Latisse",
+    "fullName": "Latisse 0,03% · Solución 5ml + 100 aplicadores",
+    "brand": "Allergan",
+    "price": 52990,
     "oldPrice": null,
     "badge": "Premium"
   },
