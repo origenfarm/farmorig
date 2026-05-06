@@ -18,8 +18,124 @@
 
   document.title = `${data.fullName} — Farma Origen`;
 
-  /* ---------- TITLE ---------- */
+  /* ---------- CATEGORIA + DISCLAIMER (white-hat) ---------- */
+  const CATEGORY = {
+    // Suplementos alimenticios
+    supplement: new Set([
+      'melena-leon','reishi','cordyceps','berberina','cardo-mariano','resveratrol',
+      'ginkgo','cromo','nmn','nad','liver-complex','tribulus','bacopa','melatonil',
+      'quercetina','sambucol','shilajit','vitafer','citracal','complejo-b','neurobionta',
+      'biozen','artrisimi'
+    ]),
+    // Probióticos (suplemento alimenticio especializado)
+    probiotic: new Set([
+      'alflorex','bioflora','perenteryl','multiflora','lactoflora','enterogermina'
+    ]),
+    // Cuidado de la piel (cosmético tópico)
+    skincare: new Set([
+      'cicaplast-b5','dermopure','effaclar-duo','effaclar-serum','eucerin-pigment',
+      'eucerin-hyaluron','eucerin-atopicontrol','hyalu-b5','mela-b3','retinal-shot',
+      'mixsoon','alopek'
+    ]),
+    // Protector solar
+    sunscreen: new Set(['anthelios-uvmune','heliocare']),
+    // Cuidado ocular (lubricante)
+    eyecare: new Set(['hyabak','hylo-comod','lagricel','systane-complete','systane-ultra','toptear']),
+    // Higiene/cosmético capilar o cuidado tópico
+    topical: new Set(['loceryl','dilasedan']),
+    // Vías respiratorias / fitoterápico OTC
+    herbal_otc: new Set(['kaloba','bisolvon']),
+    // Bem-estar circulatório OTC
+    circulatory: new Set(['daflon']),
+    // Cuidado masculino / fragancia
+    fragrance: new Set(['pheromen']),
+    // Bem-estar peso (suplemento)
+    weight: new Set(['balloon-slim','thermo-slim','lipo6']),
+    // Producto sensible (manter no site mas sem claim médico)
+    cosmetic_specialty: new Set(['latisse','finaprost'])
+  };
+
+  function getCategory(sku) {
+    for (const [cat, set] of Object.entries(CATEGORY)) {
+      if (set.has(sku)) return cat;
+    }
+    return 'supplement';
+  }
+
+  const COMPLIANCE_TEXT = {
+    supplement:    'Suplemento alimenticio. No reemplaza una dieta equilibrada ni constituye tratamiento médico.',
+    probiotic:     'Suplemento alimenticio con cultivos. No reemplaza una dieta equilibrada ni constituye tratamiento médico.',
+    skincare:      'Producto cosmético de uso tópico. Para uso externo. Si presenta irritación, suspende el uso.',
+    sunscreen:     'Producto cosmético de protección solar. Reaplica cada 2 horas y después de baño o sudor intenso.',
+    eyecare:       'Producto para cuidado e higiene ocular. Si presentas molestias, consulta a un especialista.',
+    topical:       'Producto de uso tópico/personal. Sigue las indicaciones del envase y suspende ante reacciones adversas.',
+    herbal_otc:    'Producto a base de extractos botánicos. Sigue las indicaciones del envase. No reemplaza tratamiento médico.',
+    circulatory:   'Producto a base de flavonoides. Sigue las indicaciones del envase. No reemplaza tratamiento médico.',
+    fragrance:     'Producto cosmético de uso externo. Solo para mayores de 18 años.',
+    weight:        'Suplemento alimenticio. No reemplaza una alimentación equilibrada ni el ejercicio. Los resultados varían según cada persona.',
+    cosmetic_specialty: 'Producto cosmético de uso tópico. Lee atentamente el inserto del envase antes de usar.'
+  };
+
+  const category = getCategory(data.sku);
+  document.body.dataset.category = category;
+  const complianceEl = document.getElementById('pdCompliance');
+  const complianceText = document.getElementById('pdComplianceText');
+  if (complianceText) complianceText.textContent = COMPLIANCE_TEXT[category] || COMPLIANCE_TEXT.supplement;
+
+  /* ---------- TITLE + META ---------- */
   document.getElementById('pdTitle').textContent = data.fullName;
+
+  // Meta description white-hat (sem claims médicos)
+  const META_DESC = {
+    supplement: `${data.fullName}. Suplemento alimenticio disponible en Farma Origen con despacho a todo Chile.`,
+    probiotic:  `${data.fullName}. Suplemento con cultivos vivos disponible en Farma Origen con despacho a todo Chile.`,
+    skincare:   `${data.fullName}. Producto de cuidado de la piel disponible en Farma Origen con despacho a todo Chile.`,
+    sunscreen:  `${data.fullName}. Protector solar disponible en Farma Origen con despacho a todo Chile.`,
+    eyecare:    `${data.fullName}. Cuidado e higiene ocular disponible en Farma Origen con despacho a todo Chile.`,
+    topical:    `${data.fullName}. Producto de uso tópico disponible en Farma Origen con despacho a todo Chile.`,
+    herbal_otc: `${data.fullName}. Producto a base de extractos botánicos. Despacho a todo Chile.`,
+    circulatory:`${data.fullName}. Producto a base de flavonoides. Despacho a todo Chile.`,
+    fragrance:  `${data.fullName}. Fragancia masculina. Solo para mayores de 18 años. Despacho a todo Chile.`,
+    weight:     `${data.fullName}. Suplemento alimenticio. Resultados varían. Despacho a todo Chile.`,
+    cosmetic_specialty: `${data.fullName}. Producto cosmético tópico. Despacho a todo Chile.`
+  };
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.setAttribute('name', 'description');
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute('content', META_DESC[category] || META_DESC.supplement);
+
+  // JSON-LD Product schema
+  const ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: data.fullName,
+    brand: { '@type': 'Brand', name: data.brand || 'Origen Natural' },
+    category: ({
+      supplement:'Health & Wellness > Supplements',
+      probiotic:'Health & Wellness > Supplements > Probiotics',
+      skincare:'Beauty > Skin Care',
+      sunscreen:'Beauty > Sun Care',
+      eyecare:'Health & Personal Care > Eye Care',
+      topical:'Health & Personal Care',
+      herbal_otc:'Health & Wellness > Herbal',
+      circulatory:'Health & Wellness',
+      fragrance:'Beauty > Fragrance',
+      weight:'Health & Wellness > Supplements',
+      cosmetic_specialty:'Beauty > Skin Care'
+    })[category] || 'Health & Wellness',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'CLP',
+      price: data.price,
+      availability: 'https://schema.org/InStock'
+    }
+  });
+  document.head.appendChild(ld);
   document.getElementById('pdBrand').textContent = data.brand || '';
   document.getElementById('pdInfoBrand').textContent = data.brand || '—';
 
@@ -27,11 +143,32 @@
   const pres = data.fullName.split('·')[1]?.trim() || data.fullName;
   document.getElementById('pdInfoPres').textContent = pres;
 
-  // Descripción genérica basada en marca/nombre
-  document.getElementById('pdDescText').textContent =
-    `${data.fullName} de ${data.brand || 'origen seleccionado'}. ` +
-    `Producto disponible en Farma Origen con despacho a todo Chile y ` +
-    `garantía de autenticidad. Para consultas, contáctanos por WhatsApp.`;
+  // Descripción genérica white-hat por categoría — sem claims médicos
+  const DESC_BY_CAT = {
+    supplement:
+      `${data.fullName} es un suplemento alimenticio de ${data.brand || 'origen seleccionado'}, disponible en Farma Origen con despacho a todo Chile y garantía de autenticidad. Sigue las indicaciones del envase y consulta a un profesional de la salud antes de iniciar cualquier suplemento.`,
+    probiotic:
+      `${data.fullName} es un suplemento alimenticio con cultivos vivos de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase. No reemplaza una alimentación equilibrada. Consulta a un profesional ante dudas.`,
+    skincare:
+      `${data.fullName} es un producto cosmético de cuidado de la piel de ${data.brand || 'origen seleccionado'}. Para uso tópico externo. Realiza prueba de tolerancia en una zona pequeña antes del primer uso.`,
+    sunscreen:
+      `${data.fullName} es un protector solar cosmético de ${data.brand || 'origen seleccionado'}. Aplica generosamente 15 minutos antes de la exposición y reaplica cada 2 horas o tras baño/sudor intenso.`,
+    eyecare:
+      `${data.fullName} es un producto para higiene y lubricación ocular de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase y consulta a un oftalmólogo si las molestias persisten.`,
+    topical:
+      `${data.fullName} es un producto de uso tópico/personal de ${data.brand || 'origen seleccionado'}. Para uso externo. Sigue siempre las indicaciones del envase original.`,
+    herbal_otc:
+      `${data.fullName} es un producto a base de extractos botánicos de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase. No reemplaza un tratamiento médico ni el diagnóstico de un profesional.`,
+    circulatory:
+      `${data.fullName} es un producto a base de flavonoides de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase. Consulta a un profesional de la salud ante dudas.`,
+    fragrance:
+      `${data.fullName} es una fragancia cosmética de uso externo, exclusiva para mayores de 18 años. Disponible en Farma Origen con despacho a todo Chile.`,
+    weight:
+      `${data.fullName} es un suplemento alimenticio de ${data.brand || 'origen seleccionado'}. Los resultados pueden variar según cada persona. No reemplaza una alimentación equilibrada ni el ejercicio. Consulta a un profesional de la salud antes de usar.`,
+    cosmetic_specialty:
+      `${data.fullName} es un producto cosmético de uso tópico de ${data.brand || 'origen seleccionado'}. Lee atentamente las instrucciones del envase antes de usar. Para uso externo.`
+  };
+  document.getElementById('pdDescText').textContent = DESC_BY_CAT[category] || DESC_BY_CAT.supplement;
 
   /* ---------- BADGE ---------- */
   if (data.badge) {
