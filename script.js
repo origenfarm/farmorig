@@ -174,7 +174,10 @@ const cart = {
   total() { return this.items.reduce((s, i) => s + i.price * i.qty, 0); },
   refresh() {
     const el = document.getElementById('cartCount');
-    if (el) el.textContent = this.count();
+    if (!el) return;
+    const n = this.count();
+    el.textContent = n > 99 ? '99+' : String(n);
+    if (n === 0) el.setAttribute('hidden', ''); else el.removeAttribute('hidden');
   }
 };
 cart.load();
