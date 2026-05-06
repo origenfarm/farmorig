@@ -1542,8 +1542,11 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
   .news-form .btn { width: 100%; }
 
   .brands-strip { grid-template-columns: repeat(2, 1fr); }
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-  .pay-strip { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+  .footer-grid .foot-col { display: flex; flex-direction: column; align-items: center; }
+  .footer-grid .foot-brand p { max-width: none; margin-left: auto; margin-right: auto; }
+  .pay-strip { grid-template-columns: 1fr; text-align: center; }
+  .pay-icons { justify-content: center; }
 }
 
 @media (max-width: 480px) {

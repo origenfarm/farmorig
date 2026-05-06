@@ -135,8 +135,15 @@
     cuenta: {
       title: 'Mi cuenta',
       body: `
-        <p>Próximamente podrás crear cuenta para guardar direcciones, ver historial de pedidos y favoritos.</p>
-        <p>Por ahora, todas las compras se procesan como invitado — no necesitas registrarte para comprar.</p>`
+        <p>Tu cuenta se crea <strong>automáticamente</strong> con tu primera compra, usando el email que ingresas en el checkout.</p>
+        <p>Una vez creada, podrás:</p>
+        <ul>
+          <li>Ver el historial de tus pedidos</li>
+          <li>Guardar direcciones de despacho</li>
+          <li>Marcar productos favoritos</li>
+          <li>Acceder más rápido en próximas compras</li>
+        </ul>
+        <p>Recibirás los datos de acceso por email después de tu primera orden.</p>`
     },
     favoritos: {
       title: 'Favoritos',
