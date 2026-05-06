@@ -38,10 +38,12 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
-  /* Gutter simétrico em qualquer viewport.
-     Desktop (scrollbar clássica): margens iguais nos 2 lados
-     Mobile (overlay scrollbars): zero efeito, ocupa edge-to-edge */
-  scrollbar-gutter: stable both-edges;
+}
+/* Gutter simétrico SÓ em dispositivos com mouse (desktop com scrollbar
+   clássica). Em touch devices (iPhone, Android) o iOS/Chrome usa overlay
+   scrollbars — aplicar gutter aqui criaria 30px de espaço morto inútil. */
+@media (pointer: fine) {
+  html { scrollbar-gutter: stable both-edges; }
 }
 body {
   font-family: var(--font-sans);
