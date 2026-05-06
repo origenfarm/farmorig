@@ -107,7 +107,25 @@ const SHIPPING_FEE       = 3990;
     e.target.value = v;
   });
 
-  /* ---------- 5. PAGOU PAYMENT ELEMENT ---------- */
+  /* ---------- 5a. METHOD TABS (Cartão / Voucher) ---------- */
+  let activeMethod = 'credit_card';
+  document.querySelectorAll('.ck-method-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const m = tab.dataset.method;
+      activeMethod = m;
+      document.querySelectorAll('.ck-method-tab').forEach(t => {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+      document.querySelectorAll('.ck-method-pane').forEach(p => {
+        const show = p.dataset.pane === m;
+        p.classList.toggle('active', show);
+        if (show) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+      });
+    });
+  });
+
+  /* ---------- 5b. PAGOU PAYMENT ELEMENT (cartão) ---------- */
   let elements, card;
   let pagouReady = false;
 
@@ -172,7 +190,6 @@ const SHIPPING_FEE       = 3990;
   /* ---------- 7. SUBMIT ---------- */
   const payBtn = $('ckPayBtn');
   payBtn.addEventListener('click', async () => {
-    if (!pagouReady) return;
     const err = validateForm();
     if (err) { showPayError(err); return; }
     showPayError(null);
@@ -185,35 +202,33 @@ const SHIPPING_FEE       = 3990;
     const orderId = 'FO-' + Date.now() + '-' + Math.random().toString(36).slice(2,7);
 
     try {
-      // elements.submit() tokeniza o cartão e chama createTransaction
-      // com o token. Dentro da callback, postamos pro backend.
-      const result = await elements.submit({
-        createTransaction: async (tokenData) => {
-          const body = buildTransactionBody({
-            token: tokenData.token,
-            orderId,
-            total,
-            installments: parseInt($('ckInstall').value, 10) || 1
-          });
+      let result;
 
-          // POST pro backend do usuário (que usa secret-key Bearer no servidor).
-          const r = await fetch(BACKEND_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-          });
-          const json = await r.json().catch(() => ({}));
-          if (!r.ok) {
-            const msg = json?.message || json?.error || JSON.stringify(json) || ('HTTP ' + r.status);
-            const err = new Error('gateway_error');
-            err.gatewayError = msg;
-            err.gatewayStatus = r.status;
-            err.data = json;
-            throw err;
+      if (activeMethod === 'credit_card') {
+        if (!pagouReady) throw new Error('SDK do gateway não inicializado.');
+        // elements.submit() tokeniza o cartão e chama createTransaction
+        result = await elements.submit({
+          createTransaction: async (tokenData) => {
+            const body = buildTransactionBody({
+              method: 'credit_card',
+              token: tokenData.token,
+              orderId,
+              total,
+              installments: parseInt($('ckInstall').value, 10) || 1
+            });
+            return await postBackend(body);
           }
-          return json.data || json;
-        }
-      });
+        });
+      } else if (activeMethod === 'boleto') {
+        // Voucher/Boleto não precisa tokenizar — vai direto pro backend
+        const body = buildTransactionBody({
+          method: 'boleto',
+          orderId,
+          total,
+          installments: 1
+        });
+        result = await postBackend(body);
+      }
 
       handleResult(result, orderId, total);
     } catch (e) {
@@ -255,9 +270,8 @@ const SHIPPING_FEE       = 3990;
     'VIII':'BI','IX':'AR','XIV':'LR','X':'LL','XI':'AY','XII':'MA'
   };
 
-  function buildTransactionBody({ token, orderId, total, installments }) {
+  function buildTransactionBody({ method, token, orderId, total, installments }) {
     const rut = $('ckRut').value.replace(/[^0-9kK]/g, '').toUpperCase();
-    // phone: garante 11 dígitos com DDI 56 (Chile)
     let phoneDigits = $('ckPhone').value.replace(/\D/g, '');
     if (!phoneDigits.startsWith('56')) phoneDigits = '56' + phoneDigits;
     phoneDigits = phoneDigits.slice(0, 11).padEnd(11, '0');
@@ -275,8 +289,8 @@ const SHIPPING_FEE       = 3990;
       neighborhood: undefined
     };
 
-    return {
-      method: 'credit_card',
+    const body = {
+      method, // 'credit_card' ou 'boleto'
       amount: amountBRL,
       currency: 'BRL',
       notify_url: `${window.location.origin}/api/pagou/webhook`,
@@ -301,25 +315,58 @@ const SHIPPING_FEE       = 3990;
         user_identification_number: rut
       }),
       shipping: { address },
-      token,
-      installments,
       external_ref: orderId,
       traceable: true
     };
+
+    if (method === 'credit_card') {
+      body.token = token;
+      body.installments = installments;
+    }
+    // boleto: sem token, sem installments
+
+    return body;
+  }
+
+  async function postBackend(body) {
+    const r = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const msg = json?.message || json?.error || JSON.stringify(json) || ('HTTP ' + r.status);
+      const err = new Error('gateway_error');
+      err.gatewayError = msg;
+      err.gatewayStatus = r.status;
+      err.data = json;
+      throw err;
+    }
+    return json.data || json;
   }
 
   function handleResult(res, orderId, total) {
     const status = res?.status || res?.data?.status;
     const next   = res?.next_action || res?.data?.next_action;
+    const boleto = res?.boleto || res?.data?.boleto || res?.voucher || res?.data?.voucher;
 
+    // 3DS in-flight
     if (next?.type === 'three_ds_challenge') {
-      // SDK do Pagou normalmente lida com o desafio internamente; se chegou
-      // até aqui sem terminar, mostra mensagem.
       openResult({
         ok: true,
         title: 'Verificación en curso',
         msg: 'Tu banco solicita una validación adicional. Sigue las instrucciones del SDK 3D Secure.'
       });
+      return;
+    }
+
+    // Boleto/voucher gerado — mostrar link e código de barras
+    if (boleto || activeMethod === 'boleto') {
+      cart.items = []; cart.save(); cart.refresh();
+      const url = boleto?.url || boleto?.pdf || boleto?.payment_url;
+      const barcode = boleto?.barcode || boleto?.line || boleto?.digitable_line;
+      openVoucherResult({ orderId, total, url, barcode });
       return;
     }
 
@@ -343,6 +390,23 @@ const SHIPPING_FEE       = 3990;
         msg: 'No pudimos procesar tu tarjeta. Verifica los datos o usa otro medio de pago.'
       });
     }
+  }
+
+  function openVoucherResult({ orderId, total, url, barcode }) {
+    $('ckResultTitle').textContent = '¡Voucher generado!';
+    let html = `<p>Tu orden <strong>#${orderId}</strong> por <strong>${fmt(total)}</strong> fue creada. Paga el voucher para confirmar tu pedido (vence en 3 días).</p>`;
+    if (barcode) {
+      html += `<div class="ck-voucher-barcode"><label>Línea digitable</label><code>${barcode}</code><button type="button" onclick="navigator.clipboard.writeText('${barcode}')">Copiar</button></div>`;
+    }
+    if (url) {
+      html += `<a href="${url}" target="_blank" rel="noopener" class="ck-pay-btn" style="margin-top:12px">Ver / imprimir voucher</a>`;
+    }
+    $('ckResultMsg').innerHTML = html;
+    $('ckResultIcon').innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h20M2 17h20"/><path d="M5 7v10M9 7v10M13 7v10M17 7v10"/></svg>';
+    $('ckResultIcon').className = 'ck-modal-icon ok';
+    $('ckResultCta').textContent = 'Volver al inicio';
+    $('ckResult').hidden = false;
+    document.body.style.overflow = 'hidden';
   }
 
   /* ---------- 8. UI HELPERS ---------- */
