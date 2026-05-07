@@ -3158,9 +3158,10 @@ html, body { overflow-x: hidden; }
   .header-burger:active { background: var(--green) !important; }
   .header-burger svg { width: 22px; height: 22px; stroke: #fff; }
 
-  /* Logo 44px (era 32) */
-  .logo { height: 44px !important; }
-  .logo img { max-height: 44px !important; height: 44px !important; }
+  /* Logo 44px (era 32) — só no header padrão (.header-inner),
+     a página de produto (.header-inner-pd) tem seus próprios tamanhos. */
+  .header-inner .logo { height: 44px; }
+  .header-inner .logo img { max-height: 44px; height: 44px; }
 
   .header-actions { gap: 14px !important; }
   .header-actions a,
@@ -3446,3 +3447,59 @@ html, body { overflow-x: hidden; }
    Disclaimer permanece no rodapé, na aba Precauciones e dentro da
    descrição rica — ou seja, compliance/Google Ads continua coberto. */
 .pd-compliance { display: none !important; }
+
+/* ===========================================
+   FIX HEADER MOBILE — página de produto
+   .header-inner-pd tem layout próprio (flex space-between).
+   Sobrescreve as regras globais de .header-inner que apanhavam ele
+   via classe compartilhada e quebravam o tamanho do logo.
+=========================================== */
+@media (max-width: 600px) {
+  .header-inner.header-inner-pd {
+    display: flex !important;
+    grid-template: none !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    grid-template-rows: none !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 8px 14px !important;
+  }
+
+  .header-inner-pd .logo {
+    height: auto !important;
+    place-self: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto;
+  }
+  .header-inner-pd .logo img {
+    height: 56px !important;
+    max-height: 56px !important;
+    max-width: 180px !important;
+    width: auto !important;
+    object-fit: contain;
+    display: block;
+  }
+
+  .header-inner-pd .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    place-self: auto !important;
+    flex: 0 0 auto;
+  }
+  .header-inner-pd .header-actions a,
+  .header-inner-pd .header-actions button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .header-inner-pd .header-burger { display: none !important; }
+}
+
+@media (max-width: 380px) {
+  .header-inner-pd .logo img { height: 48px !important; max-width: 150px !important; }
+  .header-inner-pd .header-actions { gap: 10px !important; }
+}
