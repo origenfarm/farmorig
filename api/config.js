@@ -17,5 +17,8 @@ export default function handler(req, res) {
   return res.status(200).json({
     pagouPublicKey: process.env.PAGOU_PUBLIC_KEY || '',
     pagouEnv: process.env.PAGOU_ENV || 'sandbox',
+    googleAdsId: process.env.GOOGLE_ADS_ID || '',
+    googleAdsConversionLabel: process.env.GOOGLE_ADS_CONVERSION_LABEL || '',
+    metaPixelId: process.env.META_PIXEL_ID || '',
   });
 }

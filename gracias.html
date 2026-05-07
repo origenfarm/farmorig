@@ -112,6 +112,7 @@
     </div>
   </footer>
 
+  <script src="analytics.js" defer></script>
   <script>
     // Esvazia carrinho (compra finalizada) e renderiza dados do pedido
     (function() {
@@ -125,6 +126,22 @@
         el.textContent = '$' + Number(total).toLocaleString('es-CL');
         el.hidden = false;
       }
+
+      // Dispara conversão Google Ads + Meta Pixel quando analytics carregar.
+      // foPurchase() está em analytics.js (defer, carrega depois).
+      function fireConversion(retries) {
+        if (typeof window.foPurchase === 'function') {
+          window.foPurchase({
+            orderId,
+            value: Number(total) || 0,
+            currency: 'CLP'
+          });
+          return;
+        }
+        if ((retries || 0) > 30) return;
+        setTimeout(() => fireConversion((retries || 0) + 1), 100);
+      }
+      fireConversion(0);
     })();
   </script>
 </body>
