@@ -213,6 +213,106 @@
 })();
 
 
+/* ---------- FILTRO POR CATEGORIA ----------
+   Clique numa cat-card → URL vira #cat=xxx → produtos filtrados.
+   Mapping SKU→categoria fica aqui (não precisa tocar no HTML dos cards).
+*/
+(function categoryFilter() {
+  const CATEGORY_MAP = {
+    hongos:       ['melena-leon', 'reishi', 'cordyceps'],
+    probioticos:  ['alflorex', 'bioflora', 'perenteryl', 'multiflora', 'lactoflora', 'enterogermina'],
+    longevidad:   ['nmn', 'nad', 'resveratrol', 'quercetina'],
+    dermo:        ['cicaplast-b5', 'dermopure', 'effaclar-duo', 'effaclar-serum',
+                   'eucerin-pigment', 'eucerin-hyaluron', 'eucerin-atopicontrol',
+                   'hyalu-b5', 'mela-b3', 'retinal-shot', 'mixsoon', 'alopek',
+                   'anthelios-uvmune', 'heliocare'],
+    ocular:       ['hyabak', 'hylo-comod', 'lagricel', 'systane-complete', 'systane-ultra', 'toptear'],
+    energia:      ['ginkgo', 'cromo', 'citracal', 'biozen', 'sambucol', 'neurobionta', 'complejo-b', 'vitafer'],
+    bienestar:    ['melatonil', 'bacopa'],
+    suplementos:  ['berberina', 'cardo-mariano', 'tribulus', 'shilajit', 'liver-complex', 'kaloba', 'artrisimi']
+  };
+  const CATEGORY_LABELS = {
+    hongos: 'Hongos Medicinales',
+    probioticos: 'Probióticos',
+    longevidad: 'Antioxidantes & Longevidad',
+    dermo: 'Dermocosmética',
+    ocular: 'Cuidado Ocular',
+    energia: 'Energía & Vitalidad',
+    bienestar: 'Bienestar & Sueño',
+    suplementos: 'Suplementos Naturales'
+  };
+
+  // Tagging dos produtos (na ordem em que existem)
+  function tagProducts() {
+    document.querySelectorAll('.product').forEach(card => {
+      const skuEl = card.querySelector('[data-sku]');
+      if (!skuEl) return;
+      const sku = skuEl.dataset.sku;
+      for (const [cat, skus] of Object.entries(CATEGORY_MAP)) {
+        if (skus.includes(sku)) {
+          card.dataset.cat = cat;
+          break;
+        }
+      }
+    });
+  }
+
+  function applyFilter() {
+    const m = location.hash.match(/^#cat=(.+)/);
+    const cat = m ? m[1] : null;
+    const cards = document.querySelectorAll('.products-grid .product');
+    let visible = 0;
+    cards.forEach(c => {
+      const show = !cat || c.dataset.cat === cat;
+      c.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    renderChip(cat, visible);
+    if (cat) {
+      const target = document.getElementById('catalogo') || document.querySelector('.products-grid');
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function renderChip(cat, count) {
+    let chip = document.getElementById('foCatChip');
+    const catalogo = document.getElementById('catalogo')?.querySelector('.section-head, .container');
+    if (!cat) {
+      chip?.remove();
+      return;
+    }
+    if (!chip) {
+      chip = document.createElement('div');
+      chip.id = 'foCatChip';
+      chip.className = 'fo-cat-chip';
+      catalogo?.prepend(chip);
+    }
+    chip.innerHTML = `
+      <span class="fo-cat-chip-label">Filtro:</span>
+      <strong>${CATEGORY_LABELS[cat] || cat}</strong>
+      <span class="fo-cat-chip-count">${count} producto${count !== 1 ? 's' : ''}</span>
+      <a href="#" class="fo-cat-chip-clear" aria-label="Quitar filtro">×</a>
+    `;
+    chip.querySelector('.fo-cat-chip-clear').addEventListener('click', e => {
+      e.preventDefault();
+      history.replaceState(null, '', location.pathname + location.search);
+      applyFilter();
+    });
+  }
+
+  function init() {
+    tagProducts();
+    applyFilter();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  window.addEventListener('hashchange', applyFilter);
+})();
+
 /* ---------- AUTO-SWAP DE IMAGENS DE PRODUTO + LINK PARA PRODUTO ----------
    Se você jogar uma imagem com o nome do SKU em
    /assets/products/{sku}.jpg (ou .png/.webp) ela
