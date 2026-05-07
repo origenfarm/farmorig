@@ -3043,3 +3043,86 @@ html, body { overflow-x: hidden; }
 /* Bug 4 — Drawer fechado fora do flow horizontal (já estava translateX(-100%),
    garantir que o conteúdo fora não cause scrollbar lateral) */
 .menu { will-change: transform; }
+
+/* ===========================================
+   FIX HEADER MOBILE — alinhamento + sticky stack
+   Briefing 2 do usuário (debug ao vivo).
+=========================================== */
+
+/* Topbar sticky empilhada acima do header pra não deixar fragmento
+   amarelo do hero vazar entre os dois quando rolar. */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+}
+.header {
+  /* Header já era sticky top:0 — ajusta pra ficar abaixo da topbar */
+  top: var(--topbar-h, 0px);
+}
+
+@media (max-width: 600px) {
+  .topbar { font-size: 0.7rem; }
+
+  .header {
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  }
+
+  .header-inner {
+    display: grid !important;
+    grid-template-areas:
+      "burger logo actions"
+      "search search search" !important;
+    grid-template-columns: 38px 1fr auto !important;
+    grid-template-rows: 56px 48px !important;
+    align-items: center !important;
+    gap: 8px 10px !important;
+    padding: 6px 14px 10px !important;
+  }
+
+  .header-burger {
+    grid-area: burger;
+    justify-self: start;
+    align-self: center;
+  }
+
+  .logo {
+    grid-area: logo;
+    justify-self: center;
+    align-self: center;
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+  .logo img {
+    max-height: 32px;
+    width: auto;
+    display: block;
+  }
+
+  .header-actions {
+    grid-area: actions;
+    justify-self: end;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-actions a,
+  .header-actions button {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .search {
+    grid-area: search;
+    width: 100%;
+    margin: 0;
+  }
+  .search input { height: 40px; }
+}
