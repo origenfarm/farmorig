@@ -3126,3 +3126,115 @@ html, body { overflow-x: hidden; }
   }
   .search input { height: 40px; }
 }
+
+/* ===========================================
+   FIX FINAL — menu mobile + header (briefing 3)
+   identidade do hamburger, drawer cobre topbar, close visível,
+   "Más Buscados" sem fundo permanente, items 56px touch.
+=========================================== */
+@media (max-width: 600px) {
+  /* ---- HEADER ---- */
+  .header-inner {
+    grid-template-columns: 44px 1fr auto !important;
+    grid-template-rows: 60px 48px !important;
+  }
+
+  /* Hamburger com identidade — verde escuro chunky */
+  .header-burger {
+    width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    background: var(--green-dark) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .header-burger:hover,
+  .header-burger:active { background: var(--green) !important; }
+  .header-burger svg { width: 22px; height: 22px; stroke: #fff; }
+
+  /* Logo 44px (era 32) */
+  .logo { height: 44px !important; }
+  .logo img { max-height: 44px !important; height: 44px !important; }
+
+  .header-actions { gap: 14px !important; }
+  .header-actions a,
+  .header-actions button { width: 30px !important; height: 30px !important; }
+
+  /* ---- DRAWER ---- */
+  .menu {
+    width: min(85vw, 320px) !important;
+    max-width: 320px !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 1100 !important;
+    padding: 64px 0 24px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+  }
+  .menu-backdrop { z-index: 1099 !important; }
+
+  /* Botão fechar verde escuro com X branco */
+  .menu-close {
+    width: 40px !important;
+    height: 40px !important;
+    background: var(--green-dark) !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 2 !important;
+  }
+  .menu-close:hover { background: var(--green) !important; }
+  .menu-close svg { width: 20px; height: 20px; stroke: #fff; }
+
+  /* Esconde o "::before Categorías" antigo, usa nova label */
+  .menu::before { display: none; }
+
+  /* Items 56px touch ergonômico */
+  .menu li {
+    width: 100%;
+    border-bottom: 1px solid rgba(20, 50, 41, 0.08);
+  }
+  .menu li:last-child { border-bottom: 0; }
+  .menu li a {
+    display: flex;
+    align-items: center;
+    padding: 18px 24px !important;
+    min-height: 56px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: var(--green-dark) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    transition: background 0.15s, color 0.15s;
+  }
+  .menu li a:hover,
+  .menu li a:active {
+    background: var(--cream) !important;
+    color: var(--green) !important;
+  }
+
+  /* "Más Buscados" — sem fundo permanente, badge HOT discreta */
+  .menu li.hot a {
+    background: transparent !important;
+    color: var(--green-dark) !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    padding: 18px 24px !important;
+  }
+  .menu li.hot a::after {
+    content: "HOT";
+    margin-left: auto;
+    background: var(--gold);
+    color: var(--green-dark);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+  }
+  .menu li.hot a:hover::after { background: var(--gold-bright); }
+}
