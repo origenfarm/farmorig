@@ -146,7 +146,19 @@
   // Copy customizado por SKU (sobrepõe a descrição genérica da categoria).
   // Adicione aqui produtos que precisam de texto específico.
   const PRODUCT_COPY = {
-    'balloon-slim': `Balloon Slim es un suplemento alimenticio en cápsulas con fibras naturales (tecnología Hydro Slim). Al ingerir las cápsulas con un vaso de agua, las fibras se expanden en el estómago generando sensación de saciedad temporal — una alternativa no invasiva como apoyo a tu plan alimenticio. Pensado para adultos mayores de 18 años. Modo de uso sugerido: 2 cápsulas con un vaso de agua 20 minutos antes de las comidas principales. Acompaña con una alimentación equilibrada y actividad física regular. Los resultados pueden variar según cada persona. No reemplaza una dieta balanceada ni constituye tratamiento médico. Ante condiciones de salud preexistentes, embarazo, lactancia o uso de medicamentos, consulta a un profesional antes de iniciar.`
+    'balloon-slim': `Balloon Slim es un suplemento alimenticio en cápsulas formulado a base de fibras vegetales (tecnología Hydro Slim™). Está pensado como apoyo dietético complementario para adultos mayores de 18 años que desean acompañar un plan de alimentación equilibrado.
+
+Cómo se toma: las cápsulas se ingieren con un vaso grande de agua (mínimo 250 ml) aproximadamente 20 minutos antes del almuerzo y de la cena. Al hidratarse, las fibras vegetales se expanden suavemente en el estómago, contribuyendo a una sensación de saciedad temporal antes de las comidas. La fibra continúa su recorrido natural por el sistema digestivo y no es absorbida por el organismo.
+
+Composición: mezcla de fibras vegetales solubles e insolubles (Hydro Slim™), cápsula de origen vegetal HPMC. Sin gluten, sin azúcar añadida, sin colorantes ni saborizantes artificiales.
+
+Modo de uso sugerido: 2 cápsulas con un vaso grande de agua 20 minutos antes del almuerzo y la cena. Mantén una buena hidratación durante el día (1,5 a 2 L de agua). Acompaña siempre con una alimentación variada y equilibrada y con actividad física regular adaptada a tu rutina.
+
+Para quién es: adultos sanos mayores de 18 años. No usar en menores de edad. No usar en personas con dificultad para tragar, antecedentes de obstrucción intestinal, divertículos, esofagitis, hernia hiatal o cualquier condición digestiva sin orientación profesional.
+
+Información importante: este producto es un suplemento alimenticio y no constituye un medicamento ni un tratamiento médico. No reemplaza una dieta balanceada, ejercicio o consulta médica. Los resultados pueden variar según el estilo de vida, hábitos alimenticios y características de cada persona. Si estás embarazada, en período de lactancia, tienes alguna condición de salud preexistente o utilizas medicamentos, consulta a un profesional de la salud antes de iniciar el uso.
+
+Conservación: mantener el envase cerrado en lugar fresco y seco, lejos de la luz directa y del alcance de niños menores de 5 años. Una vez abierto, consumir según las indicaciones de la etiqueta.`
   };
 
   // Descripción genérica white-hat por categoría — sem claims médicos
@@ -174,8 +186,17 @@
     cosmetic_specialty:
       `${data.fullName} es un producto cosmético de uso tópico de ${data.brand || 'origen seleccionado'}. Lee atentamente las instrucciones del envase antes de usar. Para uso externo.`
   };
-  document.getElementById('pdDescText').textContent =
-    PRODUCT_COPY[data.sku] || DESC_BY_CAT[category] || DESC_BY_CAT.supplement;
+  // Renderiza descrição respeitando parágrafos (\n\n vira novo <p>).
+  const rawDesc = PRODUCT_COPY[data.sku] || DESC_BY_CAT[category] || DESC_BY_CAT.supplement;
+  const descEl = document.getElementById('pdDescText');
+  // Limpa o <p> wrapper original e injeta os parágrafos como filhos
+  descEl.outerHTML = '<div id="pdDescText" class="pd-desc-body"></div>';
+  const newDescEl = document.getElementById('pdDescText');
+  String(rawDesc).split(/\n\s*\n/).forEach(para => {
+    const p = document.createElement('p');
+    p.textContent = para.trim();
+    newDescEl.appendChild(p);
+  });
 
   /* ---------- BADGE ---------- */
   if (data.badge) {
