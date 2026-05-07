@@ -81,7 +81,7 @@ export default function handler(req, res) {
   const desc = product
     ? `${product.fullName}${product.brand ? ' de ' + product.brand : ''} · Disponible en Farma Origen con despacho a todo Chile.`
     : 'Detalle de producto en Farma Origen. Despacho a todo Chile.';
-  const img = product ? imageUrl(product.sku) : `${SITE_URL}/assets/logofarmaorigen.jpeg`;
+  const img = product ? imageUrl(product.sku) : `${SITE_URL}/assets/logofarmaorigen.webp`;
   const url = `${SITE_URL}/productos/${sku}`;
   const price = product ? product.price : null;
 
