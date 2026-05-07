@@ -3238,3 +3238,36 @@ html, body { overflow-x: hidden; }
   }
   .menu li.hot a:hover::after { background: var(--gold-bright); }
 }
+
+/* ===========================================
+   FIX — Pay strip mobile (Medios de pago / Despacho con)
+   Estavam empilhados muito próximos.
+=========================================== */
+@media (max-width: 720px) {
+  .pay-strip {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .pay-block {
+    padding: 8px 0;
+  }
+  .pay-block + .pay-block {
+    border-top: 1px solid rgba(244, 239, 230, 0.10);
+    padding-top: 28px;
+    margin-top: 4px;
+  }
+  .pay-block h5 {
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+  }
+  .pay-icons {
+    justify-content: center;
+    gap: 10px;
+  }
+  .pay-icons span {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+}
