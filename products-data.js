@@ -167,9 +167,9 @@ window.FO_PRODUCTS = [
     "name": "Balloon Slim",
     "fullName": "Balloon Slim · 30 cápsulas",
     "brand": "Slim Lab",
-    "price": 24990,
-    "oldPrice": 29990,
-    "badge": "-20%"
+    "price": 29900,
+    "oldPrice": 39990,
+    "badge": "-25%"
   },
   {
     "sku": "thermo-slim",

@@ -361,6 +361,12 @@
 (function injectKitOptions() {
   const fmt = n => '$' + n.toLocaleString('es-CL');
 
+  // Override de preços de kit por SKU (totais em CLP).
+  // Quando definido, sobrepõe o default "preço x 2" / "preço x 3".
+  const CUSTOM_KITS = {
+    'balloon-slim': { kit3: 54900, kit5: 79900 }
+  };
+
   document.querySelectorAll('.product').forEach(card => {
     const btn = card.querySelector('.btn-add[data-action="checkout"]');
     if (!btn) return;
@@ -369,10 +375,11 @@
     const price = parseInt(btn.dataset.price, 10) || 0;
     if (!price) return;
 
-    const kit3 = price * 2;  // leva 3, paga 2
-    const kit5 = price * 3;  // leva 5, paga 3
-    const save3 = price * 1; // economia
-    const save5 = price * 2;
+    const custom = CUSTOM_KITS[sku] || {};
+    const kit3 = custom.kit3 || price * 2;  // leva 3, paga 2
+    const kit5 = custom.kit5 || price * 3;  // leva 5, paga 3
+    const save3 = price * 3 - kit3;
+    const save5 = price * 5 - kit5;
 
     const wrap = document.createElement('div');
     wrap.className = 'kits';

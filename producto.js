@@ -258,10 +258,23 @@
   document.getElementById('pdInstall').innerHTML =
     `o 3 cuotas de <strong>${fmt(Math.ceil(data.price / 3))}</strong> sin interés`;
 
-  /* ---------- KIT PRICES ---------- */
+  /* ---------- KIT PRICES ----------
+     Default: 2x e 3x do preço unitário.
+     Override por SKU em CUSTOM_KITS quando precisar de preço fixo. */
+  const CUSTOM_KITS = {
+    'balloon-slim': { kit3: 54900, kit5: 79900 }
+  };
+  const kitOver = CUSTOM_KITS[data.sku] || {};
+  const kit3Price = kitOver.kit3 || data.price * 2;
+  const kit5Price = kitOver.kit5 || data.price * 3;
   document.querySelector('[data-target="single"]').textContent = fmt(data.price);
-  document.querySelector('[data-target="kit3x2"]').textContent = fmt(data.price * 2);
-  document.querySelector('[data-target="kit5x3"]').textContent = fmt(data.price * 3);
+  document.querySelector('[data-target="kit3x2"]').textContent = fmt(kit3Price);
+  document.querySelector('[data-target="kit5x3"]').textContent = fmt(kit5Price);
+  // % de economia dinâmica (refletindo kit custom ou default)
+  const save3pct = Math.round((1 - kit3Price / (data.price * 3)) * 100);
+  const save5pct = Math.round((1 - kit5Price / (data.price * 5)) * 100);
+  document.querySelector('[data-target="kit3x2-save"]').textContent = `Ahorra ${save3pct}%`;
+  document.querySelector('[data-target="kit5x3-save"]').textContent = `Ahorra ${save5pct}%`;
 
   let currentKit = 'single';
   document.querySelectorAll('input[name="pdKit"]').forEach(r => {
@@ -344,11 +357,11 @@
     if (currentKit === 'kit3x2') {
       btnSku = `${data.sku}-kit3x2`;
       btnName = `${data.name} · Kit Lleva 3 Paga 2`;
-      btnPrice = data.price * 2;
+      btnPrice = kit3Price;
     } else if (currentKit === 'kit5x3') {
       btnSku = `${data.sku}-kit5x3`;
       btnName = `${data.name} · Kit Lleva 5 Paga 3`;
-      btnPrice = data.price * 3;
+      btnPrice = kit5Price;
     }
     addBtn.dataset.sku = btnSku;
     addBtn.dataset.name = btnName;
