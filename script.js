@@ -258,8 +258,12 @@
   }
 
   function applyFilter() {
-    const m = location.hash.match(/^#cat=(.+)/);
-    const cat = m ? m[1] : null;
+    // Aceita tanto /categorias/hongos quanto #cat=hongos
+    const pathMatch = location.pathname.match(/^\/categorias\/([^/?#]+)/);
+    const hashMatch = location.hash.match(/^#cat=(.+)/);
+    const cat = pathMatch ? decodeURIComponent(pathMatch[1])
+              : hashMatch ? hashMatch[1]
+              : null;
     const cards = document.querySelectorAll('.products-grid .product');
     let visible = 0;
     cards.forEach(c => {
@@ -295,7 +299,8 @@
     `;
     chip.querySelector('.fo-cat-chip-clear').addEventListener('click', e => {
       e.preventDefault();
-      history.replaceState(null, '', location.pathname + location.search);
+      // Limpa tanto path quanto hash → volta pra raiz
+      history.replaceState(null, '', '/');
       applyFilter();
     });
   }
@@ -338,10 +343,10 @@
     };
     tryNext();
 
-    // Ao clicar na imagem ou no nome, abre a página de produto
+    // Ao clicar na imagem ou no nome, abre a página de produto (URL limpa)
     const openProduct = e => {
       if (e.target.closest('button, .badge-fav, .kit-btn, .kit-toggle')) return;
-      location.href = `producto.html?sku=${sku}`;
+      location.href = `/productos/${sku}`;
     };
     card.querySelector('.prod-img')?.addEventListener('click', openProduct);
     card.querySelector('.prod-name')?.addEventListener('click', openProduct);

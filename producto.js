@@ -669,8 +669,8 @@
       tryNext();
 
       // navegar ao clicar na imagem ou no nome
-      card.querySelector('.prod-img').addEventListener('click', () => location.href = `producto.html?sku=${s}`);
-      card.querySelector('.prod-name').addEventListener('click', () => location.href = `producto.html?sku=${s}`);
+      card.querySelector('.prod-img').addEventListener('click', () => location.href = `/productos/${s}`);
+      card.querySelector('.prod-name').addEventListener('click', () => location.href = `/productos/${s}`);
     });
   })();
 
