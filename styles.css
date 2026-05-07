@@ -2941,3 +2941,26 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
   .ck-section-head h2 { font-size: 0.95rem; }
   .ck-badges { width: 100%; margin-left: 0; }
 }
+
+/* ===========================================
+   FIX: producto.html overflow no mobile
+   Grid items têm min-width:auto por padrão, fazendo .pd-thumbs (6×fixed)
+   forçar a coluna a estourar 420px num viewport de 390px e empurrar tudo
+   pra direita. Adicionado por debug do usuário.
+=========================================== */
+@media (max-width: 980px) {
+  .pd-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .pd-gallery,
+  .pd-info,
+  .pd-main-wrap,
+  .pd-thumbs {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+  .pd-thumbs {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
