@@ -8,7 +8,11 @@
    ENV VARS necessárias no painel da Vercel:
      PAGOU_SECRET_KEY  →  sk_sandbox_xxx ou sk_live_xxx
      PAGOU_ENV         →  "sandbox" (default) ou "production"
+     RESEND_API_KEY    →  re_xxxxxxxxx (envio de email)
+     ADMIN_EMAIL       →  contacto@farmaorigen.com (cópia interna)
 ============================================ */
+
+import { sendOrderReceived, sendOrderConfirmed, sendAdminNew } from '../_email.js';
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
@@ -55,6 +59,31 @@ export default async function handler(req, res) {
     if (!r.ok) {
       console.error('[pagou] erro', r.status, json);
       return res.status(r.status).json(json);
+    }
+
+    // ---- Email (não bloqueia resposta se falhar) ----
+    try {
+      const txStatus = json?.data?.status;
+      const orderId = payload.external_ref || json?.data?.id;
+      const total = payload.metadata
+        ? (() => { try { return JSON.parse(payload.metadata).original_amount_clp; } catch { return payload.amount; } })()
+        : payload.amount;
+      const items = (payload.products || []).map(p => ({
+        name: p.name,
+        price: p.price,
+        qty: p.quantity || 1
+      }));
+      const buyer = payload.buyer || {};
+
+      // Cliente: confirmação de recebimento + (se já aprovado) confirmação de pagamento
+      sendOrderReceived({ orderId, total, items, buyer }).catch(()=>{});
+      if (txStatus === 'authorized' || txStatus === 'captured' || txStatus === 'paid') {
+        sendOrderConfirmed({ orderId, total, buyer }).catch(()=>{});
+      }
+      // Admin: aviso de nova ordem
+      sendAdminNew({ orderId, total, items, buyer }).catch(()=>{});
+    } catch (mailErr) {
+      console.error('[email] falha não-fatal:', mailErr);
     }
 
     return res.status(200).json(json);

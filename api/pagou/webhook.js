@@ -15,6 +15,7 @@
 ============================================ */
 
 import crypto from 'node:crypto';
+import { sendOrderConfirmed, sendOrderFailed } from '../_email.js';
 
 // Pequeno cache em memória pra dedupe (válido enquanto a função estiver "warm").
 // Pra produção robusta, troque por Redis/KV/DB.
@@ -95,9 +96,25 @@ export default async function handler(req, res) {
     txId: tx.id,
   });
 
-  // TODO: quando tiver banco, atualize o pedido externalRef com o status:
-  // if (status === 'captured' || status === 'paid') { markOrderPaid(externalRef); }
-  // if (status === 'refused' || status === 'failed') { markOrderFailed(externalRef); }
+  // Email pro cliente baseado no novo status
+  try {
+    const buyer = tx.buyer || {};
+    let totalCLP = amount;
+    // Se houver metadata com o valor original em CLP, usa ele em vez do amount em BRL
+    if (tx.metadata) {
+      try {
+        const meta = typeof tx.metadata === 'string' ? JSON.parse(tx.metadata) : tx.metadata;
+        if (meta.original_amount_clp) totalCLP = meta.original_amount_clp;
+      } catch {}
+    }
+    if (status === 'captured' || status === 'paid' || status === 'authorized') {
+      await sendOrderConfirmed({ orderId: externalRef, total: totalCLP, buyer });
+    } else if (status === 'refused' || status === 'failed' || status === 'cancelled' || status === 'voided') {
+      await sendOrderFailed({ orderId: externalRef, total: totalCLP, buyer });
+    }
+  } catch (mailErr) {
+    console.error('[webhook-email] falha não-fatal', mailErr);
+  }
 
   return res.status(200).json({ ok: true });
 }
