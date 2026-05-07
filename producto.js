@@ -143,6 +143,12 @@
   const pres = data.fullName.split('·')[1]?.trim() || data.fullName;
   document.getElementById('pdInfoPres').textContent = pres;
 
+  // Copy customizado por SKU (sobrepõe a descrição genérica da categoria).
+  // Adicione aqui produtos que precisam de texto específico.
+  const PRODUCT_COPY = {
+    'balloon-slim': `Balloon Slim es un suplemento alimenticio en cápsulas con fibras naturales (tecnología Hydro Slim). Al ingerir las cápsulas con un vaso de agua, las fibras se expanden en el estómago generando sensación de saciedad temporal — una alternativa no invasiva como apoyo a tu plan alimenticio. Pensado para adultos mayores de 18 años. Modo de uso sugerido: 2 cápsulas con un vaso de agua 20 minutos antes de las comidas principales. Acompaña con una alimentación equilibrada y actividad física regular. Los resultados pueden variar según cada persona. No reemplaza una dieta balanceada ni constituye tratamiento médico. Ante condiciones de salud preexistentes, embarazo, lactancia o uso de medicamentos, consulta a un profesional antes de iniciar.`
+  };
+
   // Descripción genérica white-hat por categoría — sem claims médicos
   const DESC_BY_CAT = {
     supplement:
@@ -168,7 +174,8 @@
     cosmetic_specialty:
       `${data.fullName} es un producto cosmético de uso tópico de ${data.brand || 'origen seleccionado'}. Lee atentamente las instrucciones del envase antes de usar. Para uso externo.`
   };
-  document.getElementById('pdDescText').textContent = DESC_BY_CAT[category] || DESC_BY_CAT.supplement;
+  document.getElementById('pdDescText').textContent =
+    PRODUCT_COPY[data.sku] || DESC_BY_CAT[category] || DESC_BY_CAT.supplement;
 
   /* ---------- BADGE ---------- */
   if (data.badge) {
