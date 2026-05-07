@@ -3677,3 +3677,8 @@ html, body { overflow-x: hidden; }
   .thx-actions .btn { width: 100%; }
   .thx-trust { gap: 10px; }
 }
+
+/* Esconde badge de % desconto no canto da galeria do produto.
+   Continua aparecendo nos cards do catálogo (badge red/-XX%) — só some
+   na PDP grande. */
+.pd-main-wrap .pd-badge { display: none !important; }
