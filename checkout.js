@@ -107,25 +107,7 @@ const SHIPPING_FEE       = 3990;
     e.target.value = v;
   });
 
-  /* ---------- 5a. METHOD TABS (Cartão / Voucher) ---------- */
-  let activeMethod = 'credit_card';
-  document.querySelectorAll('.ck-method-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const m = tab.dataset.method;
-      activeMethod = m;
-      document.querySelectorAll('.ck-method-tab').forEach(t => {
-        t.classList.toggle('active', t === tab);
-        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
-      });
-      document.querySelectorAll('.ck-method-pane').forEach(p => {
-        const show = p.dataset.pane === m;
-        p.classList.toggle('active', show);
-        if (show) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
-      });
-    });
-  });
-
-  /* ---------- 5b. PAGOU PAYMENT ELEMENT (cartão) ---------- */
+  /* ---------- 5. PAGOU PAYMENT ELEMENT (cartão — único método disponível) ---------- */
   let elements, card;
   let pagouReady = false;
 
@@ -202,33 +184,20 @@ const SHIPPING_FEE       = 3990;
     const orderId = 'FO-' + Date.now() + '-' + Math.random().toString(36).slice(2,7);
 
     try {
-      let result;
-
-      if (activeMethod === 'credit_card') {
-        if (!pagouReady) throw new Error('SDK do gateway não inicializado.');
-        // elements.submit() tokeniza o cartão e chama createTransaction
-        result = await elements.submit({
-          createTransaction: async (tokenData) => {
-            const body = buildTransactionBody({
-              method: 'credit_card',
-              token: tokenData.token,
-              orderId,
-              total,
-              installments: parseInt($('ckInstall').value, 10) || 1
-            });
-            return await postBackend(body);
-          }
-        });
-      } else if (activeMethod === 'boleto') {
-        // Voucher/Boleto não precisa tokenizar — vai direto pro backend
-        const body = buildTransactionBody({
-          method: 'boleto',
-          orderId,
-          total,
-          installments: 1
-        });
-        result = await postBackend(body);
-      }
+      if (!pagouReady) throw new Error('SDK do gateway não inicializado.');
+      // elements.submit() tokeniza o cartão e chama createTransaction
+      const result = await elements.submit({
+        createTransaction: async (tokenData) => {
+          const body = buildTransactionBody({
+            method: 'credit_card',
+            token: tokenData.token,
+            orderId,
+            total,
+            installments: parseInt($('ckInstall').value, 10) || 1
+          });
+          return await postBackend(body);
+        }
+      });
 
       handleResult(result, orderId, total);
     } catch (e) {
@@ -349,7 +318,6 @@ const SHIPPING_FEE       = 3990;
   function handleResult(res, orderId, total) {
     const status = res?.status || res?.data?.status;
     const next   = res?.next_action || res?.data?.next_action;
-    const boleto = res?.boleto || res?.data?.boleto || res?.voucher || res?.data?.voucher;
 
     // 3DS in-flight
     if (next?.type === 'three_ds_challenge') {
@@ -358,15 +326,6 @@ const SHIPPING_FEE       = 3990;
         title: 'Verificación en curso',
         msg: 'Tu banco solicita una validación adicional. Sigue las instrucciones del SDK 3D Secure.'
       });
-      return;
-    }
-
-    // Boleto/voucher gerado — mostrar link e código de barras
-    if (boleto || activeMethod === 'boleto') {
-      cart.items = []; cart.save(); cart.refresh();
-      const url = boleto?.url || boleto?.pdf || boleto?.payment_url;
-      const barcode = boleto?.barcode || boleto?.line || boleto?.digitable_line;
-      openVoucherResult({ orderId, total, url, barcode });
       return;
     }
 
@@ -392,22 +351,6 @@ const SHIPPING_FEE       = 3990;
     }
   }
 
-  function openVoucherResult({ orderId, total, url, barcode }) {
-    $('ckResultTitle').textContent = '¡Voucher generado!';
-    let html = `<p>Tu orden <strong>#${orderId}</strong> por <strong>${fmt(total)}</strong> fue creada. Paga el voucher para confirmar tu pedido (vence en 3 días).</p>`;
-    if (barcode) {
-      html += `<div class="ck-voucher-barcode"><label>Línea digitable</label><code>${barcode}</code><button type="button" onclick="navigator.clipboard.writeText('${barcode}')">Copiar</button></div>`;
-    }
-    if (url) {
-      html += `<a href="${url}" target="_blank" rel="noopener" class="ck-pay-btn" style="margin-top:12px">Ver / imprimir voucher</a>`;
-    }
-    $('ckResultMsg').innerHTML = html;
-    $('ckResultIcon').innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h20M2 17h20"/><path d="M5 7v10M9 7v10M13 7v10M17 7v10"/></svg>';
-    $('ckResultIcon').className = 'ck-modal-icon ok';
-    $('ckResultCta').textContent = 'Volver al inicio';
-    $('ckResult').hidden = false;
-    document.body.style.overflow = 'hidden';
-  }
 
   /* ---------- 8. UI HELPERS ---------- */
   function showPayError(msg) {
