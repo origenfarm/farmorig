@@ -145,20 +145,46 @@
 
   // Copy customizado por SKU (sobrepõe a descrição genérica da categoria).
   // Adicione aqui produtos que precisam de texto específico.
+  // PRODUCT_COPY agora aceita HTML estruturado.
+  // Usa template strings com markup, renderizado via innerHTML.
+  // Sem claims médicos, sem promessas de resultado.
   const PRODUCT_COPY = {
-    'balloon-slim': `Balloon Slim es un suplemento alimenticio en cápsulas formulado a base de fibras vegetales (tecnología Hydro Slim™). Está pensado como apoyo dietético complementario para adultos mayores de 18 años que desean acompañar un plan de alimentación equilibrado.
+    'balloon-slim': `
+<p class="pd-desc-lead">Suplemento alimenticio en cápsulas a base de fibras vegetales con tecnología <strong>Hydro Slim™</strong>, pensado como apoyo dietético complementario para adultos.</p>
 
-Cómo se toma: las cápsulas se ingieren con un vaso grande de agua (mínimo 250 ml) aproximadamente 20 minutos antes del almuerzo y de la cena. Al hidratarse, las fibras vegetales se expanden suavemente en el estómago, contribuyendo a una sensación de saciedad temporal antes de las comidas. La fibra continúa su recorrido natural por el sistema digestivo y no es absorbida por el organismo.
+<section class="pd-desc-block">
+  <h4>¿Cómo funciona la fibra?</h4>
+  <ol class="pd-steps">
+    <li><span class="pd-step-num">1</span><div><strong>Hidratación:</strong> ingieres 2 cápsulas con un vaso grande de agua antes de la comida.</div></li>
+    <li><span class="pd-step-num">2</span><div><strong>Volumen:</strong> las fibras se hidratan y aumentan suavemente su volumen en el estómago.</div></li>
+    <li><span class="pd-step-num">3</span><div><strong>Saciedad temporal:</strong> esto puede contribuir a una sensación de plenitud antes de las comidas.</div></li>
+    <li><span class="pd-step-num">4</span><div><strong>Tránsito natural:</strong> la fibra sigue su recorrido digestivo y no es absorbida por el organismo.</div></li>
+  </ol>
+</section>
 
-Composición: mezcla de fibras vegetales solubles e insolubles (Hydro Slim™), cápsula de origen vegetal HPMC. Sin gluten, sin azúcar añadida, sin colorantes ni saborizantes artificiales.
+<section class="pd-desc-block">
+  <h4>Composición</h4>
+  <ul class="pd-chips">
+    <li>Hydro Slim™ · fibra vegetal soluble e insoluble</li>
+    <li>Cápsula HPMC de origen vegetal</li>
+    <li>Sin gluten</li>
+    <li>Sin azúcar añadida</li>
+    <li>Sin colorantes artificiales</li>
+  </ul>
+</section>
 
-Modo de uso sugerido: 2 cápsulas con un vaso grande de agua 20 minutos antes del almuerzo y la cena. Mantén una buena hidratación durante el día (1,5 a 2 L de agua). Acompaña siempre con una alimentación variada y equilibrada y con actividad física regular adaptada a tu rutina.
+<section class="pd-desc-block pd-desc-usage">
+  <h4>Modo de uso sugerido</h4>
+  <p><strong>2 cápsulas</strong> con un vaso grande de agua (mínimo 250 ml), <strong>20 minutos antes</strong> del almuerzo y la cena.</p>
+  <p>Mantén una buena hidratación durante el día (1,5 a 2 L de agua). La hidratación es esencial para que las fibras funcionen como se describe.</p>
+</section>
 
-Para quién es: adultos sanos mayores de 18 años. No usar en menores de edad. No usar en personas con dificultad para tragar, antecedentes de obstrucción intestinal, divertículos, esofagitis, hernia hiatal o cualquier condición digestiva sin orientación profesional.
-
-Información importante: este producto es un suplemento alimenticio y no constituye un medicamento ni un tratamiento médico. No reemplaza una dieta balanceada, ejercicio o consulta médica. Los resultados pueden variar según el estilo de vida, hábitos alimenticios y características de cada persona. Si estás embarazada, en período de lactancia, tienes alguna condición de salud preexistente o utilizas medicamentos, consulta a un profesional de la salud antes de iniciar el uso.
-
-Conservación: mantener el envase cerrado en lugar fresco y seco, lejos de la luz directa y del alcance de niños menores de 5 años. Una vez abierto, consumir según las indicaciones de la etiqueta.`
+<section class="pd-desc-block pd-desc-warn">
+  <h4>Información importante</h4>
+  <p>Producto exclusivo para <strong>adultos mayores de 18 años</strong>. No usar en menores de edad.</p>
+  <p><strong>Consulta a un profesional antes de usar</strong> si tienes dificultad para tragar, antecedentes de obstrucción intestinal, divertículos, esofagitis, hernia hiatal, estás embarazada, en lactancia, tienes alguna condición de salud preexistente o utilizas medicamentos.</p>
+  <p class="pd-desc-disclaimer">Suplemento alimenticio. No es un medicamento, no constituye tratamiento médico, no reemplaza una alimentación equilibrada ni el ejercicio. Los resultados pueden variar según el estilo de vida y características de cada persona.</p>
+</section>`
   };
 
   // Descripción genérica white-hat por categoría — sem claims médicos
@@ -186,17 +212,23 @@ Conservación: mantener el envase cerrado en lugar fresco y seco, lejos de la lu
     cosmetic_specialty:
       `${data.fullName} es un producto cosmético de uso tópico de ${data.brand || 'origen seleccionado'}. Lee atentamente las instrucciones del envase antes de usar. Para uso externo.`
   };
-  // Renderiza descrição respeitando parágrafos (\n\n vira novo <p>).
+  // Renderização da descrição:
+  // - Se PRODUCT_COPY traz HTML (começa com '<'), renderiza via innerHTML.
+  // - Caso contrário, divide em parágrafos por \n\n (textContent escapado).
   const rawDesc = PRODUCT_COPY[data.sku] || DESC_BY_CAT[category] || DESC_BY_CAT.supplement;
   const descEl = document.getElementById('pdDescText');
-  // Limpa o <p> wrapper original e injeta os parágrafos como filhos
   descEl.outerHTML = '<div id="pdDescText" class="pd-desc-body"></div>';
   const newDescEl = document.getElementById('pdDescText');
-  String(rawDesc).split(/\n\s*\n/).forEach(para => {
-    const p = document.createElement('p');
-    p.textContent = para.trim();
-    newDescEl.appendChild(p);
-  });
+  const trimmed = String(rawDesc).trim();
+  if (trimmed.startsWith('<')) {
+    newDescEl.innerHTML = trimmed;
+  } else {
+    trimmed.split(/\n\s*\n/).forEach(para => {
+      const p = document.createElement('p');
+      p.textContent = para.trim();
+      newDescEl.appendChild(p);
+    });
+  }
 
   /* ---------- BADGE ---------- */
   if (data.badge) {

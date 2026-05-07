@@ -3322,3 +3322,122 @@ html, body { overflow-x: hidden; }
   line-height: 1;
 }
 .fo-cat-chip-clear:hover { background: var(--green-dark); color: var(--white); }
+
+/* ===========================================
+   DESCRIÇÃO RICA — Cards, Steps, Chips
+   Usado em pages de produto com PRODUCT_COPY HTML.
+=========================================== */
+.pd-desc-body { display: flex; flex-direction: column; gap: 20px; }
+
+/* Lead text destacado */
+.pd-desc-lead {
+  font-size: 1.05rem !important;
+  line-height: 1.55;
+  color: var(--green-dark);
+  margin: 0;
+}
+.pd-desc-lead strong { color: var(--green); }
+
+/* Bloco genérico */
+.pd-desc-block {
+  background: var(--cream);
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+.pd-desc-block h4 {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.pd-desc-block p {
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--graphite);
+}
+.pd-desc-block p:last-child { margin-bottom: 0; }
+.pd-desc-block p strong { color: var(--green-dark); font-weight: 700; }
+
+/* Steps numerados */
+.pd-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.pd-steps li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.pd-step-num {
+  flex: 0 0 28px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pd-steps li > div { flex: 1; min-width: 0; }
+.pd-steps li strong { color: var(--green-dark); }
+
+/* Chips de composição */
+.pd-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+.pd-chips li {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--green-dark);
+  margin: 0;
+}
+
+/* Bloco modo de uso (verde mais forte) */
+.pd-desc-usage {
+  background: rgba(31, 77, 61, 0.05);
+  border-left: 3px solid var(--green);
+}
+
+/* Bloco aviso (terracota) */
+.pd-desc-warn {
+  background: rgba(181, 99, 74, 0.05);
+  border-left: 3px solid var(--terracota);
+}
+.pd-desc-warn h4 { color: var(--terracota); }
+.pd-desc-disclaimer {
+  font-size: 0.78rem !important;
+  color: var(--graphite-soft) !important;
+  font-style: italic;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(181, 99, 74, 0.25);
+  margin-top: 10px !important;
+}
+
+@media (max-width: 600px) {
+  .pd-desc-block { padding: 14px 16px; }
+  .pd-desc-block h4 { font-size: 0.72rem; }
+  .pd-steps li { font-size: 0.86rem; }
+  .pd-chips li { font-size: 0.72rem; padding: 5px 10px; }
+}
