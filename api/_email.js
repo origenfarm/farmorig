@@ -1,9 +1,13 @@
 /* ============================================
    Resend email helper + templates
    ============================================
-   ENV VARS:
-     RESEND_API_KEY  → re_xxxxxxxxx (obrigatório pra enviar)
-     ADMIN_EMAIL     → contacto@farmaorigen.com (cópia interna)
+   ENV VARS na Vercel:
+     RESEND_API_KEY   → re_xxxxxxxxx (obrigatório pra enviar)
+     EMAIL_FROM       → "Farma Origen <pedidos@farmaorigen.com>" ou onboarding@resend.dev
+     EMAIL_REPLY_TO   → contacto@farmaorigen.com (responder vai pra cá)
+     EMAIL_BCC        → contacto@farmaorigen.com (cópia oculta de TODO email)
+     ADMIN_EMAIL      → contacto@farmaorigen.com (notificação dedicada de nova ordem)
+                        (opcional — BCC já cobre se preferires)
 
    USO:
      import { sendOrderReceived, sendOrderConfirmed } from '../_email.js';
@@ -11,11 +15,9 @@
 ============================================ */
 
 const RESEND_URL = 'https://api.resend.com/emails';
-// FROM vem de env var. Antes de verificar DNS no Resend, use:
-//   EMAIL_FROM = onboarding@resend.dev   (sandbox, só envia pra você mesmo)
-// Depois de verificar farmaorigen.com:
-//   EMAIL_FROM = Farma Origen <pedidos@farmaorigen.com>
 const FROM = () => process.env.EMAIL_FROM || 'onboarding@resend.dev';
+const REPLY_TO = () => process.env.EMAIL_REPLY_TO || 'contacto@farmaorigen.com';
+const BCC = () => process.env.EMAIL_BCC || null;
 
 const fmt = n => '$' + Number(n).toLocaleString('es-CL');
 
@@ -140,13 +142,32 @@ function tplAdminNew({ orderId, total, items, buyer }) {
 
 /* ---------- Public API ---------- */
 
-async function send({ to, subject, html, replyTo }) {
+async function send({ to, subject, html, replyTo, skipBcc }) {
   const key = process.env.RESEND_API_KEY;
   if (!key) {
     console.warn('[email] RESEND_API_KEY not set — skipping send');
     return { skipped: true };
   }
   if (!to) return { skipped: true, reason: 'no recipient' };
+
+  const payload = {
+    from: FROM(),
+    to: Array.isArray(to) ? to : [to],
+    subject,
+    html,
+    reply_to: replyTo || REPLY_TO()
+  };
+
+  // BCC oculto: copia o admin em todos os emails (exceto se a flag skipBcc
+  // estiver ligada, ex: pra notificação dedicada do admin que já vai pra ele)
+  const bcc = BCC();
+  if (bcc && !skipBcc) {
+    // Não copia se o destinatário JÁ é o BCC (evita auto-reply)
+    const toList = Array.isArray(to) ? to : [to];
+    if (!toList.some(t => t.toLowerCase().includes(bcc.toLowerCase()))) {
+      payload.bcc = [bcc];
+    }
+  }
 
   try {
     const r = await fetch(RESEND_URL, {
@@ -155,13 +176,7 @@ async function send({ to, subject, html, replyTo }) {
         'Authorization': `Bearer ${key}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        from: FROM(),
-        to: Array.isArray(to) ? to : [to],
-        subject,
-        html,
-        reply_to: replyTo || 'contacto@farmaorigen.com'
-      })
+      body: JSON.stringify(payload)
     });
     const body = await r.json().catch(() => ({}));
     if (!r.ok) {
@@ -191,7 +206,8 @@ export async function sendOrderFailed({ orderId, total, buyer }) {
 }
 
 export async function sendAdminNew({ orderId, total, items, buyer }) {
-  const admin = process.env.ADMIN_EMAIL || 'contacto@farmaorigen.com';
+  const admin = process.env.ADMIN_EMAIL || process.env.EMAIL_BCC || 'contacto@farmaorigen.com';
   const html = tplAdminNew({ orderId, total, items, buyer });
-  return send({ to: admin, subject: `🟢 Nueva orden #${orderId} — ${fmt(total)}`, html });
+  // skipBcc pra não duplicar (se admin == BCC, manda só uma vez)
+  return send({ to: admin, subject: `🟢 Nueva orden #${orderId} — ${fmt(total)}`, html, skipBcc: true });
 }
