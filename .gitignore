@@ -44,5 +44,7 @@ logs/
 *.tmp
 tmp/
 _*.css
-_*.js
 _*.html
+# _*.js — removido pq tava capturando api/_email.js (utilitário real, não temp).
+# Se precisar de temp .js no root, prefixe com __ ou ponha em /tmp.
+!api/_email.js
