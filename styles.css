@@ -2974,3 +2974,72 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
+
+/* ===========================================
+   FIX FINAL — Bugs CSS responsivos mobile
+   Briefing entregue pelo usuário (debug ao vivo, 8 bugs).
+=========================================== */
+
+/* Garantir que body/html não façam overflow horizontal */
+html, body { overflow-x: hidden; }
+
+@media (max-width: 600px) {
+  /* ------- Bug 1 — Preços dos kits cortados (CRÍTICO) ------- */
+  .kit-btn {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 10px;
+  }
+  .kit-tag { font-size: 11px; white-space: normal; }
+  .kit-price {
+    width: 100%;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+    text-align: left;
+  }
+  .kit-price strong { font-size: 13px; white-space: nowrap; }
+  .kit-price small { font-size: 10px; display: inline; }
+  .kit-toggle { font-size: 10px; padding: 6px 10px; }
+
+  /* ------- Bug 2 — Setas do hero cobrindo o título ------- */
+  .hero-arrow {
+    top: auto !important;
+    bottom: 12px;
+    transform: none !important;
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+  }
+  .hero-arrow.prev { left: 12px; right: auto; }
+  .hero-arrow.next { right: 12px; left: auto; }
+  .hero-arrow:hover { transform: scale(1.08) !important; }
+  .hero h1 { font-size: 28px; line-height: 1.15; }
+  .hero p { font-size: 14px; }
+
+  /* ------- Bug 6 — Cards de categoria com texto grande demais ------- */
+  .cat-card { min-height: 160px; padding: 12px 8px; }
+  .cat-card h3 { font-size: 12px; line-height: 1.2; min-height: 30px; }
+  .cat-card p { font-size: 11px; }
+
+  /* ------- Bug 7 — Ticker próximo dos dots do hero ------- */
+  .hero-dots { bottom: 8px; }
+  .hero { padding-bottom: 36px; }
+  .ticker { font-size: 12px; padding: 8px 0; }
+
+  /* ------- Bug 8 — Cards de produto ocupando 100% da coluna ------- */
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .product { width: 100%; min-width: 0; max-width: 100%; }
+  .prod-name { font-size: 13px; }
+  .prod-price strong { font-size: 16px; }
+}
+
+/* Bug 3 — esconde <br> do h1 do hero em telas mui estreitas */
+@media (max-width: 380px) {
+  .hero h1 br { display: none; }
+  .hero h1 { font-size: 24px; }
+}
+
+/* Bug 4 — Drawer fechado fora do flow horizontal (já estava translateX(-100%),
+   garantir que o conteúdo fora não cause scrollbar lateral) */
+.menu { will-change: transform; }
