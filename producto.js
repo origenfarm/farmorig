@@ -385,9 +385,10 @@
     const q = parseInt(addBtn.dataset.qty, 10) || 1;
     for (let i = 0; i < q; i++) cart.add(item);
     const original = addBtn.innerHTML;
-    addBtn.innerHTML = `✓ ${q} agregado${q > 1 ? 's' : ''} al carro`;
+    addBtn.innerHTML = `✓ ${q} agregado${q > 1 ? 's' : ''}`;
     addBtn.classList.add('added');
-    setTimeout(() => { addBtn.innerHTML = original; addBtn.classList.remove('added'); updateAddBtn(); }, 1600);
+    setTimeout(() => { addBtn.innerHTML = original; addBtn.classList.remove('added'); updateAddBtn(); }, 1200);
+    if (typeof window.openMiniCart === 'function') window.openMiniCart();
   }, true);
 
   /* ---------- REGION + DELIVERY ---------- */

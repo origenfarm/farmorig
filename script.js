@@ -529,7 +529,7 @@ document.addEventListener('click', (e) => {
   };
   cart.add(item);
 
-  // micro feedback
+  // Pequeno feedback no botão e abre mini-cart drawer lateral
   const original = btn.innerHTML;
   btn.innerHTML = '✓ Agregado';
   btn.classList.add('added');
@@ -537,14 +537,13 @@ document.addEventListener('click', (e) => {
     btn.innerHTML = original;
     btn.classList.remove('added');
   }, 1400);
+
+  if (typeof window.openMiniCart === 'function') window.openMiniCart();
 });
 
-/* Botão do header → abre checkout com tudo */
-document.getElementById('cartButton')?.addEventListener('click', (e) => {
-  if (cart.items.length === 0) return; // deixa rolar pro link
-  e.preventDefault();
-  triggerCheckout();
-});
+/* O botão do header agora abre o mini-cart drawer (em miniCartDrawer mais abaixo).
+   Mantido aqui só pra previne o anchor padrão #carro saltar a página. */
+document.getElementById('cartButton')?.addEventListener('click', e => e.preventDefault());
 
 /* ---------- FAVORITOS (toggle visual) ---------- */
 document.addEventListener('click', (e) => {
@@ -601,3 +600,162 @@ window.addEventListener('scroll', () => {
   if (!header) return;
   header.classList.toggle('scrolled', window.scrollY > 8);
 }, { passive: true });
+
+/* ============================================
+   MINI-CART DRAWER (lateral direito)
+   ============================================
+   Abre quando usuário adiciona produto ao carro.
+   Mostra itens + total + 2 CTAs: continuar comprando | ir al pago
+*/
+(function miniCartDrawer() {
+  const fmt = n => '$' + Number(n).toLocaleString('es-CL');
+
+  // Backdrop
+  const backdrop = document.createElement('div');
+  backdrop.className = 'mc-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(backdrop);
+
+  // Drawer
+  const drawer = document.createElement('aside');
+  drawer.className = 'mc-drawer';
+  drawer.setAttribute('aria-label', 'Tu carro');
+  drawer.setAttribute('aria-hidden', 'true');
+  drawer.innerHTML = `
+    <header class="mc-head">
+      <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 5h2l3 12h11l3-9H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> Tu carro <span class="mc-count" id="mcCount">0</span></h2>
+      <button type="button" class="mc-close" aria-label="Cerrar">&times;</button>
+    </header>
+    <div class="mc-body">
+      <ul class="mc-items" id="mcItems"></ul>
+      <div class="mc-empty" id="mcEmpty" hidden>
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5h2l3 12h11l3-9H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+        <p>Tu carro está vacío</p>
+        <small>Agrega productos para verlos aquí</small>
+      </div>
+    </div>
+    <footer class="mc-foot" id="mcFoot">
+      <div class="mc-totals">
+        <span>Subtotal</span>
+        <strong id="mcTotal">$0</strong>
+      </div>
+      <small class="mc-shipping-hint" id="mcShipHint">Despacho gratis en compras sobre $30.000</small>
+      <a href="/checkout.html" class="mc-btn mc-btn-primary" id="mcGoPay">Ir al pago</a>
+      <button type="button" class="mc-btn mc-btn-ghost" id="mcContinue">Continuar comprando</button>
+    </footer>
+  `;
+  document.body.appendChild(drawer);
+
+  function renderItem(it, idx) {
+    const slug = String(it.sku || '').toLowerCase().replace(/-kit\d+x\d+$/, '');
+    const exts = ['webp','jpg','jpeg','png'];
+    const imgFallback = `https://placehold.co/120x120/1F4D3D/F4EFE6?text=${encodeURIComponent(it.name)}&font=raleway`;
+    return `
+      <li class="mc-item" data-idx="${idx}">
+        <div class="mc-item-img">
+          <img src="assets/products/${slug}.webp"
+               onerror="this.onerror=null;this.src='assets/products/${slug}.jpg';this.onerror=function(){this.src='${imgFallback}';};"
+               alt="${it.name}" loading="lazy" />
+        </div>
+        <div class="mc-item-info">
+          <strong>${it.name}</strong>
+          <small>${fmt(it.price)} c/u</small>
+          <div class="mc-qty">
+            <button class="mc-qty-btn" data-act="dec" aria-label="Quitar">−</button>
+            <span>${it.qty}</span>
+            <button class="mc-qty-btn" data-act="inc" aria-label="Agregar">+</button>
+            <button class="mc-item-rm" data-act="rm" aria-label="Eliminar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="mc-item-total">${fmt(it.price * it.qty)}</div>
+      </li>`;
+  }
+
+  function render() {
+    cart.load();
+    const items = cart.items || [];
+    const itemsEl = drawer.querySelector('#mcItems');
+    const emptyEl = drawer.querySelector('#mcEmpty');
+    const foot = drawer.querySelector('#mcFoot');
+    const countEl = drawer.querySelector('#mcCount');
+    const totalEl = drawer.querySelector('#mcTotal');
+    const shipHint = drawer.querySelector('#mcShipHint');
+
+    countEl.textContent = items.reduce((s,i) => s + i.qty, 0);
+
+    if (!items.length) {
+      itemsEl.innerHTML = '';
+      emptyEl.hidden = false;
+      foot.classList.add('mc-foot-empty');
+      totalEl.textContent = fmt(0);
+      return;
+    }
+    emptyEl.hidden = true;
+    foot.classList.remove('mc-foot-empty');
+    itemsEl.innerHTML = items.map((it, i) => renderItem(it, i)).join('');
+    const total = cart.total();
+    totalEl.textContent = fmt(total);
+    if (total >= 30000) {
+      shipHint.innerHTML = '✓ ¡Tienes despacho gratis!';
+      shipHint.classList.add('ok');
+    } else {
+      const falta = 30000 - total;
+      shipHint.innerHTML = `Te faltan ${fmt(falta)} para despacho gratis`;
+      shipHint.classList.remove('ok');
+    }
+  }
+
+  function open() {
+    render();
+    drawer.classList.add('open');
+    backdrop.classList.add('show');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('mc-open');
+  }
+  function close() {
+    drawer.classList.remove('open');
+    backdrop.classList.remove('show');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('mc-open');
+  }
+
+  // Event listeners
+  drawer.querySelector('.mc-close').addEventListener('click', close);
+  drawer.querySelector('#mcContinue').addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) close(); });
+
+  // Item actions (qty / remove)
+  drawer.querySelector('#mcItems').addEventListener('click', e => {
+    const btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    const li = btn.closest('.mc-item');
+    if (!li) return;
+    const idx = parseInt(li.dataset.idx, 10);
+    cart.load();
+    if (btn.dataset.act === 'inc') cart.items[idx].qty += 1;
+    else if (btn.dataset.act === 'dec') {
+      cart.items[idx].qty -= 1;
+      if (cart.items[idx].qty <= 0) cart.items.splice(idx, 1);
+    } else if (btn.dataset.act === 'rm') {
+      cart.items.splice(idx, 1);
+    }
+    cart.save();
+    cart.refresh();
+    render();
+  });
+
+  // Header cart button → abre o drawer (em vez de ir direto pro checkout)
+  document.querySelectorAll('#cartButton, .cart-btn').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      open();
+    });
+  });
+
+  // Expõe pra o checkout-button handler chamar
+  window.openMiniCart = open;
+  window.closeMiniCart = close;
+})();
