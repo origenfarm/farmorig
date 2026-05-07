@@ -38,12 +38,14 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  background: var(--cream);
 }
-/* Gutter simétrico SÓ em dispositivos com mouse (desktop com scrollbar
-   clássica). Em touch devices (iPhone, Android) o iOS/Chrome usa overlay
-   scrollbars — aplicar gutter aqui criaria 30px de espaço morto inútil. */
+/* Gutter só na BORDA DIREITA em desktop (onde a scrollbar mora). Antes
+   era 'both-edges' mas a faixa esquerda ficava visível porque o html-bg
+   não cobria o topbar/header verde — virava barra branca lateral.
+   Em touch (iPhone/Android) com overlay scrollbars não aplica. */
 @media (pointer: fine) {
-  html { scrollbar-gutter: stable both-edges; }
+  html { scrollbar-gutter: stable; }
 }
 body {
   font-family: var(--font-sans);
