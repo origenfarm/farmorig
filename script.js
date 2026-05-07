@@ -683,7 +683,9 @@ window.addEventListener('scroll', () => {
     const totalEl = drawer.querySelector('#mcTotal');
     const shipHint = drawer.querySelector('#mcShipHint');
 
-    countEl.textContent = items.reduce((s,i) => s + i.qty, 0);
+    const totalQty = items.reduce((s,i) => s + i.qty, 0);
+    countEl.textContent = totalQty || '';
+    countEl.dataset.zero = totalQty === 0 ? 'true' : 'false';
 
     if (!items.length) {
       itemsEl.innerHTML = '';

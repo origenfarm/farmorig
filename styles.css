@@ -3718,29 +3718,48 @@ body.mc-open { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--line);
   background: var(--cream);
+  flex-shrink: 0;
 }
 .mc-head h2 {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  margin: 0;
   font-size: 1rem;
   font-weight: 800;
   color: var(--green-dark);
   letter-spacing: -0.01em;
+  line-height: 1;
 }
-.mc-head h2 svg { color: var(--green); }
-.mc-count {
+.mc-head h2 svg {
+  color: var(--green);
+  flex-shrink: 0;
+  display: block;
+}
+.mc-drawer .mc-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
   background: var(--green);
   color: var(--white);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 2px 8px;
   border-radius: 999px;
-  margin-left: 4px;
+  line-height: 1;
+  letter-spacing: 0;
+  font-style: normal;
+  position: static;
+  border: none;
+  box-shadow: none;
 }
+.mc-drawer .mc-count:empty,
+.mc-drawer .mc-count[data-zero="true"] { display: none; }
 .mc-close {
   width: 34px; height: 34px;
   border-radius: 50%;
