@@ -4,7 +4,8 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/productos/:sku", "destination": "/producto.html?sku=:sku" },
-    { "source": "/categorias/:cat", "destination": "/index.html" }
+    { "source": "/categorias/:cat", "destination": "/index.html" },
+    { "source": "/gracias", "destination": "/gracias.html" }
   ],
   "headers": [
     {

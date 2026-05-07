@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1F4D3D" />
+  <title>¡Gracias por tu compra! — Farma Origen</title>
+  <meta name="description" content="Pedido confirmado. Estamos preparando tu envío." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Header minimal -->
+  <header class="header header-pd">
+    <div class="container header-inner header-inner-pd">
+      <a href="/" class="logo" aria-label="Farma Origen">
+        <img src="assets/logofarmaorigen.jpeg" alt="Farma Origen" />
+      </a>
+      <div class="checkout-trust">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/></svg>
+        <span>Pedido seguro</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="thx">
+    <div class="container thx-inner">
+
+      <div class="thx-icon" aria-hidden="true">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+
+      <h1 class="thx-title">¡Gracias por tu compra!</h1>
+      <p class="thx-sub">Tu pago fue aprobado y tu pedido fue confirmado.</p>
+
+      <div class="thx-order">
+        <span class="thx-order-label">Número de orden</span>
+        <strong id="thxOrderId">—</strong>
+        <span class="thx-order-amount" id="thxAmount" hidden></span>
+      </div>
+
+      <ul class="thx-steps">
+        <li class="done">
+          <span class="thx-dot">✓</span>
+          <div>
+            <strong>Pago aprobado</strong>
+            <small>Confirmamos el cobro de tu tarjeta.</small>
+          </div>
+        </li>
+        <li class="active">
+          <span class="thx-dot">2</span>
+          <div>
+            <strong>Preparando tu pedido</strong>
+            <small>Estamos empacando tu compra (1-2 días hábiles).</small>
+          </div>
+        </li>
+        <li>
+          <span class="thx-dot">3</span>
+          <div>
+            <strong>Despacho</strong>
+            <small>Te enviaremos el código de seguimiento por email apenas se despache.</small>
+          </div>
+        </li>
+        <li>
+          <span class="thx-dot">4</span>
+          <div>
+            <strong>Recibe tu pedido</strong>
+            <small>De 24 a 72 h hábiles según tu región.</small>
+          </div>
+        </li>
+      </ul>
+
+      <p class="thx-email-hint">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+        Te enviamos los detalles del pedido a tu email. Revisa también la carpeta de spam.
+      </p>
+
+      <div class="thx-actions">
+        <a href="/" class="btn btn-primary">Seguir comprando</a>
+        <a href="https://wa.me/56900000000?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20pedido" target="_blank" rel="noopener" class="btn btn-light">Hablar por WhatsApp</a>
+      </div>
+
+      <ul class="thx-trust">
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 5h2l3 12h11l3-9H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+          <span>Despacho a todo Chile</span>
+        </li>
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/></svg>
+          <span>Compra protegida</span>
+        </li>
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+          <span>Cambio fácil</span>
+        </li>
+      </ul>
+
+    </div>
+  </main>
+
+  <footer class="footer ck-footer">
+    <div class="container footer-bottom">
+      <p>© 2026 Farma Origen · contacto@farmaorigen.com</p>
+    </div>
+  </footer>
+
+  <script>
+    // Esvazia carrinho (compra finalizada) e renderiza dados do pedido
+    (function() {
+      try { localStorage.removeItem('fo_cart'); } catch (e) {}
+      const params = new URLSearchParams(location.search);
+      const orderId = params.get('order') || params.get('orderId');
+      const total = params.get('total');
+      if (orderId) document.getElementById('thxOrderId').textContent = '#' + orderId;
+      if (total) {
+        const el = document.getElementById('thxAmount');
+        el.textContent = '$' + Number(total).toLocaleString('es-CL');
+        el.hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>

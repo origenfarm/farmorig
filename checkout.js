@@ -259,7 +259,7 @@ const SHIPPING_FEE       = 3990;
     };
 
     const body = {
-      method, // 'credit_card' ou 'boleto'
+      method, // 'credit_card' (único método ativo no gateway)
       amount: amountBRL,
       currency: 'BRL',
       notify_url: `${window.location.origin}/api/pagou/webhook`,
@@ -292,7 +292,6 @@ const SHIPPING_FEE       = 3990;
       body.token = token;
       body.installments = installments;
     }
-    // boleto: sem token, sem installments
 
     return body;
   }
@@ -331,11 +330,9 @@ const SHIPPING_FEE       = 3990;
 
     if (status === 'authorized' || status === 'captured' || status === 'paid') {
       cart.items = []; cart.save(); cart.refresh();
-      openResult({
-        ok: true,
-        title: '¡Pago aprobado!',
-        msg: `Tu orden #${orderId} por ${fmt(total)} fue confirmada. Recibirás el seguimiento en tu email.`
-      });
+      // Redireciona pra página de obrigado (em vez de modal)
+      window.location.href = `/gracias?order=${encodeURIComponent(orderId)}&total=${total}`;
+      return;
     } else if (status === 'pending' || status === 'processing') {
       openResult({
         ok: true,
