@@ -3441,3 +3441,8 @@ html, body { overflow-x: hidden; }
   .pd-steps li { font-size: 0.86rem; }
   .pd-chips li { font-size: 0.72rem; padding: 5px 10px; }
 }
+
+/* Hide compliance bar acima do botão de compra (matava conversão).
+   Disclaimer permanece no rodapé, na aba Precauciones e dentro da
+   descrição rica — ou seja, compliance/Google Ads continua coberto. */
+.pd-compliance { display: none !important; }
