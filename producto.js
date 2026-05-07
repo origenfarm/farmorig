@@ -488,18 +488,23 @@
 
   /* ---------- CEP LOOKUP ---------- */
   cepEl.addEventListener('input', () => {
-    cepEl.value = cepEl.value.replace(/\D/g, '').slice(0, 8);
+    cepEl.value = cepEl.value.replace(/\D/g, '').slice(0, 7);
     cepFb.textContent = '';
     cepFb.className = 'pd-cep-feedback';
+    // Limpa estado anterior se editou
+    regionEl.value = '';
+    fillComunas('');
+    saveRegion();
+    renderDelivery();
   });
   cepEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); lookupCep(); } });
   cepBtn.addEventListener('click', lookupCep);
-  cepEl.addEventListener('blur', () => { if (cepEl.value.length >= 7) lookupCep(); });
+  cepEl.addEventListener('blur', () => { if (cepEl.value.length === 7) lookupCep(); });
 
   async function lookupCep() {
     const cp = cepEl.value.trim();
-    if (cp.length < 7) {
-      showCepMsg('Ingresa un código postal de 7 dígitos.', 'error');
+    if (cp.length !== 7 || !/^\d{7}$/.test(cp)) {
+      showCepMsg('El código postal chileno tiene 7 dígitos. Ej: 8320000.', 'error');
       return;
     }
     cepSpin.hidden = false;
@@ -509,10 +514,14 @@
     let region = null;
     let comuna = null;
     let placeName = null;
+    let apiNotFound = false;
+    let apiError = false;
 
     try {
       const r = await fetch(`https://api.zippopotam.us/cl/${cp}`, { mode: 'cors' });
-      if (r.ok) {
+      if (r.status === 404) {
+        apiNotFound = true; // CEP realmente não existe
+      } else if (r.ok) {
         const j = await r.json();
         const place = j.places?.[0];
         if (place) {
@@ -522,23 +531,40 @@
           region = mapZippoState(stateAbbr, stateName);
           comuna = placeName;
         }
+      } else {
+        apiError = true;
       }
     } catch (e) {
-      // Si la API falla (offline, CORS, etc.) caemos al fallback de prefijo
-    }
-
-    if (!region) {
-      // Fallback por prefijo
-      const pref = cp.slice(0, 2);
-      region = CEP_PREFIX_REGION[pref] || null;
+      apiError = true;
     }
 
     cepSpin.hidden = true;
     cepBtn.disabled = false;
 
+    // CEP não existe segundo a API → erro claro, sem fallback
+    if (apiNotFound) {
+      showCepMsg('Ese código postal no existe. Verifica los dígitos o selecciona tu región manualmente.', 'error');
+      document.querySelector('.pd-manual')?.setAttribute('open', '');
+      regionEl.value = '';
+      fillComunas('');
+      saveRegion();
+      renderDelivery();
+      return;
+    }
+
+    // API falhou (offline/CORS) → tenta fallback de prefixo só se a API não respondeu
+    if (!region && apiError) {
+      const pref = cp.slice(0, 2);
+      region = CEP_PREFIX_REGION[pref] || null;
+    }
+
     if (!region) {
       showCepMsg('No reconocemos ese código postal. Selecciona tu región manualmente.', 'error');
       document.querySelector('.pd-manual')?.setAttribute('open', '');
+      regionEl.value = '';
+      fillComunas('');
+      saveRegion();
+      renderDelivery();
       return;
     }
 

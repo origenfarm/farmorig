@@ -2300,8 +2300,9 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
 }
 @media (max-width: 720px) {
   .pd { padding: 24px 0; }
-  .pd-actions { flex-direction: column; }
-  .pd-qty { align-self: flex-start; }
+  .pd-actions { flex-direction: column; align-items: center; }
+  .pd-qty { align-self: center; }
+  .pd-add { width: 100%; }
   .pd-trust { grid-template-columns: repeat(2, 1fr); padding: 18px 8px; }
   .pd-info-grid { grid-template-columns: repeat(2, 1fr); }
   .pd-thumbs { grid-template-columns: repeat(5, 1fr); }
