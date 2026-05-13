@@ -73,6 +73,7 @@
       <div class="pd-info">
         <span class="pd-brand" id="pdBrand"></span>
         <h1 class="pd-title" id="pdTitle">…</h1>
+        <p class="pd-subtitle" id="pdSubtitle" hidden></p>
         <div class="pd-meta">
           <span class="pd-rating">
             <span class="stars">★★★★★</span>
@@ -87,6 +88,9 @@
         </div>
         <p class="pd-installments" id="pdInstall"></p>
 
+        <!-- ===== BULLETS DE BENEFÍCIO (white-hat, injetado por producto.js) ===== -->
+        <ul class="pd-bullets" id="pdBullets" hidden></ul>
+
         <!-- ===== COMPLIANCE BAR (visible on every product) ===== -->
         <aside class="pd-compliance" id="pdCompliance" role="note">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -97,19 +101,20 @@
         <div class="pd-kits" id="pdKits">
           <h3>Elige tu pack</h3>
           <div class="pd-kit-options">
-            <label class="pd-kit-opt selected">
-              <input type="radio" name="pdKit" value="single" checked />
+            <label class="pd-kit-opt" data-kit="single">
+              <input type="radio" name="pdKit" value="single" />
               <span class="pd-kit-name">1 unidad</span>
               <span class="pd-kit-price" data-target="single">$0</span>
               <span class="pd-kit-tag">Estándar</span>
             </label>
-            <label class="pd-kit-opt">
+            <label class="pd-kit-opt" data-kit="kit3x2">
+              <span class="pd-kit-popular">★ MÁS ELEGIDO</span>
               <input type="radio" name="pdKit" value="kit3x2" />
               <span class="pd-kit-name">Lleva 3 · Paga 2</span>
               <span class="pd-kit-price" data-target="kit3x2">$0</span>
               <span class="pd-kit-tag green" data-target="kit3x2-save">Ahorra 33%</span>
             </label>
-            <label class="pd-kit-opt highlight">
+            <label class="pd-kit-opt" data-kit="kit5x3">
               <input type="radio" name="pdKit" value="kit5x3" />
               <span class="pd-kit-name">Lleva 5 · Paga 3</span>
               <span class="pd-kit-price" data-target="kit5x3">$0</span>

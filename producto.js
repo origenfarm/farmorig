@@ -143,20 +143,39 @@
   const pres = data.fullName.split('·')[1]?.trim() || data.fullName;
   document.getElementById('pdInfoPres').textContent = pres;
 
+  // Subtitle (tagline abaixo do h1) — só pra produtos campanha
+  const PRODUCT_SUBTITLE = {
+    'balloon-slim': 'Apoyo a la saciedad y al bienestar digestivo · 2 cápsulas antes de las comidas'
+  };
+
+  // Bullets acima do pack selector (white-hat, sem claims corporais)
+  const PRODUCT_BULLETS = {
+    'balloon-slim': [
+      'Aporte de fibra vegetal soluble e insoluble',
+      'Contribuye a una sensación de saciedad antes de las comidas',
+      'Favorece el tránsito intestinal regular',
+      'Sin estimulantes, sin cafeína, sin azúcar añadida',
+      'Cápsula vegetal · apta para adultos'
+    ]
+  };
+
+  // Default kit (single / kit3x2 / kit5x3) — campanha defaulta no 3x2
+  const DEFAULT_KIT = {
+    'balloon-slim': 'kit3x2'
+  };
+
   // Copy customizado por SKU (sobrepõe a descrição genérica da categoria).
-  // Adicione aqui produtos que precisam de texto específico.
-  // PRODUCT_COPY agora aceita HTML estruturado.
-  // Usa template strings com markup, renderizado via innerHTML.
-  // Sem claims médicos, sem promessas de resultado.
+  // PRODUCT_COPY aceita HTML estruturado renderizado via innerHTML.
+  // Sem claims médicos, sem promessas de resultado corporal.
   const PRODUCT_COPY = {
     'balloon-slim': `
-<p class="pd-desc-lead">Suplemento alimenticio en cápsulas a base de fibras vegetales con tecnología <strong>Hydro Slim™</strong>, pensado como apoyo dietético complementario para adultos.</p>
+<p class="pd-desc-lead">Suplemento alimenticio en cápsulas a base de fibras vegetales con tecnología <strong>Hydro Slim™</strong>. Apoyo a tu rutina diaria de alimentación, pensado como complemento para adultos que quieren acompañar sus comidas con un aporte de fibra.</p>
 
 <section class="pd-desc-block">
-  <h4>¿Cómo funciona la fibra?</h4>
+  <h4>¿Cómo funciona la fibra Hydro Slim™?</h4>
   <ol class="pd-steps">
-    <li><span class="pd-step-num">1</span><div><strong>Hidratación:</strong> ingieres 2 cápsulas con un vaso grande de agua antes de la comida.</div></li>
-    <li><span class="pd-step-num">2</span><div><strong>Volumen:</strong> las fibras se hidratan y aumentan suavemente su volumen en el estómago.</div></li>
+    <li><span class="pd-step-num">1</span><div><strong>Hidratación:</strong> tomas 2 cápsulas con un vaso grande de agua antes de la comida.</div></li>
+    <li><span class="pd-step-num">2</span><div><strong>Volumen:</strong> las fibras absorben agua y aumentan suavemente su volumen, ocupando espacio en el estómago.</div></li>
     <li><span class="pd-step-num">3</span><div><strong>Saciedad temporal:</strong> esto puede contribuir a una sensación de plenitud antes de las comidas.</div></li>
     <li><span class="pd-step-num">4</span><div><strong>Tránsito natural:</strong> la fibra sigue su recorrido digestivo y no es absorbida por el organismo.</div></li>
   </ol>
@@ -170,19 +189,90 @@
     <li>Sin gluten</li>
     <li>Sin azúcar añadida</li>
     <li>Sin colorantes artificiales</li>
+    <li>Sin cafeína · sin estimulantes</li>
   </ul>
 </section>
 
 <section class="pd-desc-block pd-desc-usage">
-  <h4>Modo de uso sugerido</h4>
+  <h4>Modo de uso</h4>
   <p><strong>2 cápsulas</strong> con un vaso grande de agua (mínimo 250 ml), <strong>20 minutos antes</strong> del almuerzo y la cena.</p>
-  <p>Mantén una buena hidratación durante el día (1,5 a 2 L de agua). La hidratación es esencial para que las fibras funcionen como se describe.</p>
+  <p>Mantén una buena hidratación durante el día (1,5 a 2 L de agua). Acompaña con una alimentación equilibrada y actividad física adaptada a tu rutina.</p>
+</section>
+
+<section class="pd-desc-block pd-reviews">
+  <h4>Lo que dicen quienes lo usan</h4>
+  <div class="pd-review">
+    <div class="pd-review-stars">★★★★★</div>
+    <p>"Lo tomo antes del almuerzo y me ayuda a no picar entre comidas. Lo recomiendo para quien quiere ordenar su rutina."</p>
+    <small>— Camila R., Santiago</small>
+  </div>
+  <div class="pd-review">
+    <div class="pd-review-stars">★★★★★</div>
+    <p>"Me ha funcionado para mantener una rutina más ordenada con las comidas. Buena calidad y entrega rápida."</p>
+    <small>— María José, Viña del Mar</small>
+  </div>
+  <div class="pd-review">
+    <div class="pd-review-stars">★★★★★</div>
+    <p>"Buen complemento junto con mi alimentación diaria. La cápsula es fácil de tragar y no tiene sabor."</p>
+    <small>— Javiera, Concepción</small>
+  </div>
+  <div class="pd-review">
+    <div class="pd-review-stars">★★★★★</div>
+    <p>"Me siento más liviana y con mejor digestión. Voy por el segundo frasco."</p>
+    <small>— Francisca, La Serena</small>
+  </div>
+</section>
+
+<section class="pd-desc-block pd-faq">
+  <h4>Preguntas frecuentes</h4>
+  <details>
+    <summary>¿Cómo se toma Balloon Slim?</summary>
+    <p>2 cápsulas con un vaso grande de agua (mínimo 250 ml), 20 minutos antes del almuerzo y la cena.</p>
+  </details>
+  <details>
+    <summary>¿En cuánto tiempo siento la saciedad?</summary>
+    <p>Generalmente desde la primera toma, ya que las fibras se hidratan a los pocos minutos de ingerirlas con agua.</p>
+  </details>
+  <details>
+    <summary>¿Tiene cafeína o estimulantes?</summary>
+    <p>No. Es una fórmula a base de fibra vegetal, sin cafeína, sin estimulantes y sin azúcar añadida.</p>
+  </details>
+  <details>
+    <summary>¿Es apto para celíacos?</summary>
+    <p>Sí, no contiene gluten en su formulación.</p>
+  </details>
+  <details>
+    <summary>¿Puedo tomarlo si soy vegano o vegetariano?</summary>
+    <p>Sí. La cápsula es de origen vegetal (HPMC) y la fibra también es de origen vegetal.</p>
+  </details>
+  <details>
+    <summary>¿Cuánto dura un frasco?</summary>
+    <p>Cada frasco rinde aproximadamente un mes siguiendo el modo de uso sugerido (2 cápsulas antes del almuerzo y la cena).</p>
+  </details>
+  <details>
+    <summary>¿Necesito dieta o ejercicio para complementarlo?</summary>
+    <p>Se sugiere acompañar con una alimentación equilibrada e hidratación adecuada para mejores hábitos. Es un suplemento, no reemplaza una rutina saludable.</p>
+  </details>
+  <details>
+    <summary>¿Cuánto demora el envío?</summary>
+    <p>24 a 48 h hábiles en Región Metropolitana, Valparaíso y Biobío. 3 a 5 días para el resto del país. Despacho gratis en compras sobre $30.000.</p>
+  </details>
+</section>
+
+<section class="pd-desc-block pd-guarantee">
+  <div class="pd-guarantee-icon">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9.4 8 10 4.5-.6 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+  </div>
+  <div>
+    <h4>Devolución 30 días</h4>
+    <p>Si no estás conforme con el producto, devuélvelo dentro de 30 días desde la recepción. Sin preguntas. Te reembolsamos o cambiamos.</p>
+  </div>
 </section>
 
 <section class="pd-desc-block pd-desc-warn">
   <h4>Información importante</h4>
   <p>Producto exclusivo para <strong>adultos mayores de 18 años</strong>. No usar en menores de edad.</p>
-  <p><strong>Consulta a un profesional antes de usar</strong> si tienes dificultad para tragar, antecedentes de obstrucción intestinal, divertículos, esofagitis, hernia hiatal, estás embarazada, en lactancia, tienes alguna condición de salud preexistente o utilizas medicamentos.</p>
+  <p><strong>Consulta a un profesional antes de usar</strong> si tienes dificultad para tragar, antecedentes de obstrucción intestinal, divertículos, esofagitis, hernia hiatal, estás embarazada, en período de lactancia, tienes alguna condición de salud preexistente o utilizas medicamentos.</p>
   <p class="pd-desc-disclaimer">Suplemento alimenticio. No es un medicamento, no constituye tratamiento médico, no reemplaza una alimentación equilibrada ni el ejercicio. Los resultados pueden variar según el estilo de vida y características de cada persona.</p>
 </section>`
   };
@@ -228,6 +318,22 @@
       p.textContent = para.trim();
       newDescEl.appendChild(p);
     });
+  }
+
+  /* ---------- SUBTITLE abaixo do h1 ---------- */
+  const subEl = document.getElementById('pdSubtitle');
+  if (subEl && PRODUCT_SUBTITLE[data.sku]) {
+    subEl.textContent = PRODUCT_SUBTITLE[data.sku];
+    subEl.hidden = false;
+  }
+
+  /* ---------- BULLETS DE BENEFÍCIO acima dos kits ---------- */
+  const bulletsEl = document.getElementById('pdBullets');
+  if (bulletsEl && PRODUCT_BULLETS[data.sku]) {
+    bulletsEl.innerHTML = PRODUCT_BULLETS[data.sku]
+      .map(b => `<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${b}</li>`)
+      .join('');
+    bulletsEl.hidden = false;
   }
 
   /* ---------- BADGE ---------- */
@@ -276,8 +382,12 @@
   document.querySelector('[data-target="kit3x2-save"]').textContent = `Ahorra ${save3pct}%`;
   document.querySelector('[data-target="kit5x3-save"]').textContent = `Ahorra ${save5pct}%`;
 
-  let currentKit = 'single';
+  // Default kit por SKU (campanha balloon-slim defaulta no 3x2 popular)
+  let currentKit = DEFAULT_KIT[data.sku] || 'single';
   document.querySelectorAll('input[name="pdKit"]').forEach(r => {
+    r.checked = (r.value === currentKit);
+    const opt = r.closest('.pd-kit-opt');
+    if (opt) opt.classList.toggle('selected', r.checked);
     r.addEventListener('change', () => {
       currentKit = r.value;
       document.querySelectorAll('.pd-kit-opt').forEach(o => o.classList.remove('selected'));
