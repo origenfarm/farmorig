@@ -20,5 +20,6 @@ export default function handler(req, res) {
     googleAdsId: process.env.GOOGLE_ADS_ID || '',
     googleAdsConversionLabel: process.env.GOOGLE_ADS_CONVERSION_LABEL || '',
     metaPixelId: process.env.META_PIXEL_ID || '',
+    clarityProjectId: process.env.CLARITY_PROJECT_ID || '',
   });
 }

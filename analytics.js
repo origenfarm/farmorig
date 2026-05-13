@@ -42,6 +42,15 @@
     window.__FO_GADS_LABEL = cfg.googleAdsConversionLabel || '';
   }
 
+  /* ---------- Microsoft Clarity (heatmaps + session recording) ---------- */
+  if (cfg.clarityProjectId) {
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, 'clarity', 'script', cfg.clarityProjectId);
+  }
+
   /* ---------- Meta Pixel (Facebook/Instagram) ---------- */
   if (cfg.metaPixelId) {
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
