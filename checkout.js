@@ -15,7 +15,7 @@
 
 const BACKEND_URL        = '/api/pagou/transactions';
 const CONFIG_URL         = '/api/config';
-const SHIPPING_THRESHOLD = 30000;
+const SHIPPING_THRESHOLD = 20000;
 const SHIPPING_FEE       = 3990;
 
 (function checkout() {
@@ -35,23 +35,68 @@ const SHIPPING_FEE       = 3990;
   }
 
   const itemsEl = $('ckItems');
-  itemsEl.innerHTML = cart.items.map(it => `
-    <li class="ck-item">
-      <div class="ck-item-img">
-        <img src="assets/products/${slug(it.sku)}.webp"
-             onerror="this.onerror=null;this.src='assets/products/${slug(it.sku)}.jpg';this.onerror=function(){this.onerror=null;this.src='https://placehold.co/120x120/1F4D3D/F4EFE6?text=${encodeURIComponent(it.name)}&font=raleway';};"
-             alt="${it.name}" loading="lazy" />
-        <span class="ck-item-qty">${it.qty}</span>
-      </div>
-      <div class="ck-item-info">
-        <strong>${it.name}</strong>
-        <small>${fmt(it.price)} c/u</small>
-      </div>
-      <span class="ck-item-total">${fmt(it.price * it.qty)}</span>
-    </li>
-  `).join('');
+
+  function renderItems() {
+    itemsEl.innerHTML = cart.items.map((it, idx) => `
+      <li class="ck-item" data-idx="${idx}">
+        <div class="ck-item-img">
+          <img src="assets/products/${slug(it.sku)}.webp"
+               onerror="this.onerror=null;this.src='assets/products/${slug(it.sku)}.jpg';this.onerror=function(){this.onerror=null;this.src='https://placehold.co/120x120/1F4D3D/F4EFE6?text=${encodeURIComponent(it.name)}&font=raleway';};"
+               alt="${it.name}" loading="lazy" />
+        </div>
+        <div class="ck-item-info">
+          <strong>${it.name}</strong>
+          <small>${fmt(it.price)} c/u</small>
+          <div class="ck-item-controls">
+            <div class="ck-qty-stepper" role="group" aria-label="Cantidad">
+              <button type="button" class="ck-qty-btn" data-act="dec" aria-label="Quitar uno">−</button>
+              <span class="ck-qty-val">${it.qty}</span>
+              <button type="button" class="ck-qty-btn" data-act="inc" aria-label="Agregar uno">+</button>
+            </div>
+            <button type="button" class="ck-item-trash" data-act="rm" aria-label="Eliminar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+        <span class="ck-item-total">${fmt(it.price * it.qty)}</span>
+      </li>
+    `).join('');
+  }
 
   function slug(s){ return String(s).toLowerCase().replace(/-kit\d+x\d+$/,''); }
+
+  renderItems();
+
+  // Event delegation: + / − / trash
+  itemsEl.addEventListener('click', e => {
+    const btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    const li = btn.closest('.ck-item');
+    const idx = Number(li?.dataset.idx);
+    if (Number.isNaN(idx) || !cart.items[idx]) return;
+    const act = btn.dataset.act;
+    if (act === 'inc') {
+      cart.items[idx].qty = Math.min(99, (cart.items[idx].qty || 1) + 1);
+    } else if (act === 'dec') {
+      cart.items[idx].qty = (cart.items[idx].qty || 1) - 1;
+      if (cart.items[idx].qty <= 0) cart.items.splice(idx, 1);
+    } else if (act === 'rm') {
+      cart.items.splice(idx, 1);
+    }
+    cart.save();
+    cart.refresh();
+    if (!cart.items.length) {
+      document.querySelector('.ck-grid').innerHTML = `
+        <div class="ck-empty">
+          <h2>Tu carro está vacío</h2>
+          <p>Agrega productos antes de finalizar la compra.</p>
+          <a href="index.html" class="ck-pay-btn">Ver productos</a>
+        </div>`;
+      return;
+    }
+    renderItems();
+    refreshTotals();
+  });
 
   /* ---------- 2. TOTAIS ---------- */
   let subtotal = cart.total();

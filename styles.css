@@ -2754,50 +2754,28 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
 }
 .ck-item {
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
 }
 .ck-item-img {
-  position: relative;
   width: 56px; height: 56px;
   background: var(--cream);
   border-radius: var(--radius);
-  /* overflow visible pra o badge de qty não ser cortado */
-  overflow: visible;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 .ck-item-img img {
   width: 100%; height: 100%;
   object-fit: contain;
   padding: 4px;
-  border-radius: var(--radius);
   background: var(--cream);
+  display: block;
 }
-.ck-item-qty {
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  background: var(--green);
-  color: var(--white);
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 800;
-  font-style: normal;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--white);
-  box-shadow: 0 2px 4px rgba(20, 50, 41, 0.18);
-  z-index: 2;
-}
-.ck-item-info { min-width: 0; }
+.ck-item-info { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .ck-item-info strong {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--green-dark);
   line-height: 1.25;
@@ -2806,11 +2784,64 @@ h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 700; }
   white-space: nowrap;
 }
 .ck-item-info small { font-size: 0.72rem; color: var(--graphite-soft); }
+
+.ck-item-controls {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 4px;
+}
+.ck-qty-stepper {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--white);
+  height: 28px;
+}
+.ck-qty-btn {
+  width: 26px; height: 26px;
+  background: transparent;
+  border: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  cursor: pointer;
+  display: grid; place-items: center;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.15s;
+}
+.ck-qty-btn:hover { background: var(--cream); color: var(--green); }
+.ck-qty-val {
+  min-width: 24px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  user-select: none;
+}
+.ck-item-trash {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--graphite-soft);
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: all 0.15s;
+  padding: 0;
+}
+.ck-item-trash:hover {
+  color: var(--terracota);
+  border-color: var(--terracota);
+  background: #FBE9E5;
+}
+
 .ck-item-total {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--green-dark);
   white-space: nowrap;
+  align-self: start;
 }
 
 .ck-coupon {
