@@ -625,14 +625,11 @@
     let region = null;
     let comuna = null;
     let placeName = null;
-    let apiNotFound = false;
-    let apiError = false;
 
+    // 1) Tenta a API (zippopotam) pra pegar a comuna específica
     try {
       const r = await fetch(`https://api.zippopotam.us/cl/${cp}`, { mode: 'cors' });
-      if (r.status === 404) {
-        apiNotFound = true; // CEP realmente não existe
-      } else if (r.ok) {
+      if (r.ok) {
         const j = await r.json();
         const place = j.places?.[0];
         if (place) {
@@ -642,32 +639,18 @@
           region = mapZippoState(stateAbbr, stateName);
           comuna = placeName;
         }
-      } else {
-        apiError = true;
       }
-    } catch (e) {
-      apiError = true;
+    } catch (e) { /* segue pro fallback de prefixo */ }
+
+    // 2) Fallback: usa o prefixo de 2 dígitos pra deduzir a região
+    //    (a API do zippopotam cobre poucos CEPs chilenos; o prefixo é confiável pra região)
+    if (!region) {
+      const pref = cp.slice(0, 2);
+      region = CEP_PREFIX_REGION[pref] || null;
     }
 
     cepSpin.hidden = true;
     cepBtn.disabled = false;
-
-    // CEP não existe segundo a API → erro claro, sem fallback
-    if (apiNotFound) {
-      showCepMsg('Ese código postal no existe. Verifica los dígitos o selecciona tu región manualmente.', 'error');
-      document.querySelector('.pd-manual')?.setAttribute('open', '');
-      regionEl.value = '';
-      fillComunas('');
-      saveRegion();
-      renderDelivery();
-      return;
-    }
-
-    // API falhou (offline/CORS) → tenta fallback de prefixo só se a API não respondeu
-    if (!region && apiError) {
-      const pref = cp.slice(0, 2);
-      region = CEP_PREFIX_REGION[pref] || null;
-    }
 
     if (!region) {
       showCepMsg('No reconocemos ese código postal. Selecciona tu región manualmente.', 'error');
@@ -690,8 +673,10 @@
     const regName = REGION_NAME[region];
     const detail = placeName
       ? `${placeName}, ${regName}`
-      : regName;
+      : `${regName} · Selecciona tu comuna`;
     showCepMsg(`✓ ${detail}`, 'ok');
+    // Sem comuna do API → abre o seletor manual pra usuário escolher
+    if (!comuna) document.querySelector('.pd-manual')?.setAttribute('open', '');
     saveRegion();
     renderDelivery();
   }
