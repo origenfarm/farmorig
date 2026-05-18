@@ -38,7 +38,9 @@ const SHIPPING_FEE       = 3990;
   itemsEl.innerHTML = cart.items.map(it => `
     <li class="ck-item">
       <div class="ck-item-img">
-        <img src="assets/products/${slug(it.sku)}.jpg" onerror="this.src='https://placehold.co/120x120/1F4D3D/F4EFE6?text=${encodeURIComponent(it.name)}&font=raleway'" alt="${it.name}" />
+        <img src="assets/products/${slug(it.sku)}.webp"
+             onerror="this.onerror=null;this.src='assets/products/${slug(it.sku)}.jpg';this.onerror=function(){this.onerror=null;this.src='https://placehold.co/120x120/1F4D3D/F4EFE6?text=${encodeURIComponent(it.name)}&font=raleway';};"
+             alt="${it.name}" loading="lazy" />
         <span class="ck-item-qty">${it.qty}</span>
       </div>
       <div class="ck-item-info">
