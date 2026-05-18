@@ -138,10 +138,7 @@
       title: 'Libro de reclamos',
       body: `
         <p>Si tuviste un problema con tu compra, queremos resolverlo.</p>
-        <ol>
-          <li>Escríbenos primero a <strong>contacto@farmaorigen.com</strong> o WhatsApp con tu número de orden</li>
-          <li>Si no resolvemos en 5 días hábiles, puedes formalizar el reclamo</li>
-        </ol>
+        <p>Escríbenos a <strong>contacto@farmaorigen.com</strong> con tu número de orden y te respondemos lo antes posible.</p>
         <p>Trabajamos para que cada compra sea una experiencia positiva.</p>`
     },
     ayuda: {
