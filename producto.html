@@ -167,7 +167,7 @@
             <p class="pd-cep-feedback" id="pdCepFeedback"></p>
 
             <details class="pd-manual">
-              <summary>O selecciona manualmente tu región</summary>
+              <summary>¿Comuna incorrecta? Cámbiala</summary>
               <div class="pd-region-row">
                 <select id="pdRegion" aria-label="Selecciona tu región">
                   <option value="">Selecciona tu región</option>
@@ -305,6 +305,20 @@
           </ul>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS (renderizado por producto.js conforme SKU) ============ -->
+  <section class="pd-reviews-section" id="pdReviewsSection" hidden>
+    <div class="container">
+      <header class="pd-reviews-head">
+        <h2>Reseñas de clientes</h2>
+        <div class="pd-reviews-rating">
+          <span class="pd-reviews-stars">★★★★★</span>
+          <span class="pd-reviews-score"><strong>4.8</strong> de 5 · <span id="pdReviewsCount">0</span> reseñas</span>
+        </div>
+      </header>
+      <div class="pd-reviews-grid" id="pdReviewsGrid"></div>
     </div>
   </section>
 

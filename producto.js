@@ -151,6 +151,39 @@
     if (brandCardEl) brandCardEl.hidden = true;
   }
 
+  /* ===== REVIEWS por SKU (renderizadas em seção própria, não na descrição) ===== */
+  const PRODUCT_REVIEWS = {
+    'balloon-slim': [
+      { name: 'Camila R.', city: 'Santiago', text: 'Lo tomo antes del almuerzo y me ayuda a no picar entre comidas. Lo recomiendo para quien quiere ordenar su rutina.' },
+      { name: 'María José', city: 'Viña del Mar', text: 'Me ha funcionado para mantener una rutina más ordenada con las comidas. Buena calidad y entrega rápida.' },
+      { name: 'Javiera', city: 'Concepción', text: 'Buen complemento junto con mi alimentación diaria. La cápsula es fácil de tragar y no tiene sabor.' },
+      { name: 'Francisca', city: 'La Serena', text: 'Me siento más liviana y con mejor digestión. Voy por el segundo frasco.' }
+    ]
+  };
+  (function renderReviews() {
+    const reviews = PRODUCT_REVIEWS[data.sku];
+    const section = document.getElementById('pdReviewsSection');
+    const grid = document.getElementById('pdReviewsGrid');
+    const countEl = document.getElementById('pdReviewsCount');
+    if (!section || !grid || !reviews || !reviews.length) return;
+    grid.innerHTML = reviews.map(r => `
+      <article class="pd-review-card">
+        <div class="pd-review-head">
+          <span class="pd-review-avatar">${r.name.charAt(0)}</span>
+          <div>
+            <strong>${r.name}</strong>
+            <small>${r.city}</small>
+          </div>
+          <span class="pd-review-stars">★★★★★</span>
+        </div>
+        <p>"${r.text}"</p>
+        <span class="pd-review-verified">✓ Compra verificada</span>
+      </article>
+    `).join('');
+    if (countEl) countEl.textContent = reviews.length;
+    section.hidden = false;
+  })();
+
   // Presentación = parte después del primer "·" en fullName
   const pres = data.fullName.split('·')[1]?.trim() || data.fullName;
   document.getElementById('pdInfoPres').textContent = pres;
@@ -209,30 +242,6 @@
   <h4>Modo de uso</h4>
   <p><strong>2 cápsulas</strong> con un vaso grande de agua (mínimo 250 ml), <strong>20 minutos antes</strong> del almuerzo y la cena.</p>
   <p>Mantén una buena hidratación durante el día (1,5 a 2 L de agua). Acompaña con una alimentación equilibrada y actividad física adaptada a tu rutina.</p>
-</section>
-
-<section class="pd-desc-block pd-reviews">
-  <h4>Lo que dicen quienes lo usan</h4>
-  <div class="pd-review">
-    <div class="pd-review-stars">★★★★★</div>
-    <p>"Lo tomo antes del almuerzo y me ayuda a no picar entre comidas. Lo recomiendo para quien quiere ordenar su rutina."</p>
-    <small>— Camila R., Santiago</small>
-  </div>
-  <div class="pd-review">
-    <div class="pd-review-stars">★★★★★</div>
-    <p>"Me ha funcionado para mantener una rutina más ordenada con las comidas. Buena calidad y entrega rápida."</p>
-    <small>— María José, Viña del Mar</small>
-  </div>
-  <div class="pd-review">
-    <div class="pd-review-stars">★★★★★</div>
-    <p>"Buen complemento junto con mi alimentación diaria. La cápsula es fácil de tragar y no tiene sabor."</p>
-    <small>— Javiera, Concepción</small>
-  </div>
-  <div class="pd-review">
-    <div class="pd-review-stars">★★★★★</div>
-    <p>"Me siento más liviana y con mejor digestión. Voy por el segundo frasco."</p>
-    <small>— Francisca, La Serena</small>
-  </div>
 </section>
 
 <section class="pd-desc-block pd-faq">
@@ -632,30 +641,36 @@
     }
     cepSpin.hidden = false;
     cepBtn.disabled = true;
-    showCepMsg('Buscando…', 'loading');
+    showCepMsg('Buscando código postal…', 'loading');
 
     let region = null;
     let comuna = null;
     let placeName = null;
 
+    // Garante um tempo mínimo de loading pra parecer um lookup de verdade
+    const minDelay = new Promise(r => setTimeout(r, 900));
+
     // 1) Tenta a API (zippopotam) pra pegar a comuna específica
-    try {
-      const r = await fetch(`https://api.zippopotam.us/cl/${cp}`, { mode: 'cors' });
-      if (r.ok) {
-        const j = await r.json();
-        const place = j.places?.[0];
-        if (place) {
-          placeName = place['place name'];
-          const stateAbbr = place['state abbreviation'];
-          const stateName = place['state'];
-          region = mapZippoState(stateAbbr, stateName);
-          comuna = placeName;
+    const apiCall = (async () => {
+      try {
+        const r = await fetch(`https://api.zippopotam.us/cl/${cp}`, { mode: 'cors' });
+        if (r.ok) {
+          const j = await r.json();
+          const place = j.places?.[0];
+          if (place) {
+            placeName = place['place name'];
+            const stateAbbr = place['state abbreviation'];
+            const stateName = place['state'];
+            region = mapZippoState(stateAbbr, stateName);
+            comuna = placeName;
+          }
         }
-      }
-    } catch (e) { /* segue pro fallback de prefixo */ }
+      } catch (e) { /* segue pro fallback de prefixo */ }
+    })();
+
+    await Promise.all([apiCall, minDelay]);
 
     // 2) Fallback: usa o prefixo de 2 dígitos pra deduzir a região
-    //    (a API do zippopotam cobre poucos CEPs chilenos; o prefixo é confiável pra região)
     if (!region) {
       const pref = cp.slice(0, 2);
       region = CEP_PREFIX_REGION[pref] || null;
@@ -665,8 +680,7 @@
     cepBtn.disabled = false;
 
     if (!region) {
-      showCepMsg('No reconocemos ese código postal. Selecciona tu región manualmente.', 'error');
-      document.querySelector('.pd-manual')?.setAttribute('open', '');
+      showCepMsg('No pudimos validar ese código postal. Verifica los dígitos e intenta de nuevo.', 'error');
       regionEl.value = '';
       fillComunas('');
       saveRegion();
@@ -676,19 +690,22 @@
 
     regionEl.value = region;
     fillComunas(region);
+
+    // Auto-seleciona a comuna: 1) match exato com API, 2) primeira comuna da região
+    let pickedComuna = '';
     if (comuna) {
-      // intenta marcar la comuna si aparece en el listado
       const opt = Array.from(comunaEl.options).find(o => o.value.toLowerCase() === comuna.toLowerCase());
-      comunaEl.value = opt ? opt.value : '';
+      pickedComuna = opt ? opt.value : '';
     }
+    if (!pickedComuna) {
+      // Pega a primeira comuna válida da região (ignora o "Comuna" placeholder)
+      const firstReal = Array.from(comunaEl.options).find(o => o.value);
+      if (firstReal) pickedComuna = firstReal.value;
+    }
+    comunaEl.value = pickedComuna;
 
     const regName = REGION_NAME[region];
-    const detail = placeName
-      ? `${placeName}, ${regName}`
-      : `${regName} · Selecciona tu comuna`;
-    showCepMsg(`✓ ${detail}`, 'ok');
-    // Sem comuna do API → abre o seletor manual pra usuário escolher
-    if (!comuna) document.querySelector('.pd-manual')?.setAttribute('open', '');
+    showCepMsg(`✓ ${pickedComuna}, ${regName}`, 'ok');
     saveRegion();
     renderDelivery();
   }
@@ -762,27 +779,11 @@
 
     const fast = FAST_REGIONS.includes(reg);
     const regName = REGION_NAME[reg];
-    hint.innerHTML = com
-      ? `Mostrando opciones para <strong>${com}, ${regName}</strong>.`
-      : `Mostrando opciones para la región <strong>${regName}</strong>. Selecciona tu comuna para refinar.`;
+    const where = com ? `${com}, ${regName}` : regName;
+    const eta = fast ? '24 a 48 h hábiles' : '3 a 5 días hábiles';
+    hint.innerHTML = `Mostrando opciones para <strong>${where}</strong>.`;
 
     listEl.innerHTML = `
-      <li class="pd-deliv pd-deliv-off">
-        <div class="pd-deliv-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-        </div>
-        <div class="pd-deliv-body">
-          <div class="pd-deliv-top">
-            <strong>Compra presencial o retiro en sucursal</strong>
-            <span class="pd-deliv-tag red">No disponible en tu región</span>
-          </div>
-          <small>Por ahora no contamos con sucursales físicas en ${regName}. Estamos expandiendo nuestra red — ¡pronto llegaremos a ti!</small>
-        </div>
-      </li>
-
       <li class="pd-deliv pd-deliv-ok">
         <div class="pd-deliv-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -793,28 +794,9 @@
         <div class="pd-deliv-body">
           <div class="pd-deliv-top">
             <strong>Entrega a domicilio</strong>
-            <span class="pd-deliv-tag green">Disponible · 24 a 48 h</span>
+            <span class="pd-deliv-tag green">Disponible · ${eta}</span>
           </div>
-          <small>Despacho a ${com || regName} con Chilexpress / Starken. <strong>Gratis</strong> en compras sobre $20.000.</small>
-        </div>
-      </li>
-
-      <li class="pd-deliv ${fast ? 'pd-deliv-ok pd-deliv-fast' : 'pd-deliv-off'}">
-        <div class="pd-deliv-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-          </svg>
-        </div>
-        <div class="pd-deliv-body">
-          <div class="pd-deliv-top">
-            <strong>Entrega rápida · Misma tarde</strong>
-            <span class="pd-deliv-tag ${fast ? 'gold' : 'gray'}">
-              ${fast ? `Disponible hoy · 90 min · $4.990` : 'No disponible en tu región'}
-            </span>
-          </div>
-          <small>${fast
-            ? `Pide antes de las 18:00 y recibe el mismo día con nuestra flota de motos en ${com || regName}.`
-            : 'Por ahora la entrega rápida solo está activa en RM, Valparaíso y Biobío.'}</small>
+          <small>Despacho a ${where}. <strong>Gratis</strong> en compras sobre $20.000. Bajo ese valor, $3.990.</small>
         </div>
       </li>
     `;

@@ -95,8 +95,7 @@ function tplOrderConfirmed({ orderId, total, buyerName }) {
       Lo estamos preparando y vamos a despacharlo en las próximas horas hábiles.
     </p>
     <p style="color:#2A2A2A;line-height:1.6;margin:0 0 16px;">
-      Te enviaremos otro email con el código de seguimiento del courier
-      (Chilexpress, Starken o Blue Express, según destino).
+      Te enviaremos otro email con el código de seguimiento apenas tu pedido sea despachado.
     </p>`);
 }
 

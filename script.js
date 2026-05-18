@@ -36,7 +36,7 @@
     despacho: {
       title: 'Despacho y envíos',
       body: `
-        <p>Enviamos a todo Chile a través de Chilexpress, Starken y Blue Express.</p>
+        <p>Enviamos a todo Chile mediante operadores logísticos seleccionados.</p>
         <ul>
           <li><strong>Región Metropolitana, Valparaíso, Biobío:</strong> 24 a 48 h hábiles</li>
           <li><strong>Resto del país:</strong> 3 a 5 días hábiles</li>
