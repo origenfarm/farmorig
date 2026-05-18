@@ -165,7 +165,7 @@ window.FO_PRODUCTS = [
   {
     "sku": "balloon-slim",
     "name": "Balloon Slim",
-    "fullName": "Balloon Slim · 60 cápsulas",
+    "fullName": "Balloon Slim · 30 cápsulas",
     "brand": "",
     "price": 29900,
     "oldPrice": 39990,
