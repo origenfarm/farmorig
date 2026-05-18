@@ -166,7 +166,7 @@ window.FO_PRODUCTS = [
     "sku": "balloon-slim",
     "name": "Balloon Slim",
     "fullName": "Balloon Slim · 30 cápsulas",
-    "brand": "Origen Wellness",
+    "brand": "",
     "price": 29900,
     "oldPrice": 39990,
     "badge": "-25%"
@@ -175,7 +175,7 @@ window.FO_PRODUCTS = [
     "sku": "thermo-slim",
     "name": "Thermo Slim",
     "fullName": "Thermo Slim Termogénico · 60 cápsulas",
-    "brand": "Origen Wellness",
+    "brand": "",
     "price": 18990,
     "oldPrice": null,
     "badge": "♡"

@@ -114,7 +114,7 @@
     '@context': 'https://schema.org/',
     '@type': 'Product',
     name: data.fullName,
-    brand: { '@type': 'Brand', name: data.brand || 'Origen Natural' },
+    ...(data.brand ? { brand: { '@type': 'Brand', name: data.brand } } : {}),
     category: ({
       supplement:'Health & Wellness > Supplements',
       probiotic:'Health & Wellness > Supplements > Probiotics',
@@ -136,8 +136,20 @@
     }
   });
   document.head.appendChild(ld);
-  document.getElementById('pdBrand').textContent = data.brand || '';
-  document.getElementById('pdInfoBrand').textContent = data.brand || '—';
+  // Brand: só mostra se realmente existe (não inventa marca pra produto sem marca)
+  const brandEl = document.getElementById('pdBrand');
+  const brandInfoEl = document.getElementById('pdInfoBrand');
+  const brandCardEl = document.getElementById('pdInfoBrandCard');
+  if (data.brand) {
+    brandEl.textContent = data.brand;
+    brandEl.hidden = false;
+    if (brandInfoEl) brandInfoEl.textContent = data.brand;
+    if (brandCardEl) brandCardEl.hidden = false;
+  } else {
+    brandEl.textContent = '';
+    brandEl.hidden = true;
+    if (brandCardEl) brandCardEl.hidden = true;
+  }
 
   // Presentación = parte después del primer "·" en fullName
   const pres = data.fullName.split('·')[1]?.trim() || data.fullName;
@@ -277,30 +289,30 @@
 </section>`
   };
 
-  // Descripción genérica white-hat por categoría — sem claims médicos
+  // Descripción genérica white-hat por categoría — sem marca, sem claims médicos
   const DESC_BY_CAT = {
     supplement:
-      `${data.fullName} es un suplemento alimenticio de ${data.brand || 'origen seleccionado'}, disponible en Farma Origen con despacho a todo Chile y garantía de autenticidad. Sigue las indicaciones del envase y consulta a un profesional de la salud antes de iniciar cualquier suplemento.`,
+      `${data.fullName} es un suplemento alimenticio disponible en Farma Origen con despacho a todo Chile y garantía de autenticidad. Sigue las indicaciones del envase y consulta a un profesional de la salud antes de iniciar cualquier suplemento.`,
     probiotic:
-      `${data.fullName} es un suplemento alimenticio con cultivos vivos de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase. No reemplaza una alimentación equilibrada. Consulta a un profesional ante dudas.`,
+      `${data.fullName} es un suplemento alimenticio con cultivos vivos. Sigue las indicaciones del envase. No reemplaza una alimentación equilibrada. Consulta a un profesional ante dudas.`,
     skincare:
-      `${data.fullName} es un producto cosmético de cuidado de la piel de ${data.brand || 'origen seleccionado'}. Para uso tópico externo. Realiza prueba de tolerancia en una zona pequeña antes del primer uso.`,
+      `${data.fullName} es un producto cosmético de cuidado de la piel. Para uso tópico externo. Realiza prueba de tolerancia en una zona pequeña antes del primer uso.`,
     sunscreen:
-      `${data.fullName} es un protector solar cosmético de ${data.brand || 'origen seleccionado'}. Aplica generosamente 15 minutos antes de la exposición y reaplica cada 2 horas o tras baño/sudor intenso.`,
+      `${data.fullName} es un protector solar cosmético. Aplica generosamente 15 minutos antes de la exposición y reaplica cada 2 horas o tras baño/sudor intenso.`,
     eyecare:
-      `${data.fullName} es un producto para higiene y lubricación ocular de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase y consulta a un oftalmólogo si las molestias persisten.`,
+      `${data.fullName} es un producto para higiene y lubricación ocular. Sigue las indicaciones del envase y consulta a un oftalmólogo si las molestias persisten.`,
     topical:
-      `${data.fullName} es un producto de uso tópico/personal de ${data.brand || 'origen seleccionado'}. Para uso externo. Sigue siempre las indicaciones del envase original.`,
+      `${data.fullName} es un producto de uso tópico/personal. Para uso externo. Sigue siempre las indicaciones del envase original.`,
     herbal_otc:
-      `${data.fullName} es un producto a base de extractos botánicos de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase. No reemplaza un tratamiento médico ni el diagnóstico de un profesional.`,
+      `${data.fullName} es un producto a base de extractos botánicos. Sigue las indicaciones del envase. No reemplaza un tratamiento médico ni el diagnóstico de un profesional.`,
     circulatory:
-      `${data.fullName} es un producto a base de flavonoides de ${data.brand || 'origen seleccionado'}. Sigue las indicaciones del envase. Consulta a un profesional de la salud ante dudas.`,
+      `${data.fullName} es un producto a base de flavonoides. Sigue las indicaciones del envase. Consulta a un profesional de la salud ante dudas.`,
     fragrance:
       `${data.fullName} es una fragancia cosmética de uso externo, exclusiva para mayores de 18 años. Disponible en Farma Origen con despacho a todo Chile.`,
     weight:
-      `${data.fullName} es un suplemento alimenticio de ${data.brand || 'origen seleccionado'}. Los resultados pueden variar según cada persona. No reemplaza una alimentación equilibrada ni el ejercicio. Consulta a un profesional de la salud antes de usar.`,
+      `${data.fullName} es un suplemento alimenticio. Los resultados pueden variar según cada persona. No reemplaza una alimentación equilibrada ni el ejercicio. Consulta a un profesional de la salud antes de usar.`,
     cosmetic_specialty:
-      `${data.fullName} es un producto cosmético de uso tópico de ${data.brand || 'origen seleccionado'}. Lee atentamente las instrucciones del envase antes de usar. Para uso externo.`
+      `${data.fullName} es un producto cosmético de uso tópico. Lee atentamente las instrucciones del envase antes de usar. Para uso externo.`
   };
   // Renderização da descrição:
   // - Se PRODUCT_COPY traz HTML (começa com '<'), renderiza via innerHTML.
