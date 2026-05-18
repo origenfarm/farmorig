@@ -190,7 +190,7 @@
 
   // Subtitle (tagline abaixo do h1) — só pra produtos campanha
   const PRODUCT_SUBTITLE = {
-    'balloon-slim': 'Apoyo a la saciedad y al bienestar digestivo · 2 cápsulas antes de las comidas'
+    'balloon-slim': 'Apoyo a la saciedad y al bienestar digestivo · 1 cápsula antes del almuerzo y de la cena'
   };
 
   // Bullets acima do pack selector (white-hat, sem claims corporais)
@@ -219,7 +219,7 @@
 <section class="pd-desc-block">
   <h4>¿Cómo funciona la fibra Hydro Slim™?</h4>
   <ol class="pd-steps">
-    <li><span class="pd-step-num">1</span><div><strong>Hidratación:</strong> tomas 2 cápsulas con un vaso grande de agua antes de la comida.</div></li>
+    <li><span class="pd-step-num">1</span><div><strong>Hidratación:</strong> tomas 1 cápsula con un vaso grande de agua antes de la comida.</div></li>
     <li><span class="pd-step-num">2</span><div><strong>Volumen:</strong> las fibras absorben agua y aumentan suavemente su volumen, ocupando espacio en el estómago.</div></li>
     <li><span class="pd-step-num">3</span><div><strong>Saciedad temporal:</strong> esto puede contribuir a una sensación de plenitud antes de las comidas.</div></li>
     <li><span class="pd-step-num">4</span><div><strong>Tránsito natural:</strong> la fibra sigue su recorrido digestivo y no es absorbida por el organismo.</div></li>
@@ -240,7 +240,7 @@
 
 <section class="pd-desc-block pd-desc-usage">
   <h4>Modo de uso</h4>
-  <p><strong>2 cápsulas</strong> con un vaso grande de agua (mínimo 250 ml), <strong>20 minutos antes</strong> del almuerzo y la cena.</p>
+  <p><strong>1 cápsula</strong> con un vaso grande de agua (mínimo 250 ml), <strong>20 minutos antes</strong> del almuerzo y otra <strong>20 minutos antes</strong> de la cena. Total: <strong>2 cápsulas al día</strong>.</p>
   <p>Mantén una buena hidratación durante el día (1,5 a 2 L de agua). Acompaña con una alimentación equilibrada y actividad física adaptada a tu rutina.</p>
 </section>
 
@@ -248,7 +248,7 @@
   <h4>Preguntas frecuentes</h4>
   <details>
     <summary>¿Cómo se toma Balloon Slim?</summary>
-    <p>2 cápsulas con un vaso grande de agua (mínimo 250 ml), 20 minutos antes del almuerzo y la cena.</p>
+    <p>1 cápsula con un vaso grande de agua (mínimo 250 ml), 20 minutos antes del almuerzo y otra 20 minutos antes de la cena. Total: 2 cápsulas al día.</p>
   </details>
   <details>
     <summary>¿En cuánto tiempo siento la saciedad?</summary>
@@ -268,7 +268,7 @@
   </details>
   <details>
     <summary>¿Cuánto dura un frasco?</summary>
-    <p>Cada frasco rinde aproximadamente un mes siguiendo el modo de uso sugerido (2 cápsulas antes del almuerzo y la cena).</p>
+    <p>El frasco de 60 cápsulas rinde aproximadamente <strong>30 días</strong> siguiendo el modo de uso sugerido (1 cápsula antes del almuerzo y 1 antes de la cena = 2 cápsulas al día).</p>
   </details>
   <details>
     <summary>¿Necesito dieta o ejercicio para complementarlo?</summary>
