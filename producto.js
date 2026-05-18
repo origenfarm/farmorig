@@ -255,7 +255,7 @@
   </details>
   <details>
     <summary>¿Cuánto demora el envío?</summary>
-    <p>24 a 48 h hábiles en Región Metropolitana, Valparaíso y Biobío. 3 a 5 días para el resto del país. Despacho gratis en compras sobre $30.000.</p>
+    <p>24 a 48 h hábiles en Región Metropolitana, Valparaíso y Biobío. 3 a 5 días para el resto del país. Despacho gratis en compras sobre $20.000.</p>
   </details>
 </section>
 
@@ -798,7 +798,7 @@
             <strong>Entrega a domicilio</strong>
             <span class="pd-deliv-tag green">Disponible · 24 a 48 h</span>
           </div>
-          <small>Despacho a ${com || regName} con Chilexpress / Starken. <strong>Gratis</strong> en compras sobre $30.000.</small>
+          <small>Despacho a ${com || regName} con Chilexpress / Starken. <strong>Gratis</strong> en compras sobre $20.000.</small>
         </div>
       </li>
 

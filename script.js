@@ -25,7 +25,7 @@
         <h4>¿Cuánto demora el despacho?</h4>
         <p>De 24 a 48 h hábiles para Región Metropolitana, Valparaíso y Biobío. 3 a 5 días para el resto del país.</p>
         <h4>¿Cuál es el costo de envío?</h4>
-        <p>Despacho gratis en compras sobre $30.000. Bajo ese valor, el costo es de $3.990 a todo Chile.</p>
+        <p>Despacho gratis en compras sobre $20.000. Bajo ese valor, el costo es de $3.990 a todo Chile.</p>
         <h4>¿Puedo cancelar o cambiar mi pedido?</h4>
         <p>Sí, mientras no haya sido despachado. Escríbenos por WhatsApp con el número de orden.</p>
         <h4>¿Los productos son originales?</h4>
@@ -41,7 +41,7 @@
           <li><strong>Región Metropolitana, Valparaíso, Biobío:</strong> 24 a 48 h hábiles</li>
           <li><strong>Resto del país:</strong> 3 a 5 días hábiles</li>
           <li><strong>Despacho rápido (mismo día):</strong> $4.990 — solo RM, V y VIII</li>
-          <li><strong>Despacho gratis:</strong> en compras sobre $30.000</li>
+          <li><strong>Despacho gratis:</strong> en compras sobre $20.000</li>
         </ul>
         <p>El stock se reserva al finalizar la compra. Te enviamos el código de seguimiento por email apenas se despache.</p>`
     },
@@ -140,14 +140,9 @@
         <ul>
           <li>Ver el historial de tus pedidos</li>
           <li>Guardar direcciones de despacho</li>
-          <li>Marcar productos favoritos</li>
           <li>Acceder más rápido en próximas compras</li>
         </ul>
         <p>Recibirás los datos de acceso por email después de tu primera orden.</p>`
-    },
-    favoritos: {
-      title: 'Favoritos',
-      body: `<p>Puedes marcar productos como favoritos haciendo clic en el corazón ♡ de cada tarjeta. Próximamente sincronizaremos los favoritos con tu cuenta.</p>`
     }
   };
 
@@ -203,7 +198,7 @@
     '#cambios':'cambios', '#nosotros':'nosotros', '#trabaja':'trabaja',
     '#prensa':'prensa', '#blog':'blog', '#terminos':'terminos',
     '#privacidad':'privacidad', '#cookies':'cookies', '#libro':'libro',
-    '#ayuda':'ayuda', '#cuenta':'cuenta', '#favoritos':'favoritos'
+    '#ayuda':'ayuda', '#cuenta':'cuenta'
   };
   document.querySelectorAll('a[href^="#"], a[href*="index.html#"]').forEach(a => {
     const href = a.getAttribute('href') || '';
@@ -639,7 +634,7 @@ window.addEventListener('scroll', () => {
         <span>Subtotal</span>
         <strong id="mcTotal">$0</strong>
       </div>
-      <small class="mc-shipping-hint" id="mcShipHint">Despacho gratis en compras sobre $30.000</small>
+      <small class="mc-shipping-hint" id="mcShipHint">Despacho gratis en compras sobre $20.000</small>
       <a href="/checkout.html" class="mc-btn mc-btn-primary" id="mcGoPay">Ir al pago</a>
       <button type="button" class="mc-btn mc-btn-ghost" id="mcContinue">Continuar comprando</button>
     </footer>

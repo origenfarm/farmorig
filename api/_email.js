@@ -79,7 +79,7 @@ function tplOrderReceived({ orderId, total, items, buyerName }) {
       </tr>
     </table>
     <p style="color:#5A5A5A;font-size:.85rem;line-height:1.55;margin-top:18px;">
-      Despacho gratis en compras sobre $30.000. El plazo de entrega es de 24 a 72 horas hábiles
+      Despacho gratis en compras sobre $20.000. El plazo de entrega es de 24 a 72 horas hábiles
       según tu región (RM, V y VIII más rápido).
     </p>`);
 }
