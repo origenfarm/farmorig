@@ -634,7 +634,6 @@ window.addEventListener('scroll', () => {
         <span>Subtotal</span>
         <strong id="mcTotal">$0</strong>
       </div>
-      <small class="mc-shipping-hint" id="mcShipHint">Despacho gratis en compras sobre $20.000</small>
       <a href="/checkout.html" class="mc-btn mc-btn-primary" id="mcGoPay">Ir al pago</a>
       <button type="button" class="mc-btn mc-btn-ghost" id="mcContinue">Continuar comprando</button>
     </footer>
@@ -676,7 +675,6 @@ window.addEventListener('scroll', () => {
     const foot = drawer.querySelector('#mcFoot');
     const countEl = drawer.querySelector('#mcCount');
     const totalEl = drawer.querySelector('#mcTotal');
-    const shipHint = drawer.querySelector('#mcShipHint');
 
     const totalQty = items.reduce((s,i) => s + i.qty, 0);
     countEl.textContent = totalQty || '';
@@ -694,14 +692,6 @@ window.addEventListener('scroll', () => {
     itemsEl.innerHTML = items.map((it, i) => renderItem(it, i)).join('');
     const total = cart.total();
     totalEl.textContent = fmt(total);
-    if (total >= 30000) {
-      shipHint.innerHTML = '✓ ¡Tienes despacho gratis!';
-      shipHint.classList.add('ok');
-    } else {
-      const falta = 30000 - total;
-      shipHint.innerHTML = `Te faltan ${fmt(falta)} para despacho gratis`;
-      shipHint.classList.remove('ok');
-    }
   }
 
   function open() {
