@@ -4222,6 +4222,7 @@ body.mc-open { overflow: hidden; }
   animation: foSpin 0.7s linear infinite;
   margin-left: 8px;
 }
+.pd-cep-spinner[hidden] { display: none !important; }
 @keyframes foSpin { to { transform: rotate(360deg); } }
 .pd-cep-feedback.loading { color: var(--graphite-soft); font-weight: 700; }
 
