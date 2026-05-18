@@ -153,20 +153,29 @@
 
   /* ===== REVIEWS por SKU (renderizadas em seção própria, não na descrição) ===== */
   const PRODUCT_REVIEWS = {
-    'balloon-slim': [
-      { name: 'Camila R.', city: 'Santiago', text: 'Lo tomo antes del almuerzo y me ayuda a no picar entre comidas. Lo recomiendo para quien quiere ordenar su rutina.' },
-      { name: 'María José', city: 'Viña del Mar', text: 'Me ha funcionado para mantener una rutina más ordenada con las comidas. Buena calidad y entrega rápida.' },
-      { name: 'Javiera', city: 'Concepción', text: 'Buen complemento junto con mi alimentación diaria. La cápsula es fácil de tragar y no tiene sabor.' },
-      { name: 'Francisca', city: 'La Serena', text: 'Me siento más liviana y con mejor digestión. Voy por el segundo frasco.' }
-    ]
+    'balloon-slim': {
+      total: 124,
+      rating: 4.8,
+      list: [
+        { name: 'Camila R.', city: 'Santiago', text: 'Lo tomo antes del almuerzo y me ayuda a no picar entre comidas. Lo recomiendo para quien quiere ordenar su rutina.' },
+        { name: 'María José', city: 'Viña del Mar', text: 'Me ha funcionado para mantener una rutina más ordenada con las comidas. Buena calidad y entrega rápida.' },
+        { name: 'Javiera', city: 'Concepción', text: 'Buen complemento junto con mi alimentación diaria. La cápsula es fácil de tragar y no tiene sabor.' },
+        { name: 'Francisca', city: 'La Serena', text: 'Me siento más liviana y con mejor digestión. Voy por el segundo frasco.' }
+      ]
+    }
   };
   (function renderReviews() {
-    const reviews = PRODUCT_REVIEWS[data.sku];
+    const reviewData = PRODUCT_REVIEWS[data.sku];
     const section = document.getElementById('pdReviewsSection');
     const grid = document.getElementById('pdReviewsGrid');
     const countEl = document.getElementById('pdReviewsCount');
-    if (!section || !grid || !reviews || !reviews.length) return;
-    grid.innerHTML = reviews.map(r => `
+    if (!section || !grid || !reviewData || !reviewData.list?.length) return;
+
+    // Sincroniza o contador do topo (rating-text) com o total — sem inconsistência
+    const topRating = document.querySelector('.pd-rating .rating-text');
+    if (topRating) topRating.textContent = `${reviewData.rating} · ${reviewData.total} reseñas`;
+
+    grid.innerHTML = reviewData.list.map(r => `
       <article class="pd-review-card">
         <div class="pd-review-head">
           <span class="pd-review-avatar">${r.name.charAt(0)}</span>
@@ -180,7 +189,9 @@
         <span class="pd-review-verified">✓ Compra verificada</span>
       </article>
     `).join('');
-    if (countEl) countEl.textContent = reviews.length;
+    if (countEl) countEl.textContent = reviewData.total;
+    const ratingEl = document.getElementById('pdReviewsRating');
+    if (ratingEl) ratingEl.textContent = reviewData.rating;
     section.hidden = false;
   })();
 
