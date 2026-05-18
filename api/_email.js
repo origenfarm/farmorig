@@ -44,7 +44,7 @@ function baseLayout(title, bodyHtml, accent) {
         <!-- Footer -->
         <tr><td style="background:#143229;padding:28px 36px;color:rgba(244,239,230,0.7);font-size:0.78rem;text-align:center;line-height:1.6;">
           <div style="margin-bottom:8px;">¿Necesitas ayuda? Escríbenos a <a href="mailto:contacto@farmaorigen.com" style="color:#E8C66B;text-decoration:none;font-weight:700;">contacto@farmaorigen.com</a></div>
-          <div style="font-size:0.7rem;opacity:0.7;">© Farma Origen · Av. Providencia 1234, Santiago de Chile · <a href="https://farmaorigen.com" style="color:rgba(244,239,230,0.8);text-decoration:none;">farmaorigen.com</a></div>
+          <div style="font-size:0.7rem;opacity:0.7;">© Farma Origen · <a href="https://farmaorigen.com" style="color:rgba(244,239,230,0.8);text-decoration:none;">farmaorigen.com</a></div>
         </td></tr>
       </table>
     </td></tr>
