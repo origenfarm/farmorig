@@ -1,14 +1,14 @@
 /* ============================================
-   Vercel Serverless Function · /api/pagou/transactions
+   Vercel Serverless Function · /api/payments/transactions
    ============================================
    Recebe o payload tokenizado do frontend (checkout.js)
-   e chama POST https://api.pagou.ai/v2/transactions
-   com a SECRET key Bearer (nunca exposta ao browser).
+   e chama o endpoint do provedor com a SECRET key Bearer
+   (nunca exposta ao browser).
 
    ENV VARS necessárias no painel da Vercel:
-     PAGOU_SECRET_KEY  →  sk_sandbox_xxx ou sk_live_xxx
+     PAGOU_SECRET_KEY  →  secret do provedor
      PAGOU_ENV         →  "sandbox" (default) ou "production"
-     RESEND_API_KEY    →  re_xxxxxxxxx (envio de email)
+     RESEND_API_KEY    →  envio de email
      ADMIN_EMAIL       →  contacto@farmaorigen.com (cópia interna)
 ============================================ */
 

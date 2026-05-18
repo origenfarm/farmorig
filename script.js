@@ -2,6 +2,28 @@
    FARMA ORIGEN — Frontend interactions
    ============================================ */
 
+/* ---------- ANTI-COPIA / ANTI-DRAG ----------
+   Bloqueia copy, drag de imagens e long-press menu em imagens.
+   Não interfere em inputs/textarea (CSS já libera user-select neles).
+*/
+(function antiCopy() {
+  document.addEventListener('dragstart', e => {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+  }, { passive: false });
+  document.addEventListener('contextmenu', e => {
+    if (e.target.closest('img, .pd-main-wrap, .pd-thumbs, .prod-img, .ck-item-img, .mc-item-img')) {
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('copy', e => {
+    const sel = window.getSelection?.().toString() || '';
+    // Permite copiar se o usuário tem foco num input (caso real: copiar email de erro etc)
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+    if (sel) e.preventDefault();
+  });
+})();
+
 /* ---------- INFO MODAL (popups do rodapé/topbar) ----------
    Qualquer <a data-info="chave"> abre um modal com conteúdo
    correspondente. Mantém o cliente na página de produto/checkout.
@@ -97,7 +119,7 @@
         <p>Tomamos en serio la protección de tus datos. Resumen:</p>
         <ul>
           <li>Recolectamos solo lo necesario: nombre, email, teléfono, dirección y datos de pago</li>
-          <li>Los datos de pago son procesados directamente por el gateway (Pagou.ai) — no los almacenamos</li>
+          <li>Los datos de pago son procesados directamente por nuestro proveedor de pago certificado — no los almacenamos</li>
           <li>Nunca compartimos tu información con terceros sin tu consentimiento</li>
           <li>Puedes solicitar la eliminación de tus datos enviando email a contacto@farmaorigen.com</li>
         </ul>`

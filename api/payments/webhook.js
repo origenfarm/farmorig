@@ -1,11 +1,11 @@
 /* ============================================
-   Vercel Serverless Function · /api/pagou/webhook
+   Vercel Serverless Function · /api/payments/webhook
    ============================================
-   Recebe notificações do Pagou.ai sobre mudança de status
+   Recebe notificações do provedor de pagamento sobre mudança de status
    das transações (autorizada, capturada, recusada, etc).
 
    ENV VAR opcional pra validação:
-     PAGOU_WEBHOOK_SECRET → secret de assinatura HMAC (se o Pagou enviar)
+     PAGOU_WEBHOOK_SECRET → secret de assinatura HMAC (se o provedor enviar)
 
    Deduplicação: chave o `id` do evento e ignora repetidos.
    Como não há banco de dados nesta versão, fazemos

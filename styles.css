@@ -4,6 +4,33 @@
    Bold, retail, chunky, loud.
 =========================================== */
 
+/* ===== ANTI-SELEÇÃO / ANTI-COPIA ===== */
+/* Bloqueia texto/imagem de ser selecionado, arrastado ou copiado.
+   Inputs/textarea/select continuam funcionando normalmente. */
+html, body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none; /* desabilita menu de long-press no iOS */
+  -webkit-tap-highlight-color: transparent;
+}
+input, textarea, select, [contenteditable="true"], .pd-cep-feedback {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
 :root {
   --green: #1F4D3D;
   --green-dark: #143229;

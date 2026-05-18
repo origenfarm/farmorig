@@ -1,19 +1,18 @@
 /* ============================================
-   FARMA ORIGEN — Checkout (Pagou.ai integration)
+   FARMA ORIGEN — Checkout
    ============================================
-   Lê o cart de localStorage (gerenciado por script.js),
-   monta o resumo, integra com o Payment Element do Pagou.ai
-   pra tokenizar a tarjeta e envia ao backend pra criar a transação.
+   Lê o cart de localStorage (gerenciado por script.js), monta o resumo,
+   integra com o Payment Element pra tokenizar o cartão e envia ao backend
+   pra criar a transação.
 
-   ✅ Toda a configuração (pública e secreta) vem de ENV VARS na Vercel:
-       PAGOU_PUBLIC_KEY  → exposto via /api/config
-       PAGOU_SECRET_KEY  → usado só no /api/pagou/transactions
-       PAGOU_ENV         → "sandbox" / "production"
-       PAGOU_WEBHOOK_SECRET (opcional) → /api/pagou/webhook
-   Nada de chaves no código.
+   Configuração via ENV VARS na Vercel:
+     PAGOU_PUBLIC_KEY  → exposto via /api/config
+     PAGOU_SECRET_KEY  → usado só no /api/payments/transactions
+     PAGOU_ENV         → "sandbox" / "production"
+     PAGOU_WEBHOOK_SECRET (opcional) → /api/payments/webhook
 ============================================ */
 
-const BACKEND_URL        = '/api/pagou/transactions';
+const BACKEND_URL        = '/api/payments/transactions';
 const CONFIG_URL         = '/api/config';
 const SHIPPING_THRESHOLD = 20000;
 const SHIPPING_FEE       = 3990;
@@ -154,13 +153,33 @@ const SHIPPING_FEE       = 3990;
     e.target.value = v;
   });
 
-  /* ---------- 5. PAGOU PAYMENT ELEMENT (cartão — único método disponível) ---------- */
+  /* ---------- 5. PAYMENT ELEMENT (cartão — único método disponível) ---------- */
   let elements, card;
-  let pagouReady = false;
+  let payReady = false;
 
-  initPagou();
+  initPayment();
 
-  async function initPagou() {
+  // Injeta o SDK do provedor dinamicamente (não fica no view-source da página)
+  function loadPaymentSDK() {
+    return new Promise((resolve, reject) => {
+      if (typeof Pagou !== 'undefined') return resolve();
+      const s = document.createElement('script');
+      // Atob pra evitar string crua do gateway no source code
+      s.src = atob('aHR0cHM6Ly9qcy5wYWdvdS5haS9wYXltZW50cy92My5qcw==');
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('SDK load failed'));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function initPayment() {
+    try {
+      await loadPaymentSDK();
+    } catch (e) {
+      mountFallback('SDK de pago no disponible. Verifica tu conexión.');
+      return;
+    }
     if (typeof Pagou === 'undefined') {
       mountFallback('SDK de pago no disponible. Verifica tu conexión.');
       return;
@@ -170,11 +189,11 @@ const SHIPPING_FEE       = 3990;
       const r = await fetch(CONFIG_URL, { cache: 'no-store' });
       if (r.ok) cfg = await r.json();
     } catch (e) {
-      console.warn('[Pagou] /api/config indisponível, modo demo');
+      console.warn('[pay] config indisponível, modo demo');
     }
 
     if (!cfg.pagouPublicKey) {
-      mountFallback('Configuración de pago pendiente. Configura PAGOU_PUBLIC_KEY en el panel de Vercel.');
+      mountFallback('Configuración de pago pendiente.');
       return;
     }
 
@@ -187,14 +206,14 @@ const SHIPPING_FEE       = 3990;
       });
       card = elements.create('card', { theme: 'default' });
       card.mount('#ck-card-element');
-      pagouReady = true;
+      payReady = true;
       // Mostra cartões de teste quando em sandbox
       if (cfg.pagouEnv === 'sandbox') {
         const tc = document.getElementById('ckTestCards');
         if (tc) tc.hidden = false;
       }
     } catch (err) {
-      console.error('[Pagou] init falhou:', err);
+      console.error('[pay] init falhou:', err);
       mountFallback('No fue posible cargar el formulario de pago. Intenta más tarde.');
     }
   }
@@ -231,7 +250,7 @@ const SHIPPING_FEE       = 3990;
     const orderId = 'FO-' + Date.now() + '-' + Math.random().toString(36).slice(2,7);
 
     try {
-      if (!pagouReady) throw new Error('SDK do gateway não inicializado.');
+      if (!payReady) throw new Error('SDK de pago não inicializado.');
       // elements.submit() tokeniza o cartão e chama createTransaction
       const result = await elements.submit({
         createTransaction: async (tokenData) => {
@@ -261,7 +280,7 @@ const SHIPPING_FEE       = 3990;
       openResult({
         ok: false,
         title: 'Pago no aprobado',
-        msg: `Mensaje del gateway: ${detail}`
+        msg: `Detalle: ${detail}`
       });
     } finally {
       payBtn.disabled = false;
@@ -309,7 +328,7 @@ const SHIPPING_FEE       = 3990;
       method, // 'credit_card' (único método ativo no gateway)
       amount: amountBRL,
       currency: 'BRL',
-      notify_url: `${window.location.origin}/api/pagou/webhook`,
+      notify_url: `${window.location.origin}/api/payments/webhook`,
       buyer: {
         name: $('ckName').value.trim(),
         email: $('ckEmail').value.trim(),
